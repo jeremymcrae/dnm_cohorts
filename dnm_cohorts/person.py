@@ -11,6 +11,10 @@ class Person(dict):
         return 'Person("{}", "{}", "{}", "{}")'.format(self.person_id, self.sex,
             self.phenotype, self.study)
     
+    def __str__(self):
+        return '{}\t{}\t{}\t{}\n'.format(self.person_id, self.sex,
+            self.phenotype, self.study)
+    
     def __hash__(self):
         string = '{}-{}-{}'.format(self.person_id, self.sex, self.phenotype)
         return hash(string)
