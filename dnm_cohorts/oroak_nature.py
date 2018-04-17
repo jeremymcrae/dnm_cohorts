@@ -13,7 +13,8 @@ def open_oroak_cohort():
     status = 'autism'
     persons = set()
     for i, row in data.iterrows():
-        if row.child.endswith('s1'):
+        person_type = row.child.split('.')[1]
+        if person_type.startswith('s'):
             continue
         
         person = Person(row.child, row.sex, status, study)
