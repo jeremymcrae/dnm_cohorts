@@ -13,7 +13,7 @@ def extract_table(handle):
     
     records = []
     header = None
-    for page in extract_pages(handle, start=12, end=16)
+    for page in extract_pages(handle, start=12, end=16):
         data = convert_page(page)
         
         data = sorted(data, reverse=True, key=lambda x: x.y0)
