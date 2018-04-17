@@ -12,6 +12,7 @@ setup (name="dnm_cohorts",
         'pdfminer.six',
         'requests',
     ],
+    entry_points={'console_scripts': ['dnm_cohorts = dnm_cohorts.__main__:main']},
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Topic :: Scientific/Engineering :: Bio-Informatics",
