@@ -36,8 +36,7 @@ def open_de_rubeis_cohort():
     
     persons = set()
     for i, row in data.iterrows():
-        person = Person({'person_id': row.person_id, 'sex': row.sex,
-            'phenotype': row.phenotype, 'study': study})
+        person = Person(row.person_id, row.sex, row.phenotype, study)
         persons.add(person)
     
     persons = add_mock_probands(persons, 1445, 'asd', study, 'autism')

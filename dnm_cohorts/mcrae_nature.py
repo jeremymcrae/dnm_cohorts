@@ -14,8 +14,7 @@ def open_mcrae_nature_cohort():
     
     persons = set()
     for i, row in data.iterrows():
-        person = Person({'person_id': row['Individual ID'], 'sex': row.Sex,
-            'phenotype': phenotype, 'study': study})
+        person = Person(row['Individual ID'], row.Sex, phenotype, study)
         persons.add(person)
     
     persons = add_mock_probands(persons, 4293, 'ddd', study, phenotype)

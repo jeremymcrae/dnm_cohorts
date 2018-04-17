@@ -20,8 +20,7 @@ def open_sanders_nature_cohort():
         if row.Role == 'Unaffected_Sibling':
             status = 'unaffected'
         
-        person = Person({'person_id': row.Sample, 'sex': row.Gender.lower(),
-            'phenotype': status, 'study': study})
+        person = Person(row.Sample, row.Gender.lower(), status, study)
         persons.add(person)
         
     return list(persons)

@@ -30,8 +30,7 @@ def open_sanders_neuron_cohort():
             sex = sexes[row['{}Sex'.format(sample)]]
             phenotype = 'unaffected' if sample == 'Sibling' else 'autism'
             
-            person = Person({'person_id': row[sample], 'sex': sex,
-                'phenotype': phenotype, 'study': study})
+            person = Person(row[sample], sex, phenotype, study)
             persons.add(person)
     
     return list(persons)

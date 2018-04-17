@@ -43,8 +43,7 @@ def open_rauch_cohort():
     persons = set()
     for i, row in data.iterrows():
         
-        person = Person({'person_id': row.person_id, 'sex': row.sex,
-            'phenotype': status, 'study': study})
+        person = Person(row.person_id, row.sex, status, study)
         persons.add(person)
     
     return list(persons)

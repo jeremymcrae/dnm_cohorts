@@ -16,8 +16,7 @@ def open_oroak_cohort():
             continue
         
         fam = row.child.split('.')[0]
-        person = Person({'person_id': str(fam), 'sex': row.sex,
-            'phenotype': status, 'study': study})
+        person = Person(str(fam), row.sex, status, study)
         persons.add(person)
     
     return list(persons)

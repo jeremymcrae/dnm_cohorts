@@ -31,8 +31,7 @@ def open_iossifov_neuron_cohort():
                 sex = 'female' if sex == 'F' else 'male'
                 person_id = '{}.{}'.format(fam, member)
                 
-                person = Person({'person_id': person_id, 'sex': sex,
-                    'phenotype': status, 'study': study})
+                person = Person(person_id, sex, status, study)
                 persons.add(person)
     
     return list(persons)
