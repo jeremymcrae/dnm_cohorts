@@ -43,7 +43,7 @@ def open_iossifov_nature_cohort():
         for member in get_members(row):
             sex = row['siblingGender'] if member[0] == 'p' else row['probandGender']
             
-            status = 'unaffected' if member[0] == 'p' else 'autism'
+            status = 'autism' if member[0] == 'p' else 'unaffected'
             sex = 'female' if sex == 'M' else 'male'
             person_id = '{}.{}'.format(fam, member)
             
