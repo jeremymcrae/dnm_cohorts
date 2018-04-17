@@ -2,7 +2,7 @@
 import pandas
 import itertools
 
-from dnm_cohorts.hashdict import Hashdict
+from dnm_cohorts.person import Person
 
 supp_s1_url = 'http://www.cell.com/cms/attachment/2024816859/2044465439/mmc2.xlsx'
 supp_s2_url = 'http://www.cell.com/cms/attachment/2024816859/2044465438/mmc3.xlsx'
@@ -31,7 +31,7 @@ def open_iossifov_neuron_cohort():
                 sex = 'female' if sex == 'F' else 'male'
                 person_id = '{}.{}'.format(fam, member)
                 
-                person = Hashdict({'person_id': person_id, 'sex': sex,
+                person = Person({'person_id': person_id, 'sex': sex,
                     'phenotype': status, 'study': study})
                 persons.add(person)
     

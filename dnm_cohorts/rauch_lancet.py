@@ -4,7 +4,7 @@ import tempfile
 import pandas
 
 from dnm_cohorts.download_file import download_file
-from dnm_cohorts.hashdict import Hashdict
+from dnm_cohorts.person import Person
 from dnm_cohorts.convert_pdf_table import extract_pages, convert_page
 
 url = 'https://ars.els-cdn.com/content/image/1-s2.0-S0140673612614809-mmc1.pdf'
@@ -43,7 +43,7 @@ def open_rauch_cohort():
     persons = set()
     for i, row in data.iterrows():
         
-        person = Hashdict({'person_id': row.person_id, 'sex': row.sex,
+        person = Person({'person_id': row.person_id, 'sex': row.sex,
             'phenotype': status, 'study': study})
         persons.add(person)
     

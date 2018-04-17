@@ -3,7 +3,7 @@ import os
 
 import pandas
 
-from dnm_cohorts.hashdict import Hashdict
+from dnm_cohorts.person import Person
 
 url = 'http://www.cell.com/cms/attachment/2118908541/2086568189/mmc2.xlsx'
 
@@ -30,7 +30,7 @@ def open_sanders_neuron_cohort():
             sex = sexes[row['{}Sex'.format(sample)]]
             phenotype = 'unaffected' if sample == 'Sibling' else 'autism'
             
-            person = Hashdict({'person_id': row[sample], 'sex': sex,
+            person = Person({'person_id': row[sample], 'sex': sex,
                 'phenotype': phenotype, 'study': study})
             persons.add(person)
     

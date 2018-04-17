@@ -1,7 +1,7 @@
 
 import pandas
 
-from dnm_cohorts.hashdict import Hashdict
+from dnm_cohorts.person import Person
 
 url = 'https://media.nature.com/original/nature-assets/nature/journal/v485/n7397/extref/nature10945-s2.xls'
 
@@ -20,7 +20,7 @@ def open_sanders_nature_cohort():
         if row.Role == 'Unaffected_Sibling':
             status = 'unaffected'
         
-        person = Hashdict({'person_id': row.Sample, 'sex': row.Gender.lower(),
+        person = Person({'person_id': row.Sample, 'sex': row.Gender.lower(),
             'phenotype': status, 'study': study})
         persons.add(person)
         

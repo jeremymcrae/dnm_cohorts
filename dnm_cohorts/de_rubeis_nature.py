@@ -4,7 +4,7 @@ import random
 
 import pandas
 
-from dnm_cohorts.hashdict import Hashdict
+from dnm_cohorts.person import Person
 from dnm_cohorts.mock_probands import add_mock_probands
 
 url = 'https://media.nature.com/original/nature-assets/nature/journal/v515/n7526/extref/nature13772-s4.xlsx'
@@ -36,7 +36,7 @@ def open_de_rubeis_cohort():
     
     persons = set()
     for i, row in data.iterrows():
-        person = Hashdict({'person_id': row.person_id, 'sex': row.sex,
+        person = Person({'person_id': row.person_id, 'sex': row.sex,
             'phenotype': row.phenotype, 'study': study})
         persons.add(person)
     

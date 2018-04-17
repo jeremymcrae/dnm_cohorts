@@ -6,7 +6,7 @@ from zipfile import ZipFile
 
 import pandas
 
-from dnm_cohorts.hashdict import Hashdict
+from dnm_cohorts.person import Person
 from dnm_cohorts.download_file import download_file
 
 url = 'https://media.nature.com/original/nature-assets/nature/journal/v515/n7526/extref/nature13908-s2.zip'
@@ -47,7 +47,7 @@ def open_iossifov_nature_cohort():
             sex = 'female' if sex == 'M' else 'male'
             person_id = '{}.{}'.format(fam, member)
             
-            person = Hashdict({'person_id': person_id, 'sex': sex,
+            person = Person({'person_id': person_id, 'sex': sex,
                 'phenotype': status, 'study': study})
             persons.add(person)
     

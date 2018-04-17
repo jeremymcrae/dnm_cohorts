@@ -1,7 +1,7 @@
 
 import pandas
 
-from dnm_cohorts.hashdict import Hashdict
+from dnm_cohorts.person import Person
 
 url = 'https://media.nature.com/original/nature-assets/nature/journal/v485/n7397/extref/nature10989-s2.xls'
 
@@ -16,7 +16,7 @@ def open_oroak_cohort():
             continue
         
         fam = row.child.split('.')[0]
-        person = Hashdict({'person_id': str(fam), 'sex': row.sex,
+        person = Person({'person_id': str(fam), 'sex': row.sex,
             'phenotype': status, 'study': study})
         persons.add(person)
     

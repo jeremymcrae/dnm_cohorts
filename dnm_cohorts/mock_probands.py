@@ -1,7 +1,7 @@
 
 import random
 
-from dnm_cohorts.hashdict import Hashdict
+from dnm_cohorts.person import Person
 from dnm_cohorts.random_id import random_id
 
 def add_mock_probands(persons, required, prefix, study, phenotype):
@@ -24,7 +24,7 @@ def add_mock_probands(persons, required, prefix, study, phenotype):
     for x in range(required - len(affected)):
         person_id = '{}_{}'.format(prefix, random_id())
         sex = 'male' if random.random() < male_ratio else 'female'
-        person = Hashdict({'person_id': person_id, 'sex': sex,
+        person = Person({'person_id': person_id, 'sex': sex,
             'phenotype': phenotype, 'study': study})
         persons.add(person)
     

@@ -4,7 +4,7 @@ import tempfile
 import pandas
 
 from dnm_cohorts.download_file import download_file
-from dnm_cohorts.hashdict import Hashdict
+from dnm_cohorts.person import Person
 from dnm_cohorts.convert_pdf_table import extract_pages, convert_page
 
 url = 'https://media.nature.com/original/nature-assets/nature/journal/v501/n7466/extref/nature12439-s1.pdf'
@@ -57,7 +57,7 @@ def open_epi4k_nature_cohort():
     persons = set()
     for i, row in data.iterrows():
         
-        person = Hashdict({'person_id': row.person_id, 'sex': row.sex,
+        person = Person({'person_id': row.person_id, 'sex': row.sex,
             'phenotype': status, 'study': study})
         persons.add(person)
     

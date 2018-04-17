@@ -4,7 +4,7 @@ random.seed(1)
 
 import pandas
 
-from dnm_cohorts.hashdict import Hashdict
+from dnm_cohorts.person import Person
 
 url = 'https://media.nature.com/original/nature-assets/neuro/journal/v19/n9/extref/nn.4352-S3.xlsx'
 
@@ -20,7 +20,7 @@ def open_lelieveld_cohort():
     persons = set()
     for person_id in ids:
         sex = 'male' if random.random() < male_fraction else 'female'
-        person = Hashdict({'person_id': person_id, 'sex': sex,
+        person = Person({'person_id': person_id, 'sex': sex,
             'phenotype': status, 'study': study})
         persons.add(person)
     

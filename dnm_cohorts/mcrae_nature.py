@@ -1,7 +1,7 @@
 
 import pandas
 
-from dnm_cohorts.hashdict import Hashdict
+from dnm_cohorts.person import Person
 from dnm_cohorts.mock_probands import add_mock_probands
 
 url = 'https://media.nature.com/original/nature-assets/nature/journal/v542/n7642/extref/nature21062-s2.xlsx'
@@ -14,7 +14,7 @@ def open_mcrae_nature_cohort():
     
     persons = set()
     for i, row in data.iterrows():
-        person = Hashdict({'person_id': row['Individual ID'], 'sex': row.Sex,
+        person = Person({'person_id': row['Individual ID'], 'sex': row.Sex,
             'phenotype': phenotype, 'study': study})
         persons.add(person)
     
