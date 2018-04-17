@@ -33,4 +33,4 @@ def open_sanders_neuron_cohort():
             person = Person(row[sample], sex, phenotype, study)
             persons.add(person)
     
-    return list(persons)
+    return persons

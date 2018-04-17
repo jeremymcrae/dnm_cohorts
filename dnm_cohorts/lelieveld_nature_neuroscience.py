@@ -23,4 +23,4 @@ def open_lelieveld_cohort():
         person = Person(person_id, sex, status, study)
         persons.add(person)
     
-    return list(persons)
+    return persons

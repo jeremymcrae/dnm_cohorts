@@ -34,4 +34,4 @@ def open_iossifov_neuron_cohort():
                 person = Person(person_id, sex, status, study)
                 persons.add(person)
     
-    return list(persons)
+    return persons

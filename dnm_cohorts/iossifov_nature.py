@@ -50,4 +50,4 @@ def open_iossifov_nature_cohort():
             person = Person(person_id, sex, status, study)
             persons.add(person)
     
-    return list(persons)
+    return persons

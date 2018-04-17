@@ -19,4 +19,4 @@ def open_mcrae_nature_cohort():
     
     persons = add_mock_probands(persons, 4293, 'ddd', study, phenotype)
     
-    return list(persons)
+    return persons

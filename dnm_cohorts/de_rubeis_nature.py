@@ -41,4 +41,4 @@ def open_de_rubeis_cohort():
     
     persons = add_mock_probands(persons, 1445, 'asd', study, 'autism')
     
-    return list(persons)
+    return persons

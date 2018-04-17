@@ -19,4 +19,4 @@ def open_oroak_cohort():
         person = Person(str(fam), row.sex, status, study)
         persons.add(person)
     
-    return list(persons)
+    return persons

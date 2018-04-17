@@ -46,4 +46,4 @@ def open_rauch_cohort():
         person = Person(row.person_id, row.sex, status, study)
         persons.add(person)
     
-    return list(persons)
+    return persons

@@ -23,4 +23,4 @@ def open_sanders_nature_cohort():
         person = Person(row.Sample, row.Gender.lower(), status, study)
         persons.add(person)
         
-    return list(persons)
+    return persons
