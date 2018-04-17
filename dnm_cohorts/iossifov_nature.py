@@ -44,7 +44,7 @@ def open_iossifov_nature_cohort():
             sex = row['siblingGender'] if member[0] == 'p' else row['probandGender']
             
             status = 'autism' if member[0] == 'p' else 'unaffected'
-            sex = 'female' if sex == 'M' else 'male'
+            sex = 'male' if sex == 'M' else 'female'
             person_id = '{}.{}'.format(fam, member)
             
             person = Person(person_id, sex, status, study)
