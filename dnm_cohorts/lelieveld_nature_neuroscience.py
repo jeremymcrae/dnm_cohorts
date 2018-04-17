@@ -20,7 +20,7 @@ def open_lelieveld_cohort():
     persons = set()
     for person_id in ids:
         sex = 'male' if random.random() < male_fraction else 'female'
-        person = Person(person_id, sex, status, study)
+        person = Person(person_id, sex, phenotype, study)
         persons.add(person)
     
     return persons
