@@ -12,7 +12,7 @@ from dnm_cohorts.cohorts.iossifov_neuron import open_iossifov_neuron_cohort
 from dnm_cohorts.cohorts.oroak_nature import open_oroak_cohort
 from dnm_cohorts.cohorts.sanders_nature import open_sanders_nature_cohort
 from dnm_cohorts.cohorts.sanders_neuron import open_sanders_neuron_cohort
-from dnm_cohorts.cohorts.lelieveld_nature_neuroscience import open_lelieveld_cohort
+from dnm_cohorts.cohorts.lelieveld_nn import open_lelieveld_cohort
 from dnm_cohorts.cohorts.mcrae_nature import open_mcrae_nature_cohort
 
 def get_options():
