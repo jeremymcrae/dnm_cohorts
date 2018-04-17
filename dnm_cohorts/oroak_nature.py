@@ -15,8 +15,7 @@ def open_oroak_cohort():
         if row.child.endswith('s1'):
             continue
         
-        fam = row.child.split('.')[0]
-        person = Person(str(fam), row.sex, status, study)
+        person = Person(row.child, row.sex, status, study)
         persons.add(person)
     
     return persons
