@@ -11,6 +11,7 @@ setup (name="dnm_cohorts",
     install_requires=['pandas',
         'pdfminer.six',
         'requests',
+        'hgvs',
     ],
     entry_points={'console_scripts': ['dnm_cohorts = dnm_cohorts.__main__:main']},
     classifiers=[
