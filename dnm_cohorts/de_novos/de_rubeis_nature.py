@@ -1,8 +1,6 @@
 
 import pandas
 
-from dnm_cohorts.ensembl import cq_and_symbols
-
 url = "http://www.nature.com/nature/journal/v515/n7526/extref/nature13772-s4.xlsx"
 
 def de_rubeis_de_novos():
@@ -27,10 +25,6 @@ def de_rubeis_de_novos():
     for col in ['person_id', 'chrom', 'ref', 'alt']:
         data[col] = data[col].astype(str).str.replace(' |\t', '')
     
-    cqs, symbols = cq_and_symbols(data.chrom, data.pos, data.ref, data.alt)
-    data['consequence'], data['symbol'] = cqs, symbols
-    
     data['study'] = "derubeis_nature_2014"
     
-    return data[["person_id", "chrom", "pos", "ref", "alt", "symbol",
-        "consequence", "study"]]
+    return data[["person_id", "chrom", "pos", "ref", "alt", "study"]]

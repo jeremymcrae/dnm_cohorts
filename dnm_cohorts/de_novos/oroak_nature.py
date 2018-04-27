@@ -1,7 +1,7 @@
 
 import pandas
 
-from dnm_cohorts.ensembl import cq_and_symbols, genome_sequence
+from dnm_cohorts.ensembl import genome_sequence
 from dnm_cohorts.fix_alleles import fix_het_alleles
 
 url = 'http://www.nature.com/nature/journal/v485/n7397/extref/nature10989-s2.xls'
@@ -66,12 +66,8 @@ def oroak_de_novos():
     
     alleles = [ fix_het_alleles(x.ref, x.alt) for i, x in data.iterrows() ]
     data['ref'], data['alt'] = list(zip(*alleles))
-    cqs, symbols = cq_and_symbols(data.chrom, data.pos, data.ref, data.alt)
-    data['consequence'] = cqs
-    data['hgnc'] =symbols
     
     data['person_id'] = data['Person']
     data['study'] = 'oroak_nature_2012'
     
-    return data[['person_id', 'chrom', 'pos', 'ref', 'alt', 'symbol',
-        'consequence', 'study_code']]
+    return data[['person_id', 'chrom', 'pos', 'ref', 'alt', 'study_code']]

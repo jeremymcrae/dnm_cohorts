@@ -9,7 +9,6 @@ from dnm_cohorts.download_file import download_file
 from dnm_cohorts.person import Person
 from dnm_cohorts.convert_pdf_table import extract_pages, convert_page
 from dnm_cohorts.fix_hgvs import fix_hgvs_coordinates
-from dnm_cohorts.ensembl import cq_and_symbols
 
 url = 'http://www.nature.com/nature/journal/v511/n7509/extref/nature13394-s1.pdf'
 
@@ -75,10 +74,6 @@ def open_gilissen_nature():
     
     chrom, pos, ref, alt = fix_hgvs_coordinates(data.hgvs_genomic)
     data['chrom'], data['pos'], data['ref'], data['alt'] = chrom, pos, ref, alt
-    cq, symbol = cq_and_symbols(data.chrom, data.pos, data.ref, data.alt)
-    data['consequence'], data['symbol'] = cq, symbol
-    
     data['study'] = 'gilissen_nature_2014'
     
-    return data[['person_id', 'chrom', 'pos', 'ref', 'alt', 'symbol',
-        'consequence', 'study']]
+    return data[['person_id', 'chrom', 'pos', 'ref', 'alt', 'study']]

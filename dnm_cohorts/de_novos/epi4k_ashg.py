@@ -4,7 +4,6 @@ import re
 import pandas
 
 from dnm_cohorts.fix_hgvs import fix_coordinates_with_allele
-from dnm_cohorts.ensembl import cq_and_symbols
 
 url = 'https://ars.els-cdn.com/content/image/1-s2.0-S0002929714003838-mmc2.xlsx'
 
@@ -33,9 +32,6 @@ def epi4k_de_novos():
     data['TRIO ID'] = data['TRIO ID'].str.replace('*', '')
     data['person_id'] = data['Child ID'].str.replace('*', '').str.upper()
     
-    cqs, symbols = cq_and_symbols(data.chrom, data.pos, data.ref, data.alt)
-    data['consequence'], data['symbol'] = cqs, symbols
-    
     data['study'] = "epi4k_ajhg_2014"
     
     # get a set of IDs that match the Coriell IDs
@@ -46,5 +42,4 @@ def epi4k_de_novos():
     
     data['person_id'] = person_ids
     
-    return data[["person_id", "chrom", "pos", "ref", "alt", "symbol",
-        "consequence", "study"]]
+    return data[["person_id", "chrom", "pos", "ref", "alt", "study"]]

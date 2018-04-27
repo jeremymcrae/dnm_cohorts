@@ -1,7 +1,7 @@
 
 import pandas
 
-from dnm_cohorts.ensembl import cq_and_symbols, genome_sequence
+from dnm_cohorts.ensembl import genome_sequence
 
 url = "http://www.nature.com/neuro/journal/v19/n9/extref/nn.4352-S3.xlsx"
 
@@ -51,12 +51,6 @@ def lelieveld_de_novos():
     
     data['ref'], data['alt'] = fix_alleles(data)
     
-    cqs, symbols = cq_and_symbols(data.chrom, data.pos, data.ref, data.alt)
-    data['consequence'] = cqs
-    data['symbol'] = symbols
-    
     data['study'] = 'lelieveld_nature_neuroscience_2016'
     
-    return data[['person_id', 'chrom', 'pos', 'ref', 'alt', 'symbol',
-        'consequence', 'study']]
-    
+    return data[['person_id', 'chrom', 'pos', 'ref', 'alt', 'study']]

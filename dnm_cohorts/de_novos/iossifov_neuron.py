@@ -2,7 +2,6 @@
 import pandas
 
 from dnm_cohorts.fix_hgvs import fix_coordinates_with_allele
-from dnm_cohorts.ensembl import cq_and_symbols
 
 snv_url = 'http://www.cell.com/cms/attachment/2024816859/2044465439/mmc2.xlsx'
 indel_url = 'http://www.cell.com/cms/attachment/2024816859/2044465437/mmc4.xlsx'
@@ -48,14 +47,11 @@ def iossifov_neuron_de_novos():
     indels = indels[['quadId', 'location', 'variant', 'effectGenes', 'effectType', 'inChild']]
     data = snvs.append(indels, ignore_index=False)
     
-    # get the coordinates and VEP consequence
-    chrom, pos, ref, alt = fix_coordinates_with_allele(data['location'], data['variant'])
-    cq, symbols = cq_and_symbols(data.chrom, data.pos, data.ref, data.alt)
-    data['consequence'] = cq
-    data['hgnc'] = symbols
+    # get the coordinates
+    coords = fix_coordinates_with_allele(data['location'], data['variant'])
+    data['chrom'], data['pos'], data['ref'], data['alt'] = coords
     
     data['person_id'] = get_person_ids(data)
     data['study'] = 'iossifov_neuron_2012'
     
-    return data[['person_id', 'sex', 'chrom', 'pos', 'ref', 'alt', 'symbol',
-        'consequence', 'study']]
+    return data[['person_id', 'sex', 'chrom', 'pos', 'ref', 'alt', 'study']]

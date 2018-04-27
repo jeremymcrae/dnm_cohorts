@@ -4,7 +4,6 @@ import tempfile
 from dnm_cohorts.download_file import download_file
 from dnm_cohorts.convert_pdf_table import extract_pages, convert_page
 from dnm_cohorts.fix_hgvs import fix_hgvs_coordinates
-from dnm_cohorts.ensembl import cq_and_symbols
 
 url = 'https://ars.els-cdn.com/content/image/1-s2.0-S0140673612614809-mmc1.pdf'
 
@@ -96,12 +95,7 @@ def rauch_de_novos():
     coords = fix_hgvs_coordinates(data['hgvs_genomic'])
     data['chrom'], data['pos'], data['ref'], data['alt'] = coords
     
-    cqs, symbols = cq_and_symbols(data.chrom, data.pos, data.ref, data.alt)
-    data['consequence'] = cqs
-    data['hgnc'] = symbols
-    
     # define the study details
     data['study'] = "rauch_lancet_2012"
     
-    return data[["person_id", "chrom", "pos", "ref", "alt", "symbol",
-        "consequence", "study"]]
+    return data[["person_id", "chrom", "pos", "ref", "alt", "study"]]

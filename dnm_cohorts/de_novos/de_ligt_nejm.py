@@ -9,7 +9,6 @@ from dnm_cohorts.download_file import download_file
 from dnm_cohorts.person import Person
 from dnm_cohorts.convert_pdf_table import extract_pages, convert_page
 from dnm_cohorts.fix_hgvs import fix_hgvs_coordinates
-from dnm_cohorts.ensembl import cq_and_symbols
 
 url = 'http://www.nejm.org/doi/suppl/10.1056/NEJMoa1206524/suppl_file/nejmoa1206524_appendix.pdf'
 
@@ -69,10 +68,7 @@ def open_de_ligt():
     
     chrom, pos, ref, alt = fix_hgvs_coordinates(data.hgvs_genomic)
     data['chrom'], data['pos'], data['ref'], data['alt'] = chrom, pos, ref, alt
-    cq, symbol = cq_and_symbols(data.chrom, data.pos, data.ref, data.alt)
-    data['consequence'], data['symbol'] = cq, symbol
     
     data['study'] = "deligt_nejm_2012"
     
-    return data[['person_id', 'chrom', 'pos', 'ref', 'alt', 'symbol',
-        'consequence', 'study']]
+    return data[['person_id', 'chrom', 'pos', 'ref', 'alt', 'study']]

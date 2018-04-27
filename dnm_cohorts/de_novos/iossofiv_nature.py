@@ -76,14 +76,9 @@ def iossifov_nature_de_novos():
     chrom, pos, ref, alt = fix_coordinates(data['location'], data['vcfVariant'])
     data['chrom'], data['pos'], data['ref'], data['alt'] = chrom, pos, ref, alt
     
-    cq, symbols = cq_and_symbols(data.chrom, data.pos, data.ref, data.alt)
-    data['consequence'] = cq
-    data['symbol'] = symbols
-    
     sample_ids = get_sample_ids(fams)
     data['person_id'] = get_person_ids(data, sample_ids)
     data = tidy_families(data)
     data['study'] = "iossifov_nature_2014"
     
-    return data[['person_id', 'chrom', 'pos', 'ref', 'alt', 'symbol',
-        'consequence', 'study']]
+    return data[['person_id', 'chrom', 'pos', 'ref', 'alt', 'study']]

@@ -1,8 +1,5 @@
 
-
 import pandas
-
-from dnm_cohorts.ensembl import cq_and_symbols
 
 url = 'https://www.cell.com/cms/attachment/2118908541/2086568191'
 
@@ -25,12 +22,6 @@ def sanders_neuron():
     data['pos'] = data['Pos(hg19)']
     data['ref'] = data['Ref']
     data['alt'] = data['Alt']
-    
-    cqs, symbols = cq_and_symbols(data.chrom, data.pos, data.ref, data.alt)
-    data['consequence'] = cqs
-    data['symbol'] = symbols
-    
     data['study'] = "sanders_neuron_2015"
     
-    return data[['person_id','chrom', 'pos', 'ref', 'alt', 'symbol',
-        'consequence', 'study']]
+    return data[['person_id','chrom', 'pos', 'ref', 'alt', 'study']]
