@@ -12,8 +12,6 @@ from dnm_cohorts.fix_hgvs import fix_hgvs_coordinates
 
 url = 'http://www.nature.com/nature/journal/v511/n7509/extref/nature13394-s1.pdf'
 
-https://media.nature.com/original/nature-assets/nature/journal/v511/n7509/extref/nature13394-s1.pdf
-
 def extract_table(handle):
     
     records = []
