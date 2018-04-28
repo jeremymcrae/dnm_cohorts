@@ -45,7 +45,7 @@ def iossifov_neuron_de_novos():
     # merge the SNV and indel de novo calls
     snvs = snvs[['quadId', 'location', 'variant', 'effectGenes', 'effectType', 'inChild']]
     indels = indels[['quadId', 'location', 'variant', 'effectGenes', 'effectType', 'inChild']]
-    data = snvs.append(indels, ignore_index=False)
+    data = snvs.append(indels, ignore_index=True)
     
     # get the coordinates
     coords = fix_coordinates_with_allele(data['location'], data['variant'])
