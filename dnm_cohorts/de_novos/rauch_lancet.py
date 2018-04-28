@@ -1,6 +1,8 @@
 
 import tempfile
 
+import pandas
+
 from dnm_cohorts.download_file import download_file
 from dnm_cohorts.convert_pdf_table import extract_pages, convert_page
 from dnm_cohorts.fix_hgvs import fix_hgvs_coordinates
