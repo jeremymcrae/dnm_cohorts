@@ -8,7 +8,7 @@ indel_url = 'http://www.cell.com/cms/attachment/2024816859/2044465437/mmc4.xlsx'
 
 def get_person_ids(data):
     
-    fam_ids = data['quadID'].astype(str)
+    fam_ids = data['quadId'].astype(str)
     children = data.inChild.str.split('M|F')
     
     # mock up some person IDs (which are very likely to be correct)
