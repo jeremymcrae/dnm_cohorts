@@ -34,6 +34,9 @@ def fix_hgvs_coordinates(coords):
         if type == 'del':
             ref = genome_sequence(chrom, pos, end + 1)
             alt = ref[0]
+        elif type == 'delins':
+            ref = genome_sequence(chrom, pos, end)
+            alt = var.posedit.edit.alt
         elif type == 'ins':
             ref = genome_sequence(chrom, pos, end)
             alt = ref + var.posedit.edit.alt
