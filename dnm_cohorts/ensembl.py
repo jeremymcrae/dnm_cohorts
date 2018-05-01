@@ -55,6 +55,7 @@ class Ensembl:
         if self.check_retry(response):
             return self.__call__(ext, data, attempt + 1)
         
+        logging.info('{}\t{}'.format(url, response.status_code))
         response.raise_for_status()
         
         return response.json()
