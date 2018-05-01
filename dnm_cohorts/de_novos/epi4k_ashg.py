@@ -22,7 +22,7 @@ url = 'https://ars.els-cdn.com/content/image/1-s2.0-S0002929714003838-mmc2.xlsx'
 #'
 #' @return data frame of de novos, including gene symbol, functional consequence
 #'     (VEP format), chromosome, nucleotide position and SNV or INDEL type
-def epi4k_de_novos():
+def epi4k_ashg_de_novos():
     
     data = pandas.read_excel(url, skip_footer=4)
     

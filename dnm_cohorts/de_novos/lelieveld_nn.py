@@ -26,7 +26,7 @@ def fix_alleles(data):
     
     return ref, alt
 
-def lelieveld_de_novos():
+def lelieveld_nn_de_novos():
     """ get de novo data for Lelieveld et al. intellectual disability exome study
     
     De novo mutation data sourced from supplementary table 1 from:

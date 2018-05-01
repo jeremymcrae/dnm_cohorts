@@ -20,7 +20,7 @@ def fix_alleles(data):
     
     return ref, alt
 
-def sanders_nature():
+def sanders_nature_de_novos():
     """ get de novo data from the Sanders et al autism exome study
     
     Supplementary table 2 (where the excel sheets for the probands and

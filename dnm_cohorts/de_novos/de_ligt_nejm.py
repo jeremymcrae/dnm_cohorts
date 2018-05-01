@@ -58,7 +58,7 @@ def clean_table(data):
     
     return data
 
-def open_de_ligt():
+def de_ligt_nejm_de_novos():
     
     temp = tempfile.NamedTemporaryFile()
     download_file(url, temp.name)

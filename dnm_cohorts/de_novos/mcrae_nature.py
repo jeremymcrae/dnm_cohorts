@@ -3,7 +3,7 @@ import pandas
 
 url = 'http://www.nature.com/nature/journal/v542/n7642/extref/nature21062-s2.xlsx'
 
-def mcrae_nature():
+def mcrae_nature_de_novos():
     """ load de novo mutations from McRae et al Nature 2017
     
     These de novos are loaded from Supplementary Table 1 from

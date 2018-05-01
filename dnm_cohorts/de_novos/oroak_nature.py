@@ -42,7 +42,7 @@ def fix_alleles(data):
     
     return ref, alt
 
-def oroak_de_novos():
+def oroak_nature_de_novos():
     """ get de novo data from the O'Roak et al autism exome study
     
     Supplementary table 3 from:

@@ -60,7 +60,7 @@ def clean_table(data):
     
     return data
 
-def open_gilissen_nature():
+def gilissen_nature_de_novos():
     """ load de novos from Gilissen et al Nature 2014
     """
     
