@@ -2,6 +2,7 @@
 import pandas
 
 from dnm_cohorts.fix_hgvs import fix_coordinates_with_allele
+from dnm_cohorts.de_novos.iossifov_nature import tidy_families
 
 snv_url = 'http://www.cell.com/cms/attachment/2024816859/2044465439/mmc2.xlsx'
 indel_url = 'http://www.cell.com/cms/attachment/2024816859/2044465437/mmc4.xlsx'
@@ -52,6 +53,7 @@ def iossifov_neuron_de_novos():
     data['chrom'], data['pos'], data['ref'], data['alt'] = coords
     
     data['person_id'] = get_person_ids(data)
+    data = tidy_families(data)
     data['study'] = 'iossifov_neuron_2012'
     
     return data[['person_id', 'chrom', 'pos', 'ref', 'alt', 'study']]
