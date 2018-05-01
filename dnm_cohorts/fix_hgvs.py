@@ -64,7 +64,7 @@ def fix_coordinates(coords, alleles):
         chrom, pos = a.split(':')
         _, _, ref, alt = b.split(':')
         chroms.append(chrom.upper().replace('CHR', ''))
-        positions.append(pos)
+        positions.append(int(pos))
         refs.append(ref)
         alts.append(alt)
     
