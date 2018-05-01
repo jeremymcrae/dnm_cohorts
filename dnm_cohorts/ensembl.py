@@ -4,6 +4,7 @@ import time
 import logging
 
 import requests
+from requests.exceptions import HTTPError
 
 # consequence list, as sorted at http://www.ensembl.org/info/genome/variation/predicted_data.html
 consequences = ["transcript_ablation", "splice_donor_variant",
@@ -103,9 +104,9 @@ def cq_and_symbol(chrom, pos, ref, alt):
     ext = "vep/human/region/{}:{}:{}/".format(chrom, pos, pos + len(ref) - 1)
     
     try:
-        data = ensembl(ext + ref)
-    except ValueError:
         data = ensembl(ext + alt)
+    except HTTPError:
+        data = ensembl(ext + ref)
     
     return find_most_severe_transcript(data[0])
 
