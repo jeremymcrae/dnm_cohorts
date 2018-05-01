@@ -99,5 +99,6 @@ def rauch_de_novos():
     
     # define the study details
     data['study'] = "rauch_lancet_2012"
+    data['confidence'] = 'high'
     
-    return data[["person_id", "chrom", "pos", "ref", "alt", "study"]]
+    return data[["person_id", "chrom", "pos", "ref", "alt", "study", "confidence"]]

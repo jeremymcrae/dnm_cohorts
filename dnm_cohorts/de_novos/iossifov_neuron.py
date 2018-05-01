@@ -55,5 +55,6 @@ def iossifov_neuron_de_novos():
     data['person_id'] = get_person_ids(data)
     data = tidy_families(data)
     data['study'] = 'iossifov_neuron_2012'
+    data['confidence'] = 'high'
     
-    return data[['person_id', 'chrom', 'pos', 'ref', 'alt', 'study']]
+    return data[['person_id', 'chrom', 'pos', 'ref', 'alt', 'study', 'confidence']]

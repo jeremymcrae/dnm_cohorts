@@ -41,5 +41,6 @@ def epi4k_de_novos():
     person_ids = [ m.group() if m is not None else person_ids[i] for i, m in enumerate(matches) ]
     
     data['person_id'] = person_ids
+    data['confidence'] = 'high'
     
-    return data[["person_id", "chrom", "pos", "ref", "alt", "study"]]
+    return data[["person_id", "chrom", "pos", "ref", "alt", "study", "confidence"]]

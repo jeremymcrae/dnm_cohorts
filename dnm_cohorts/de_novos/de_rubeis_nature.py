@@ -26,5 +26,6 @@ def de_rubeis_de_novos():
         data[col] = data[col].astype(str).str.replace(' |\t', '')
     
     data['study'] = "derubeis_nature_2014"
+    data['confidence'] = 'high'
     
-    return data[["person_id", "chrom", "pos", "ref", "alt", "study"]]
+    return data[["person_id", "chrom", "pos", "ref", "alt", "study", "confidence"]]

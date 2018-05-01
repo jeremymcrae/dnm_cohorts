@@ -22,4 +22,8 @@ def mcrae_nature():
     data['alt'] = data['Alternate allele']
     data['study'] = 'mcrae_nature_2017'
     
-    return data[['person_id', 'chrom', 'pos', 'ref', 'alt', 'study']]
+    qual, status = data['PP(DNM)'], data['Status']
+    quality = qual.isnull() | (qual > 0.00781) | (status == 'validated')
+    data['confidence'] = quality.map({True: 'high', False: 'low'})
+    
+    return data[['person_id', 'chrom', 'pos', 'ref', 'alt', 'study', 'confidence']]

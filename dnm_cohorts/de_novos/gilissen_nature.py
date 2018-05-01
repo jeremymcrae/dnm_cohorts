@@ -73,5 +73,6 @@ def open_gilissen_nature():
     chrom, pos, ref, alt = fix_hgvs_coordinates(data.hgvs_genomic)
     data['chrom'], data['pos'], data['ref'], data['alt'] = chrom, pos, ref, alt
     data['study'] = 'gilissen_nature_2014'
+    data['confidence'] = 'high'
     
-    return data[['person_id', 'chrom', 'pos', 'ref', 'alt', 'study']]
+    return data[['person_id', 'chrom', 'pos', 'ref', 'alt', 'study', 'confidence']]

@@ -70,5 +70,6 @@ def open_de_ligt():
     data['chrom'], data['pos'], data['ref'], data['alt'] = chrom, pos, ref, alt
     
     data['study'] = "deligt_nejm_2012"
+    data['confidence'] = 'high'
     
-    return data[['person_id', 'chrom', 'pos', 'ref', 'alt', 'study']]
+    return data[['person_id', 'chrom', 'pos', 'ref', 'alt', 'study', 'confidence']]

@@ -49,5 +49,6 @@ def sanders_nature():
     data['ref'], data['alt'] = list(zip(*alleles))
     
     data['study'] = "sanders_nature_2012"
+    data['confidence'] = 'high'
     
-    return data[['person_id','chrom', 'pos', 'ref', 'alt', 'study']]
+    return data[['person_id','chrom', 'pos', 'ref', 'alt', 'study', 'confidence']]

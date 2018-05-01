@@ -52,5 +52,6 @@ def lelieveld_de_novos():
     data['ref'], data['alt'] = fix_alleles(data)
     
     data['study'] = 'lelieveld_nature_neuroscience_2016'
+    data['confidence'] = 'high'
     
-    return data[['person_id', 'chrom', 'pos', 'ref', 'alt', 'study']]
+    return data[['person_id', 'chrom', 'pos', 'ref', 'alt', 'study', 'confidence']]
