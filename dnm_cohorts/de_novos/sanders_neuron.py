@@ -25,6 +25,6 @@ def sanders_neuron():
     data['study'] = "sanders_neuron_2015"
     
     quality = data['Confidence'] != 'lowConf'
-    data['confidence'] = quality.map(True: 'high', False: 'low')
+    data['confidence'] = quality.map({True: 'high', False: 'low'})
     
     return data[['person_id','chrom', 'pos', 'ref', 'alt', 'study', 'confidence']]
