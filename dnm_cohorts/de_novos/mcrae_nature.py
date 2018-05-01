@@ -1,6 +1,8 @@
 
 import pandas
 
+from dnm_cohorts.de_novo import DeNovo
+
 url = 'http://www.nature.com/nature/journal/v542/n7642/extref/nature21062-s2.xlsx'
 
 def mcrae_nature_de_novos():
@@ -26,4 +28,10 @@ def mcrae_nature_de_novos():
     quality = qual.isnull() | (qual > 0.00781) | (status == 'validated')
     data['confidence'] = quality.map({True: 'high', False: 'low'})
     
-    return data[['person_id', 'chrom', 'pos', 'ref', 'alt', 'study', 'confidence']]
+    vars = set()
+    for i, row in data.iterrows():
+        var = DeNovo(row.person_id, row.chrom, row.pos, row.ref, row.alt,
+            row.study, row.confidence)
+        vars.add(var)
+    
+    return vars

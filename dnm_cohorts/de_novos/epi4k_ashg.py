@@ -4,6 +4,7 @@ import re
 import pandas
 
 from dnm_cohorts.fix_hgvs import fix_coordinates_with_allele
+from dnm_cohorts.de_novo import DeNovo
 
 url = 'https://ars.els-cdn.com/content/image/1-s2.0-S0002929714003838-mmc2.xlsx'
 
@@ -43,4 +44,10 @@ def epi4k_ashg_de_novos():
     data['person_id'] = person_ids
     data['confidence'] = 'high'
     
-    return data[["person_id", "chrom", "pos", "ref", "alt", "study", "confidence"]]
+    vars = set()
+    for i, row in data.iterrows():
+        var = DeNovo(row.person_id, row.chrom, row.pos, row.ref, row.alt,
+            row.study, row.confidence)
+        vars.add(var)
+    
+    return vars

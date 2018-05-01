@@ -9,6 +9,7 @@ from dnm_cohorts.download_file import download_file
 from dnm_cohorts.person import Person
 from dnm_cohorts.convert_pdf_table import extract_pages, convert_page
 from dnm_cohorts.fix_hgvs import fix_hgvs_coordinates
+from dnm_cohorts.de_novo import DeNovo
 
 url = 'http://www.nature.com/nature/journal/v511/n7509/extref/nature13394-s1.pdf'
 
@@ -75,4 +76,10 @@ def gilissen_nature_de_novos():
     data['study'] = 'gilissen_nature_2014'
     data['confidence'] = 'high'
     
-    return data[['person_id', 'chrom', 'pos', 'ref', 'alt', 'study', 'confidence']]
+    vars = set()
+    for i, row in data.iterrows():
+        var = DeNovo(row.person_id, row.chrom, row.pos, row.ref, row.alt,
+            row.study, row.confidence)
+        vars.add(var)
+    
+    return vars

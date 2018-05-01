@@ -9,6 +9,7 @@ from dnm_cohorts.download_file import download_file
 from dnm_cohorts.person import Person
 from dnm_cohorts.convert_pdf_table import extract_pages, convert_page
 from dnm_cohorts.fix_hgvs import fix_hgvs_coordinates
+from dnm_cohorts.de_novo import DeNovo
 
 url = 'http://www.nejm.org/doi/suppl/10.1056/NEJMoa1206524/suppl_file/nejmoa1206524_appendix.pdf'
 
@@ -72,4 +73,10 @@ def de_ligt_nejm_de_novos():
     data['study'] = "deligt_nejm_2012"
     data['confidence'] = 'high'
     
-    return data[['person_id', 'chrom', 'pos', 'ref', 'alt', 'study', 'confidence']]
+    vars = set()
+    for i, row in data.iterrows():
+        var = DeNovo(row.person_id, row.chrom, row.pos, row.ref, row.alt,
+            row.study, row.confidence)
+        vars.add(var)
+    
+    return vars

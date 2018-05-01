@@ -1,6 +1,8 @@
 
 import pandas
 
+from dnm_cohorts.de_novo import DeNovo
+
 url = 'https://www.cell.com/cms/attachment/2118908541/2086568191'
 
 def sanders_neuron_de_novos():
@@ -27,4 +29,10 @@ def sanders_neuron_de_novos():
     quality = data['Confidence'] != 'lowConf'
     data['confidence'] = quality.map({True: 'high', False: 'low'})
     
-    return data[['person_id','chrom', 'pos', 'ref', 'alt', 'study', 'confidence']]
+    vars = set()
+    for i, row in data.iterrows():
+        var = DeNovo(row.person_id, row.chrom, row.pos, row.ref, row.alt,
+            row.study, row.confidence)
+        vars.add(var)
+    
+    return vars

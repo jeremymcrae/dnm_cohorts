@@ -1,6 +1,8 @@
 
 import pandas
 
+from dnm_cohorts.de_novo import DeNovo
+
 url = "http://www.nature.com/nature/journal/v515/n7526/extref/nature13772-s4.xlsx"
 
 def de_rubeis_nature_de_novos():
@@ -28,4 +30,10 @@ def de_rubeis_nature_de_novos():
     data['study'] = "derubeis_nature_2014"
     data['confidence'] = 'high'
     
-    return data[["person_id", "chrom", "pos", "ref", "alt", "study", "confidence"]]
+    vars = set()
+    for i, row in data.iterrows():
+        var = DeNovo(row.person_id, row.chrom, row.pos, row.ref, row.alt,
+            row.study, row.confidence)
+        vars.add(var)
+    
+    return vars

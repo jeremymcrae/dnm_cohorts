@@ -3,6 +3,7 @@ import pandas
 
 from dnm_cohorts.ensembl import genome_sequence
 from dnm_cohorts.fix_alleles import fix_het_alleles
+from dnm_cohorts.de_novo import DeNovo
 
 url = 'http://www.nature.com/nature/journal/v485/n7397/extref/nature10945-s3.xls'
 
@@ -51,4 +52,10 @@ def sanders_nature_de_novos():
     data['study'] = "sanders_nature_2012"
     data['confidence'] = 'high'
     
-    return data[['person_id','chrom', 'pos', 'ref', 'alt', 'study', 'confidence']]
+    vars = set()
+    for i, row in data.iterrows():
+        var = DeNovo(row.person_id, row.chrom, row.pos, row.ref, row.alt,
+            row.study, row.confidence)
+        vars.add(var)
+    
+    return vars

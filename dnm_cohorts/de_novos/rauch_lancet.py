@@ -6,6 +6,7 @@ import pandas
 from dnm_cohorts.download_file import download_file
 from dnm_cohorts.convert_pdf_table import extract_pages, convert_page
 from dnm_cohorts.fix_hgvs import fix_hgvs_coordinates
+from dnm_cohorts.de_novo import DeNovo
 
 url = 'https://ars.els-cdn.com/content/image/1-s2.0-S0140673612614809-mmc1.pdf'
 
@@ -101,4 +102,10 @@ def rauch_lancet_de_novos():
     data['study'] = "rauch_lancet_2012"
     data['confidence'] = 'high'
     
-    return data[["person_id", "chrom", "pos", "ref", "alt", "study", "confidence"]]
+    vars = set()
+    for i, row in data.iterrows():
+        var = DeNovo(row.person_id, row.chrom, row.pos, row.ref, row.alt,
+            row.study, row.confidence)
+        vars.add(var)
+    
+    return vars

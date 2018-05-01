@@ -2,6 +2,7 @@
 import pandas
 
 from dnm_cohorts.ensembl import genome_sequence
+from dnm_cohorts.de_novo import DeNovo
 
 url = "http://www.nature.com/neuro/journal/v19/n9/extref/nn.4352-S3.xlsx"
 
@@ -54,4 +55,10 @@ def lelieveld_nn_de_novos():
     data['study'] = 'lelieveld_nature_neuroscience_2016'
     data['confidence'] = 'high'
     
-    return data[['person_id', 'chrom', 'pos', 'ref', 'alt', 'study', 'confidence']]
+    vars = set()
+    for i, row in data.iterrows():
+        var = DeNovo(row.person_id, row.chrom, row.pos, row.ref, row.alt,
+            row.study, row.confidence)
+        vars.add(var)
+    
+    return vars
