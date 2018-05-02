@@ -64,6 +64,9 @@ def tidy_families(data):
     return pandas.DataFrame.from_records(cleaned)
 
 def iossifov_nature_de_novos():
+    """
+    Nature (2014) 515: 216-221, doi:10.1038/nature13908
+    """
     
     temp = tempfile.NamedTemporaryFile()
     download_file(url, temp.name)
@@ -80,7 +83,9 @@ def iossifov_nature_de_novos():
     sample_ids = get_sample_ids(fams)
     data['person_id'] = get_person_ids(data, sample_ids)
     data = tidy_families(data)
-    data['study'] = "iossifov_nature_2014"
+    
+    data['person_id'] += '|asd_cohorts'
+    data['study'] = "10.1038/nature13908"
     data['confidence'] = 'high'
     
     vars = set()

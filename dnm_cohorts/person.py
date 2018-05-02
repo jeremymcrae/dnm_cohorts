@@ -1,19 +1,17 @@
 
 class Person(dict):
     
-    def __init__(self, person_id, sex, phenotype, study):
+    def __init__(self, person_id, sex, phenotype):
         self.person_id = person_id
         self.sex = sex
         self.phenotype = phenotype
-        self.study = study
     
     def __repr__(self):
         return 'Person("{}", "{}", "{}", "{}")'.format(self.person_id, self.sex,
-            self.phenotype, self.study)
+            self.phenotype)
     
     def __str__(self):
-        return '{}\t{}\t{}\t{}'.format(self.person_id, self.sex,
-            self.phenotype, self.study)
+        return '{}\t{}\t{}'.format(self.person_id, self.sex, self.phenotype)
     
     def __hash__(self):
         string = '{}-{}-{}'.format(self.person_id, self.sex, self.phenotype)

@@ -35,9 +35,9 @@ def open_cohorts():
     ''' get list of all individuals in all cohorts
     '''
     # open ASD cohort info, then drop duplicate samples from the ASD cohorts
-    asd = [open_de_rubeis_cohort(), open_iossifov_nature_cohort(),
-        open_iossifov_neuron_cohort(), open_oroak_cohort(),
-        open_sanders_nature_cohort(), open_sanders_neuron_cohort()]
+    asd = [open_sanders_neuron_cohort(), open_de_rubeis_cohort(),
+        open_iossifov_nature_cohort(), open_iossifov_neuron_cohort(),
+        open_oroak_cohort(), open_sanders_nature_cohort()]
     
     for a, b in itertools.combinations(asd, 2):
         a -= b
@@ -54,9 +54,10 @@ def open_de_novos():
     """ get list of all de novos in all cohorts
     """
     # open ASD cohort info, then drop duplicate samples from the ASD cohorts
-    asd = [de_rubeis_nature_de_novos(), iossifov_neuron_de_novos(),
-        iossifov_nature_de_novos(), oroak_nature_de_novos(),
-        sanders_nature_de_novos(), sanders_neuron_de_novos()]
+    asd = [sanders_neuron_de_novos(), de_rubeis_nature_de_novos(),
+        iossifov_nature_de_novos(), iossifov_neuron_de_novos(),
+        oroak_nature_de_novos(), sanders_nature_de_novos()]
+    
     for a, b in itertools.combinations(asd, 2):
         a -= b
     
@@ -71,7 +72,7 @@ def main():
     
     if args.cohorts:
         data = open_cohorts()
-        header = ['person_id', 'sex', 'phenotype', 'study']
+        header = ['person_id', 'sex', 'phenotype']
     else:
         data = open_de_novos()
         header = ['person_id', 'chrom', 'pos', 'ref', 'alt', 'study',

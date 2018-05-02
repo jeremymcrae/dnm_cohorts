@@ -9,7 +9,7 @@ import pandas
 from dnm_cohorts.person import Person
 from dnm_cohorts.download_file import download_file
 
-url = 'https://media.nature.com/original/nature-assets/nature/journal/v515/n7526/extref/nature13908-s2.zip'
+url = 'https://www.nature.com/nature/journal/v515/n7526/extref/nature13908-s2.zip'
 
 def get_members(row):
     '''get the member IDs from the sequencing center columns
@@ -34,8 +34,6 @@ def open_iossifov_nature_cohort():
     path = os.path.join(tempdir.name, 'nature13908-s2', 'Supplementary Table 1.xlsx')
     data = pandas.read_excel(path, 'Supplement-T1-familiesTable')
     
-    study = 'iossifov_nature_2014'
-    
     persons = set()
     for i, row in data.iterrows():
         
@@ -45,9 +43,9 @@ def open_iossifov_nature_cohort():
             
             status = 'autism' if member[0] == 'p' else 'unaffected'
             sex = 'male' if sex == 'M' else 'female'
-            person_id = '{}.{}'.format(fam, member)
+            person_id = '{}.{}'.format(fam, member) + '|asd_cohorts'
             
-            person = Person(person_id, sex, status, study)
+            person = Person(person_id, sex, status)
             persons.add(person)
     
     return persons

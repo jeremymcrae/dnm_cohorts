@@ -37,13 +37,13 @@ def open_rauch_cohort():
     download_file(url, temp.name)
     
     data = extract_table(temp)
+    data['person_id'] += '|rauch'
     
-    study = 'rauch_lancet_2012'
     status = 'intellectual_disability'
     persons = set()
     for i, row in data.iterrows():
         
-        person = Person(row.person_id, row.sex, status, study)
+        person = Person(row.person_id, row.sex, status)
         persons.add(person)
     
     return persons

@@ -19,12 +19,12 @@ def sanders_neuron_de_novos():
     
     data = pandas.read_excel(url, sheet_name='Exome')
     
-    data['person_id'] = data['patientID']
+    data['person_id'] = data['patientID'].astype(str) + '|asd_cohorts'
     data['chrom'] = data['Chr']
     data['pos'] = data['Pos(hg19)']
     data['ref'] = data['Ref']
     data['alt'] = data['Alt']
-    data['study'] = "sanders_neuron_2015"
+    data['study'] = "10.1016/j.neuron.2015.09.016"
     
     quality = data['Confidence'] != 'lowConf'
     data['confidence'] = quality.map({True: 'high', False: 'low'})

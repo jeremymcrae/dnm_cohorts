@@ -52,7 +52,8 @@ def lelieveld_nn_de_novos():
     
     data['ref'], data['alt'] = fix_alleles(data)
     
-    data['study'] = 'lelieveld_nature_neuroscience_2016'
+    data['person_id'] += '|lelieveld'
+    data['study'] = '10.1038/nn.4352'
     data['confidence'] = 'high'
     
     vars = set()

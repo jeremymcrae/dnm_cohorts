@@ -55,7 +55,9 @@ def iossifov_neuron_de_novos():
     
     data['person_id'] = get_person_ids(data)
     data = tidy_families(data)
-    data['study'] = 'iossifov_neuron_2012'
+    
+    data['person_id'] += '|asd_cohorts'
+    data['study'] = '10.1016/j.neuron.2012.04.009'
     data['confidence'] = 'high'
     
     vars = set()

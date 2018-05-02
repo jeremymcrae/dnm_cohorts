@@ -3,12 +3,15 @@ import pandas
 
 from dnm_cohorts.person import Person
 
-url = 'https://media.nature.com/original/nature-assets/nature/journal/v485/n7397/extref/nature10945-s2.xls'
+url = 'https://www.nature.com/nature/journal/v485/n7397/extref/nature10945-s2.xls'
 
 def open_sanders_nature_cohort():
-    data = pandas.read_excel(url, sheet_name='Sheet1')
+    """ load individuals form Sanders et al Nature 2012 cohort
     
-    study = 'sanders_nature_2012'
+    Sanders et al. (2012) Nature 485:237-241
+    doi: 10.1038/nature10945
+    """
+    data = pandas.read_excel(url, sheet_name='Sheet1')
     
     persons = set()
     for i, row in data.iterrows():
@@ -20,7 +23,7 @@ def open_sanders_nature_cohort():
         if row.Role == 'Unaffected_Sibling':
             status = 'unaffected'
         
-        person = Person(row.Sample, row.Gender.lower(), status, study)
+        person = Person(row.Sample + '|asd_cohorts', row.Gender.lower(), status)
         persons.add(person)
         
     return persons

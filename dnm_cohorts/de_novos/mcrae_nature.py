@@ -22,7 +22,9 @@ def mcrae_nature_de_novos():
     data['pos'] = data['Position (GRCh37)']
     data['ref'] = data['Reference allele']
     data['alt'] = data['Alternate allele']
-    data['study'] = 'mcrae_nature_2017'
+    
+    data['person_id'] += '|DDD'
+    data['study'] = '10.1038/nature21062'
     
     qual, status = data['PP(DNM)'], data['Status']
     quality = qual.isnull() | (qual > 0.00781) | (status == 'validated')

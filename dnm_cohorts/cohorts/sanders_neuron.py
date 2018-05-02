@@ -8,12 +8,15 @@ from dnm_cohorts.person import Person
 url = 'http://www.cell.com/cms/attachment/2118908541/2086568189/mmc2.xlsx'
 
 def open_sanders_neuron_cohort():
-    data = pandas.read_excel(url, sheet_name='Sheet1')
+    """
     
+    Iossifov et al. (2012) Neuron 74:285-299
+    doi: 10.1016/j.neuron.2012.04.009
+    """
+    data = pandas.read_excel(url, sheet_name='Sheet1')
     
     sexes = {'F': 'female', 'female': 'female', 'M': 'male', 'male': 'male',
         'U': 'unknown'}
-    study = 'sanders_neuron_2015'
     
     persons = set()
     for i, row in data.iterrows():
@@ -30,7 +33,7 @@ def open_sanders_neuron_cohort():
             sex = sexes[row['{}Sex'.format(sample)]]
             phenotype = 'unaffected' if sample == 'Sibling' else 'autism'
             
-            person = Person(row[sample], sex, phenotype, study)
+            person = Person(row[sample] + '|asd_cohorts', sex, phenotype)
             persons.add(person)
     
     return persons

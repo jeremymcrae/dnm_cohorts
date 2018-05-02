@@ -7,7 +7,7 @@ from dnm_cohorts.download_file import download_file
 from dnm_cohorts.person import Person
 from dnm_cohorts.convert_pdf_table import extract_pages, convert_page
 
-url = 'https://media.nature.com/original/nature-assets/nature/journal/v501/n7466/extref/nature12439-s1.pdf'
+url = 'https://www.nature.com/nature/journal/v501/n7466/extref/nature12439-s1.pdf'
 url = 'http://www.cell.com/cms/attachment/2018960629/2039173309/mmc1.pdf'
 
 def extract_table(handle):
@@ -52,12 +52,12 @@ def open_epi4k_nature_cohort():
     
     data = extract_table(temp)
     
-    study = 'epi4k_ajhg_2014'
+    data['person_id'] += 'epi4k'
     status = 'seizures'
     persons = set()
     for i, row in data.iterrows():
         
-        person = Person(row.person_id, row.sex, status, study)
+        person = Person(row.person_id, row.sex, status)
         persons.add(person)
     
     return persons

@@ -99,7 +99,8 @@ def rauch_lancet_de_novos():
     data['chrom'], data['pos'], data['ref'], data['alt'] = coords
     
     # define the study details
-    data['study'] = "rauch_lancet_2012"
+    data['person_id'] += '|rauch'
+    data['study'] = "10.1016/S0140-6736(12)61480-9"
     data['confidence'] = 'high'
     
     vars = set()

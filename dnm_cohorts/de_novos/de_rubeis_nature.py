@@ -27,7 +27,8 @@ def de_rubeis_nature_de_novos():
     for col in ['person_id', 'chrom', 'ref', 'alt']:
         data[col] = data[col].astype(str).str.replace(' |\t', '')
     
-    data['study'] = "derubeis_nature_2014"
+    data['person_id'] += '|asd_cohorts'
+    data['study'] = "10.1038/nature13772"
     data['confidence'] = 'high'
     
     vars = set()

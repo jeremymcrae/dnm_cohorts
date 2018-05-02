@@ -38,7 +38,7 @@ def sanders_nature_de_novos():
     siblings = pandas.read_excel(url, sheet_name='Siblings')
     data = probands.append(siblings, ignore_index=True)
     
-    data['person_id'] = data['Child_ID']
+    data['person_id'] = data['Child_ID'].astype(str)
     data['chrom'] = data['Chr'].str.replace('chr', '')
     data['pos'] = data['Pos (hg19)']
     data['ref'] = data['Ref']
@@ -49,7 +49,8 @@ def sanders_nature_de_novos():
     alleles = [ fix_het_alleles(x.ref, x.alt) for i, x in data.iterrows() ]
     data['ref'], data['alt'] = list(zip(*alleles))
     
-    data['study'] = "sanders_nature_2012"
+    data['person_id'] += "|asd_cohorts"
+    data['study'] = "10.1038/nature10945"
     data['confidence'] = 'high'
     
     vars = set()

@@ -60,6 +60,11 @@ def clean_table(data):
     return data
 
 def de_ligt_nejm_de_novos():
+    """ get de novo mutations from De Ligt et al., 2012
+    
+    De Ligt et al., (2012) N Engl J Med 367:1921-1929
+    doi:10.1056/NEJMoa1206524
+    """
     
     temp = tempfile.NamedTemporaryFile()
     download_file(url, temp.name)
@@ -70,7 +75,8 @@ def de_ligt_nejm_de_novos():
     chrom, pos, ref, alt = fix_hgvs_coordinates(data.hgvs_genomic)
     data['chrom'], data['pos'], data['ref'], data['alt'] = chrom, pos, ref, alt
     
-    data['study'] = "deligt_nejm_2012"
+    data['person_id'] += '|de_ligt'
+    data['study'] = "10.1056/NEJMoa1206524"
     data['confidence'] = 'high'
     
     vars = set()

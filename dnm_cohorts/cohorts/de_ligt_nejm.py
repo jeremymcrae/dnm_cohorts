@@ -39,17 +39,22 @@ def extract_table(handle):
     return pandas.DataFrame({'person_id': ids, 'sex': sex})
 
 def open_de_ligt_cohort():
+    """ get individuals from De Ligt et al., 2012
+    
+    De Ligt et al., (2012) N Engl J Med 367:1921-1929
+    doi:10.1056/NEJMoa1206524
+    """
     
     temp = tempfile.NamedTemporaryFile()
     download_file(url, temp.name)
     
     data = extract_table(temp)
+    data['person_id'] += '|de_ligt'
     
-    study = 'de_ligt_nejm_2012'
     status = 'intellectual_disability'
     persons = set()
     for i, row in data.iterrows():
-        person = Person(row.person_id, row.sex, status, study)
+        person = Person(row.person_id, row.sex, status)
         persons.add(person)
     
     return persons

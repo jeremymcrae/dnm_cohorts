@@ -68,8 +68,8 @@ def oroak_nature_de_novos():
     alleles = [ fix_het_alleles(x.ref, x.alt) for i, x in data.iterrows() ]
     data['ref'], data['alt'] = list(zip(*alleles))
     
-    data['person_id'] = data['Person']
-    data['study'] = 'oroak_nature_2012'
+    data['person_id'] = data['Person'] + '|asd_cohorts'
+    data['study'] = '10.1038/nature10989'
     data['confidence'] = 'high'
     
     vars = set()

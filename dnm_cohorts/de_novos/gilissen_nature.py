@@ -63,6 +63,8 @@ def clean_table(data):
 
 def gilissen_nature_de_novos():
     """ load de novos from Gilissen et al Nature 2014
+    
+    Nature 511: 344-347 2014, doi:10.1038/nature13394
     """
     
     temp = tempfile.NamedTemporaryFile()
@@ -73,7 +75,9 @@ def gilissen_nature_de_novos():
     
     chrom, pos, ref, alt = fix_hgvs_coordinates(data.hgvs_genomic)
     data['chrom'], data['pos'], data['ref'], data['alt'] = chrom, pos, ref, alt
-    data['study'] = 'gilissen_nature_2014'
+    
+    data['person_id'] += '|de_ligt'
+    data['study'] = '10.1038/nature13394'
     data['confidence'] = 'high'
     
     vars = set()

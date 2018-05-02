@@ -4,14 +4,14 @@ import random
 from dnm_cohorts.person import Person
 from dnm_cohorts.random_id import random_id
 
-def add_mock_probands(persons, required, prefix, study, phenotype):
+def add_mock_probands(persons, required, prefix, suffix, phenotype):
     """ include mock probands for those without any de novos
     
     Args:
         persons: set of unique persons in the cohort
         required: number of required mock_probands
         prefix: prefix for mock sample IDs
-        study: code to identify the study
+        suffix: suffix for mock sample IDs
         phenotype: phenotype of probands (some studies include affected and
             unaffected).
     """
@@ -22,9 +22,9 @@ def add_mock_probands(persons, required, prefix, study, phenotype):
     male_ratio = sum(x.sex == 'male' for x in persons)/len(affected)
     
     for x in range(required - len(affected)):
-        person_id = '{}_{}'.format(prefix, random_id())
+        person_id = '{}_{}|{}'.format(prefix, random_id(), suffix)
         sex = 'male' if random.random() < male_ratio else 'female'
-        person = Person(person_id, sex, phenotype, study)
+        person = Person(person_id, sex, phenotype)
         persons.add(person)
     
     return persons

@@ -7,7 +7,7 @@ import pandas
 from dnm_cohorts.person import Person
 from dnm_cohorts.mock_probands import add_mock_probands
 
-url = 'https://media.nature.com/original/nature-assets/nature/journal/v515/n7526/extref/nature13772-s4.xlsx'
+url = 'https://www.nature.com/nature/journal/v515/n7526/extref/nature13772-s4.xlsx'
 alternate = 'http://www.cell.com/cms/attachment/2118908541/2086568191/mmc6.xlsx'
 
 def open_additional():
@@ -21,6 +21,10 @@ def open_additional():
     return data[['person_id', 'sex', 'phenotype']]
 
 def open_de_rubeis_cohort():
+    """
+    De Rubeis et al. (2013) Nature 515:209-215
+    doi: 10.1038/nature13772
+    """
     data = pandas.read_excel(url, sheet_name='De Novo', skip_footer=1)
     
     # clean up a couple of columns
@@ -31,14 +35,14 @@ def open_de_rubeis_cohort():
     
     additional = open_additional()
     data = data.append(additional, ignore_index=True)
-    
-    study = 'de_rubeis_nature_2014'
+    data['person_id'] = data.person_id.astype(str)
+    data['person_id'] += '|asd_cohorts'
     
     persons = set()
     for i, row in data.iterrows():
-        person = Person(row.person_id, row.sex, row.phenotype, study)
+        person = Person(row.person_id, row.sex, row.phenotype)
         persons.add(person)
     
-    persons = add_mock_probands(persons, 1445, 'asd', study, 'autism')
+    persons = add_mock_probands(persons, 1445, 'asd', '|asd_cohorts', 'autism')
     
     return persons
