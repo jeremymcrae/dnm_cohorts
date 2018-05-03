@@ -77,6 +77,9 @@ class Ensembl:
             # if we exceed the server limits, pause for required time
             time.sleep(float(response.headers['retry-after']))
             return True
+        elif response.status_code == 400:
+            data = response.json()
+            logging.info('{}\tERROR 400: {}'.format(response.url, data['error']))
         
         return False
 
