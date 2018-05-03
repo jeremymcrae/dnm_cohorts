@@ -79,7 +79,12 @@ class Ensembl:
             return True
         elif response.status_code == 400:
             data = response.json()
-            logging.info('{}\tERROR 400: {}'.format(response.url, data['error']))
+            error = data['error']
+            # account for some EBI REST server failures
+            if 'cannot allocate memory' in error:
+                time.sleep(30)
+                return True
+            logging.info('{}\tERROR 400: {}'.format(response.url, error))
         
         return False
 
