@@ -10,6 +10,7 @@ url = 'http://www.cell.com/cms/attachment/2118908541/2086568189/mmc2.xlsx'
 def open_sanders_neuron_cohort():
     """
     
+    Supplementary Table 1 from:
     Sanders et al. (2015) Neuron 87:1215-1233
     doi: 10.1016/j.neuron.2015.09.016
     """
