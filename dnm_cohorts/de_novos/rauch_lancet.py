@@ -56,6 +56,7 @@ def extract_table_s3(handle):
         lines = []
         for line in data:
             text = [ x.get_text().strip() for x in sorted(line, key=lambda x: x.x0) ]
+            text = [ x.replace('‐', '-') for x in text ]
             lines.append(text)
         
         # drop the page number line, blank lines, and only use a few entries
