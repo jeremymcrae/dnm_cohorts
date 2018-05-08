@@ -39,7 +39,7 @@ def extract_table(handle):
         records += lines
     
     data = pandas.DataFrame.from_records(records, columns=header)
-    data['person_id'] = data['Proband ID']
+    data['person_id'] = data['Proband ID'].str.upper()
     data['sex'] = data['Proband gender'].map({'F': 'female', 'M': 'male'})
     
     return data
