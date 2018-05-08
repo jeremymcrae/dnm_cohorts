@@ -13,6 +13,7 @@ from dnm_cohorts.de_novos import (de_ligt_nejm_de_novos,
     iossifov_neuron_de_novos, iossifov_nature_de_novos, lelieveld_nn_de_novos,
     mcrae_nature_de_novos, oroak_nature_de_novos, rauch_lancet_de_novos,
     sanders_nature_de_novos, sanders_neuron_de_novos)
+from dnm_cohorts.convert_pdf_table import flatten
 
 def get_options():
     parser = argparse.ArgumentParser()
@@ -50,6 +51,17 @@ def open_cohorts():
     
     return samples
 
+def remove_duplicate_dnms(cohorts):
+    """ only include unique variants
+    """
+    
+    shrunken = set()
+    for var in flatten(cohorts):
+        if not any( var == x for x in shrunken ):
+            shrunken.add(var)
+    
+    return shrunken
+
 def open_de_novos():
     """ get list of all de novos in all cohorts
     """
@@ -59,9 +71,12 @@ def open_de_novos():
         oroak_nature_de_novos(), sanders_nature_de_novos()]
     
     for a, b in itertools.combinations(asd, 2):
+        # remove the easy matches
         a -= b
     
-    cohorts = asd + [de_ligt_nejm_de_novos(), gilissen_nature_de_novos(),
+    asd = remove_duplicate_dnms(reversed(asd))
+    
+    cohorts = [asd] + [de_ligt_nejm_de_novos(), gilissen_nature_de_novos(),
         epi4k_ashg_de_novos(), lelieveld_nn_de_novos(), rauch_lancet_de_novos(),
         mcrae_nature_de_novos()]
     
