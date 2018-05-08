@@ -5,7 +5,7 @@ import sys
 
 from dnm_cohorts.ensembl import cq_and_symbol
 from dnm_cohorts.cohorts import (open_de_ligt_cohort, open_rauch_cohort,
-    open_de_rubeis_cohort, open_epi4k_nature_cohort, open_iossifov_nature_cohort,
+    open_de_rubeis_cohort, open_epi4k_ashg_cohort, open_iossifov_nature_cohort,
     open_iossifov_neuron_cohort, open_oroak_cohort, open_sanders_nature_cohort,
     open_sanders_neuron_cohort, open_lelieveld_cohort, open_mcrae_nature_cohort)
 from dnm_cohorts.de_novos import (de_ligt_nejm_de_novos,
@@ -45,7 +45,7 @@ def open_cohorts():
     # TODO: what about the 1 in 1000 people with differing sex between studies?
     # TODO: I've kept them for now, since they are negligle and conservative.
     samples = asd + [open_de_ligt_cohort(), open_rauch_cohort(),
-        open_epi4k_nature_cohort(), open_lelieveld_cohort(),
+        open_epi4k_ashg_cohort(), open_lelieveld_cohort(),
         open_mcrae_nature_cohort()]
     
     return samples

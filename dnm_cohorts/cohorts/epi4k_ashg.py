@@ -44,7 +44,7 @@ def extract_table(handle):
     
     return data
 
-def open_epi4k_nature_cohort():
+def open_epi4k_ashg_cohort():
     
     temp = tempfile.NamedTemporaryFile()
     download_file(url, temp.name)
