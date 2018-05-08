@@ -26,7 +26,7 @@ def extract_table(handle):
     header = [ x.get_text() for x in sorted(header, key=lambda x: x.x0) ]
     
     data = pandas.DataFrame.from_records(records, columns=header)
-    data['person_id'] = data['Patient ID']
+    data['person_id'] = data['Patient ID'].str.replace('‐', '-')
     data['sex'] = data['Gender'].map({'f': 'female', 'm': 'male'})
     
     return data
