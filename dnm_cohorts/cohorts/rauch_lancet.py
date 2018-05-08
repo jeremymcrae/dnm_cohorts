@@ -29,6 +29,9 @@ def extract_table(handle):
     data['person_id'] = data['Patient ID'].str.replace('‐', '-')
     data['sex'] = data['Gender'].map({'f': 'female', 'm': 'male'})
     
+    # fix one person ID which doesn't match the ID for its de novos
+    data['person_id'][43] = 'TUTLN'
+    
     return data
 
 def open_rauch_cohort():
