@@ -19,6 +19,10 @@ def sanders_neuron_de_novos():
     
     data = pandas.read_excel(url, sheet_name='Exome')
     
+    # remove some sibs with bad IDs. These sibs are not in the cohort table.
+    remove = {'13930.s1', '12675.s1', '12707.s1', '11931.s1', '13867.s1', '14636.s1'}
+    data = data[~data.patientID.isin(remove)]
+    
     data['person_id'] = data['patientID'].astype(str) + '|asd_cohorts'
     data['chrom'] = data['Chr']
     data['pos'] = data['Pos(hg19)']
