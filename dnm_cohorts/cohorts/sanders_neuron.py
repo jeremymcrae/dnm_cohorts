@@ -10,8 +10,8 @@ url = 'http://www.cell.com/cms/attachment/2118908541/2086568189/mmc2.xlsx'
 def open_sanders_neuron_cohort():
     """
     
-    Iossifov et al. (2012) Neuron 74:285-299
-    doi: 10.1016/j.neuron.2012.04.009
+    Sanders et al. (2015) Neuron 87:1215-1233
+    doi: 10.1016/j.neuron.2015.09.016
     """
     data = pandas.read_excel(url, sheet_name='Sheet1')
     
