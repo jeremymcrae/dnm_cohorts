@@ -17,6 +17,6 @@ def open_mcrae_nature_cohort():
         person = Person(row['Individual ID'], row.Sex, phenotype)
         persons.add(person)
     
-    persons = add_mock_probands(persons, 4293, 'ddd', '|DDD', phenotype)
+    persons = add_mock_probands(persons, 4293, 'ddd', 'DDD', phenotype)
     
     return persons

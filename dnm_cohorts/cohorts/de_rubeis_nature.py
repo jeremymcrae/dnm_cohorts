@@ -43,6 +43,6 @@ def open_de_rubeis_cohort():
         person = Person(row.person_id, row.sex, row.phenotype)
         persons.add(person)
     
-    persons = add_mock_probands(persons, 1445, 'asd', '|asd_cohorts', 'autism')
+    persons = add_mock_probands(persons, 1445, 'asd', 'asd_cohorts', 'autism')
     
     return persons
