@@ -9,15 +9,14 @@ url = 'http://www.nature.com/nature/journal/v485/n7397/extref/nature10945-s3.xls
 
 def fix_alleles(data):
     
-    alt = data['alt'].copy()
-    ref = data['ref'].copy()
+    alt = list(data['alt'])
+    ref = list(data['ref'])
     
-    # get the correct ref and alt alleles for indels
-    idx = alt.str.contains(':')
-    delta = [ len(x.split(':')[1]) for x in alt[idx] ]
-    
-    alt[idx] = [ genome_sequence(x.chrom, x.pos, x.pos) for i, x in data[idx].iterrows() ]
-    ref[idx] = [ genome_sequence(x.chrom, x.pos, x.pos + d) for (i, x), d in zip(data[idx].iterrows(), delta) ]
+    for i, (chrom, pos, a, r) in enumerate(zip(data.chrom, data.pos, alt, ref)):
+        if not ':' in a:
+            continue
+        alt[i] = genome_sequence(chrom, pos, pos)
+        ref[i] = genome_sequence(chrom, pos, pos + len(a.split(':')[1]))
     
     return ref, alt
 
