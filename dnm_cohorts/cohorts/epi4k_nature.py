@@ -52,7 +52,7 @@ def open_epi4k_nature_cohort():
     
     data = extract_table(temp)
     
-    data['person_id'] += 'epi4k'
+    data['person_id'] += '|epi4k'
     status = 'seizures'
     persons = set()
     for i, row in data.iterrows():
