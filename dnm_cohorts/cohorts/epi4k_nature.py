@@ -7,7 +7,6 @@ from dnm_cohorts.download_file import download_file
 from dnm_cohorts.person import Person
 from dnm_cohorts.convert_pdf_table import extract_pages, convert_page
 
-url = 'https://www.nature.com/nature/journal/v501/n7466/extref/nature12439-s1.pdf'
 url = 'http://www.cell.com/cms/attachment/2018960629/2039173309/mmc1.pdf'
 
 def extract_table(handle):
