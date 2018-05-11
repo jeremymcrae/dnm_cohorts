@@ -44,7 +44,7 @@ def extract_table(handle):
     
     return data
 
-def open_epi4k_ashg_cohort():
+def open_epi4k_ajhg_cohort():
     """ gets individual level data for Epi4K cohort
     
     Supplementary Table 6 from:

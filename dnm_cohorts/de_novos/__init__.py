@@ -1,7 +1,7 @@
 
 from dnm_cohorts.de_novos.de_ligt_nejm import de_ligt_nejm_de_novos
 from dnm_cohorts.de_novos.de_rubeis_nature import de_rubeis_nature_de_novos
-from dnm_cohorts.de_novos.epi4k_ashg import epi4k_ashg_de_novos
+from dnm_cohorts.de_novos.epi4k_ajhg import epi4k_ajhg_de_novos
 from dnm_cohorts.de_novos.gilissen_nature import gilissen_nature_de_novos
 from dnm_cohorts.de_novos.iossifov_neuron import iossifov_neuron_de_novos
 from dnm_cohorts.de_novos.iossifov_nature import iossifov_nature_de_novos

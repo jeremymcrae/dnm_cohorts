@@ -32,7 +32,7 @@ def get_person_ids(data):
     
     return cleaned
 
-def epi4k_ashg_de_novos():
+def epi4k_ajhg_de_novos():
     """ get de novo data for the Epi4K epilepsy exome study
     
     De novo mutation data from the most recent EPI4K publication:

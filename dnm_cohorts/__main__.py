@@ -5,11 +5,11 @@ import sys
 
 from dnm_cohorts.ensembl import cq_and_symbol
 from dnm_cohorts.cohorts import (open_de_ligt_cohort, open_rauch_cohort,
-    open_de_rubeis_cohort, open_epi4k_ashg_cohort, open_iossifov_nature_cohort,
+    open_de_rubeis_cohort, open_epi4k_ajhg_cohort, open_iossifov_nature_cohort,
     open_iossifov_neuron_cohort, open_oroak_cohort, open_sanders_nature_cohort,
     open_sanders_neuron_cohort, open_lelieveld_cohort, open_mcrae_nature_cohort)
 from dnm_cohorts.de_novos import (de_ligt_nejm_de_novos,
-    de_rubeis_nature_de_novos, epi4k_ashg_de_novos, gilissen_nature_de_novos,
+    de_rubeis_nature_de_novos, epi4k_ajhg_de_novos, gilissen_nature_de_novos,
     iossifov_neuron_de_novos, iossifov_nature_de_novos, lelieveld_nn_de_novos,
     mcrae_nature_de_novos, oroak_nature_de_novos, rauch_lancet_de_novos,
     sanders_nature_de_novos, sanders_neuron_de_novos)
@@ -46,7 +46,7 @@ def open_cohorts():
     # TODO: what about the 1 in 1000 people with differing sex between studies?
     # TODO: I've kept them for now, since they are negligle and conservative.
     samples = asd + [open_de_ligt_cohort(), open_rauch_cohort(),
-        open_epi4k_ashg_cohort(), open_lelieveld_cohort(),
+        open_epi4k_ajhg_cohort(), open_lelieveld_cohort(),
         open_mcrae_nature_cohort()]
     
     return samples
@@ -77,7 +77,7 @@ def open_de_novos():
     asd = remove_duplicate_dnms(reversed(asd))
     
     cohorts = [asd] + [de_ligt_nejm_de_novos(), gilissen_nature_de_novos(),
-        epi4k_ashg_de_novos(), lelieveld_nn_de_novos(), rauch_lancet_de_novos(),
+        epi4k_ajhg_de_novos(), lelieveld_nn_de_novos(), rauch_lancet_de_novos(),
         mcrae_nature_de_novos()]
     
     return cohorts
