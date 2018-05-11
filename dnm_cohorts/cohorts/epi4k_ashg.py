@@ -7,7 +7,7 @@ from dnm_cohorts.download_file import download_file
 from dnm_cohorts.person import Person
 from dnm_cohorts.convert_pdf_table import extract_pages, convert_page
 
-url = 'http://www.cell.com/cms/attachment/2018960629/2039173309/mmc1.pdf'
+url = 'https://ars.els-cdn.com/content/image/1-s2.0-S0002929714003838-mmc1.pdf'
 
 def extract_table(handle):
     
@@ -45,6 +45,11 @@ def extract_table(handle):
     return data
 
 def open_epi4k_ashg_cohort():
+    """ gets individual level data for Epi4K cohort
+    
+    Supplementary Table 6 from:
+    Epi4K AJHG 95: 360-370, doi: 10.1016/j.ajhg.2014.08.013
+    """
     
     temp = tempfile.NamedTemporaryFile()
     download_file(url, temp.name)
