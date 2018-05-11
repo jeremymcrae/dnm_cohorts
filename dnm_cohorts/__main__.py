@@ -2,6 +2,8 @@
 import itertools
 import argparse
 import sys
+import os
+import logging
 
 from dnm_cohorts.ensembl import cq_and_symbol
 from dnm_cohorts.cohorts import (open_de_ligt_cohort, open_rauch_cohort,
@@ -22,6 +24,7 @@ def get_options():
     group.add_argument('--cohorts', default=False, action='store_true')
     
     parser.add_argument('--output', default=sys.stdout, help='where to save output')
+    parser.add_argument('--log', default=os.devnull, help='where to write log output')
     
     args = parser.parse_args()
     
@@ -84,6 +87,8 @@ def open_de_novos():
 
 def main():
     args = get_options()
+    FORMAT = '%(asctime)-15s %(message)s'
+    logging.basicConfig(filename=args.log, format=FORMAT, level=logging.INFO)
     
     if args.cohorts:
         data = open_cohorts()
