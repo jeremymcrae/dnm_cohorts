@@ -35,7 +35,7 @@ dnm_cohorts --cohorts --output test.txt
 dnm_cohorts --de-novos --output test.txt
 ```
 
-### Cohorts
+#### Cohorts
 reference      |      phenotype
 ----           |      ----
 [De Ligt _et al_. _N Engl J Med_ 367:1921-1929](https://doi.org/10.1056/NEJMoa1206524)        |  intellectual disability
