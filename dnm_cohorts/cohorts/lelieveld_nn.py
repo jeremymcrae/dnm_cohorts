@@ -9,6 +9,12 @@ from dnm_cohorts.person import Person
 url = 'https://www.nature.com/neuro/journal/v19/n9/extref/nn.4352-S3.xlsx'
 
 def open_lelieveld_cohort():
+    """ get proband details for Lelieveld et al., 2016
+    
+    Lelieveld et al. (2016) Nature Neuroscience 19:1194-1196
+    doi: 10.1038/nn.4352
+    Supplementary table S2.
+    """
     data = pandas.read_excel(url, sheet_name='Supplementary Table 2')
     
     phenotype = 'intellectual_disability'

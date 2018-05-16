@@ -24,6 +24,8 @@ def open_de_rubeis_cohort():
     """
     De Rubeis et al. (2013) Nature 515:209-215
     doi: 10.1038/nature13772
+    Supplementary Table 3, with some additional proband details sourced from
+    Supplementary table S4 from Sanders et al. (2015) Neuron 87:1215-1233.
     """
     data = pandas.read_excel(url, sheet_name='De Novo', skip_footer=1)
     

@@ -9,10 +9,11 @@ supp_s2_url = 'http://www.cell.com/cms/attachment/2024816859/2044465438/mmc3.xls
 supp_s3_url = 'http://www.cell.com/cms/attachment/2024816859/2044465437/mmc4.xlsx'
 
 def open_iossifov_neuron_cohort():
-    """
+    """ get probands sequenced in Iossifov et al., Neuron 2012
     
     Iossifov et al. (2012) Neuron 74:285-299
     doi: 10.1016/j.neuron.2012.04.009
+    Data from supplementary tables S1, S2 and S3.
     """
     s1 = pandas.read_excel(supp_s1_url, sheet_name='SNV.v4.1-normlized')
     s2 = pandas.read_excel(supp_s2_url, sheet_name='suppLGKTable')

@@ -65,6 +65,7 @@ def gilissen_nature_de_novos():
     """ load de novos from Gilissen et al Nature 2014
     
     Nature 511: 344-347 2014, doi:10.1038/nature13394
+    Supplementary table S8.
     """
     
     temp = tempfile.NamedTemporaryFile()

@@ -10,6 +10,7 @@ def open_sanders_nature_cohort():
     
     Sanders et al. (2012) Nature 485:237-241
     doi: 10.1038/nature10945
+    Supplementary table S1
     """
     data = pandas.read_excel(url, sheet_name='Sheet1')
     

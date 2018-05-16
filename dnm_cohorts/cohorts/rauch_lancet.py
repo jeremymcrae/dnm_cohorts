@@ -35,7 +35,12 @@ def extract_table(handle):
     return data
 
 def open_rauch_cohort():
+    """ get person data for Rauch et al. intellectual disability exome study
     
+     Rauch et al. (2012) Lancet 380:1674-1682
+     doi: 10.1016/S0140-6736(12)61480-9
+     Supplementary table 1
+    """
     temp = tempfile.NamedTemporaryFile()
     download_file(url, temp.name)
     

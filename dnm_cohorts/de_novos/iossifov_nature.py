@@ -64,8 +64,11 @@ def tidy_families(data):
     return pandas.DataFrame.from_records(cleaned)
 
 def iossifov_nature_de_novos():
-    """
+    """ get de novo variants fromn Iossifov et al., Nature 2014
+    
     Nature (2014) 515: 216-221, doi:10.1038/nature13908
+    Variants sourced from Supplementary tables S2, with person IDs sourced from
+    Table S1.
     """
     
     temp = tempfile.NamedTemporaryFile()

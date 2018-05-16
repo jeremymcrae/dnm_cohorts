@@ -43,6 +43,8 @@ def open_de_ligt_cohort():
     
     De Ligt et al., (2012) N Engl J Med 367:1921-1929
     doi:10.1056/NEJMoa1206524
+    Proband details sourced from 'Clinical description of patients' section in
+    supplementary material.
     """
     
     temp = tempfile.NamedTemporaryFile()

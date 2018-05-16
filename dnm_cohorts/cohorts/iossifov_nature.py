@@ -23,6 +23,11 @@ def get_members(row):
             yield member
 
 def open_iossifov_nature_cohort():
+    """ get proband details fromn Iossifov et al., Nature 2014
+    
+    Nature (2014) 515: 216-221, doi:10.1038/nature13908
+    Supplementary table S1.
+    """
     
     tempdir = tempfile.TemporaryDirectory()
     zipf = os.path.join(tempdir.name, 'temp.zip')

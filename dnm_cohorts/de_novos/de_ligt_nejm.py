@@ -64,6 +64,8 @@ def de_ligt_nejm_de_novos():
     
     De Ligt et al., (2012) N Engl J Med 367:1921-1929
     doi:10.1056/NEJMoa1206524
+    
+    Variants sourced from Supplementary Table S3.
     """
     
     temp = tempfile.NamedTemporaryFile()
