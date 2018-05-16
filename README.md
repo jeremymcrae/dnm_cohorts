@@ -14,7 +14,7 @@ controls (e.g. unaffected siblings), the phenotype of the healthy controls is
 
 #### Install
 ``` sh
-pip install git+git://git.illumina.com/jeremymcrae/dnm_cohorts.git
+pip install git+git://github.com/jeremymcrae/dnm_cohorts.git
 ```
 
 #### Usage
