@@ -14,6 +14,7 @@ setup (name="dnm_cohorts",
         'requests',
         'hgvs',
     ],
+    package_data={"dnm_cohorts": ['data/de_novos.txt.gz', 'data/cohort.txt.gz']},
     entry_points={'console_scripts': ['dnm_cohorts = dnm_cohorts.__main__:main']},
     classifiers=[
         "Development Status :: 3 - Alpha",

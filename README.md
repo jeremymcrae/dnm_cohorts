@@ -15,7 +15,16 @@ associated with each journal publication.
 pip install git+git://git.illumina.com/jeremymcrae/dnm_cohorts.git
 ```
 
-#### Run
+#### Usage
+The data files are included in the package, and can be loaded in python with:
+``` python
+from dnm_cohorts import open_de_novos, open_cohort
+
+de_novos = open_de_novos()
+cohort = open_cohort()
+```
+
+#### Build data files
 ``` sh
 # to create a table of all individuals in the cohorts
 dnm_cohorts --cohorts --output test.txt
