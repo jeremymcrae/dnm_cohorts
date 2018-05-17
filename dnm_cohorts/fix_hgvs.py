@@ -73,6 +73,7 @@ def fix_coordinates(coords, alleles):
 def fix_coordinates_with_allele(coords, alleles):
     """
     fix_coordinates_with_allele(["chr1:10000"], ["A/G"])
+    fix_coordinates_with_allele(["chr1:10000", "chr2:20000"], ["A/G", "T/C"])
     fix_coordinates_with_allele(["chr1:10000"], ["ATGC/G"])
     fix_coordinates_with_allele(["chr1:10000"], ["sub(G-&gt;T)"])
     fix_coordinates_with_allele(["chr1:10000"], ["del(1)"])
@@ -88,12 +89,11 @@ def fix_coordinates_with_allele(coords, alleles):
         
         if 'sub' in allele:
             ref, alt = fix_substitution(chrom, start, end, allele)
-        if 'del' in allele:
+        elif 'del' in allele:
             ref, alt = fix_deletion(chrom, start, end, allele)
-        if 'ins' in allele:
+        elif 'ins' in allele:
             ref, alt = fix_insertion(chrom, start, end, allele)
-        
-        if 'ref' not in locals():
+        else:
             ref, alt = allele.split('/')
         
         chroms.append(chrom)
