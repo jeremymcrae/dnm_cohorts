@@ -16,6 +16,7 @@ from dnm_cohorts.de_novos import (de_ligt_nejm_de_novos,
     mcrae_nature_de_novos, oroak_nature_de_novos, rauch_lancet_de_novos,
     sanders_nature_de_novos, sanders_neuron_de_novos)
 from dnm_cohorts.convert_pdf_table import flatten
+from dnm_cohorts.exclude_duplicates import drop_inperson_duplicates
 
 def get_options():
     parser = argparse.ArgumentParser()
@@ -83,7 +84,7 @@ def open_de_novos():
         epi4k_ajhg_de_novos(), lelieveld_nn_de_novos(), rauch_lancet_de_novos(),
         mcrae_nature_de_novos()]
     
-    return cohorts
+    return drop_inperson_duplicates(cohorts)
 
 def main():
     args = get_options()
