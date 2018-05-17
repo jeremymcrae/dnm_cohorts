@@ -11,3 +11,6 @@ def open_de_novos():
 
 def open_cohort():
     return pandas.read_table(COHORT_PATH)
+
+de_novos = open_de_novos()
+cohort = open_cohort()
