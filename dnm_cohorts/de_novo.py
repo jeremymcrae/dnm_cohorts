@@ -1,35 +1,42 @@
 
 class DeNovo:
     
+    CHROMS = list(map(str, range(1, 23))) + ['X', 'Y', 'MT']
+    CHROMS = dict(zip(CHROMS, range(len(CHROMS))))
+    
     def __init__(self, person_id, chrom, pos, ref, alt, study, confidence,
             symbol=None, consequence=None):
         self.person_id = person_id
         self.chrom = chrom
-        self.pos = pos
+        self.pos = int(pos)
         self.ref = ref
         self.alt = alt
         self.study = study
         self.confidence = confidence
-        self.symbol = symbol
-        self.consequence = consequence
+        self.symbol = '' if symbol is None else symbol
+        self.consequence = '' if consequence is None else consequence
         
         max_len = max(len(self.ref), len(self.alt)) - 1
         self.range = (self.pos - max_len, self.pos + max_len)
     
     def __repr__(self):
-        return 'DeNovo("{}", "{}", {}, "{}", "{}", "{}", "{}")'.format( \
-            self.person_id, self.chrom, self.pos, self.ref, self.alt,
-            self.study, self.confidence)
+        return 'DeNovo("{}", "{}", {}, "{}", "{}", "{}", "{}", "{}", "{}")'.format( \
+            *list(self))
     
     def __str__(self):
-        # cope with missing symbol and consequences
-        symbol = '' if self.symbol is None else self.symbol
-        cq = '' if self.consequence is None else self.consequence
+        return '\t'.join(map(str, list(self)))
+    
+    def __iter__(self):
+        self._idx = 0
+        return self
+    
+    def __next__(self):
+        self._idx += 1
+        if self._idx > 9:
+            raise StopIteration
         
-        data = [self.person_id, self.chrom, self.pos, self.ref, self.alt,
-            self.study, self.confidence, symbol, cq]
-        
-        return '\t'.join(map(str, data))
+        return [self.person_id, self.chrom, self.pos, self.ref, self.alt,
+            self.study, self.confidence, self.symbol, self.consequence][self._idx - 1]
     
     def __hash__(self):
         string = '{}-{}-{}'.format(self.person_id, self.chrom, self.pos)
@@ -44,3 +51,14 @@ class DeNovo:
         x1, x2 = self.range
         y1, y2 = other.range
         return x2 >= y1 and y2 >= x1
+    
+    def __gt__(self, other):
+        return [self.person_id, self._int_chrom(), self.pos] > \
+            [other.person_id, other._int_chrom(), other.pos]
+    
+    def _int_chrom(self):
+        chrom = self.chrom.strip('chr')
+        if chrom not in self.CHROMS:
+            self.CHROMS[chrom] = max(self.CHROMS.values()) + 1
+        
+        return self.CHROMS[chrom]
