@@ -20,10 +20,7 @@ pip install git+git://github.com/jeremymcrae/dnm_cohorts.git
 #### Usage
 The data files are included in the package, and can be loaded in python with:
 ``` python
-from dnm_cohorts import open_de_novos, open_cohort
-
-de_novos = open_de_novos()
-cohort = open_cohort()
+from dnm_cohorts import de_novos, cohort
 ```
 
 #### Build data files
