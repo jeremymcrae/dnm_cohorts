@@ -6,7 +6,7 @@ setup (name="dnm_cohorts",
     version="1.0.0",
     author="Jeremy McRae",
     author_email="jmcrae@illumina.com",
-    url='https://git.illumina.com/jmcrae/dnm_cohorts',
+    url='https://github.com/jeremymcrae/dnm_cohorts',
     packages=["dnm_cohorts", "dnm_cohorts.cohorts", "dnm_cohorts.de_novos"],
     install_requires=['pandas',
         'xlrd',
@@ -20,4 +20,4 @@ setup (name="dnm_cohorts",
         "Development Status :: 3 - Alpha",
         "Topic :: Scientific/Engineering :: Bio-Informatics",
     ])
- 
+
