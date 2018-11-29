@@ -11,3 +11,4 @@ from dnm_cohorts.de_novos.oroak_nature import oroak_nature_de_novos
 from dnm_cohorts.de_novos.rauch_lancet import rauch_lancet_de_novos
 from dnm_cohorts.de_novos.sanders_nature import sanders_nature_de_novos
 from dnm_cohorts.de_novos.sanders_neuron import sanders_neuron_de_novos
+from dnm_cohorts.de_novos.homsy_science import homsy_science_de_novos

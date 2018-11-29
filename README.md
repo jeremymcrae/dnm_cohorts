@@ -46,5 +46,6 @@ reference      |      phenotype
 [Gilissen _et al_. _Nature_ 511:344-347](https://doi.org/10.1038/nature13394)                 |  intellectual disability
 [Iossifov _et al_. _Nature_ 498:216-221](https://doi.org/10.1038/nature13908)                 |  autism spectrum disorder
 [Sanders _et al_. _Neuron_ 87:1215-1233](https://doi.org/10.1016/j.neuron.2015.09.016)        |  autism spectrum disorder
+[Homsy _et al_. _Science_ 350:1262-1266](https://10.1126/science.aac9396)                     |  congenital heart disease
 [Lelieveld _et al_. _Nature Neuroscience_ 19:1194-1196](https://doi.org/10.1038/nn.4352)      |  intellectual disability
 [McRae _et al_. _Nature_ 19:1194-1196](https://doi.org/10.1038/nature21062)                   |  intellectual disability
