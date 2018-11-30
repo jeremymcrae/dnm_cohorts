@@ -18,11 +18,10 @@ def open_homsy_science_cohort():
     Homsy et al. Science 350: 1262-1266, doi: 10.1126/science.aac9396
     """
     
-    tempdir = tempfile.TemporaryDirectory()
-    zipf = os.path.join(tempdir.name, 'temp.zip')
-    download_file(url, zipf)
+    zipf = tempfile.NamedTemporaryFile()
+    download_file(url, zipf.name)
     
-    with ZipFile(zipf) as zipped:
+    with ZipFile(zipf.name) as zipped:
         handle = zipped.open('homsy_database_S01.xlsx')
         data = pandas.read_excel(handle, 'Database S1', skiprows=1)
     
