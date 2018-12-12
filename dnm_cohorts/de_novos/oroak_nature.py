@@ -54,7 +54,7 @@ def oroak_nature_de_novos():
         data frame of de novos, with standardised genome coordinates and VEP
         consequences for each variant
     """
-    data = pandas.read_excel(url, sheet_name="Supplementary Table 3", skip_footer=3)
+    data = pandas.read_excel(url, sheet_name="Supplementary Table 3", skipfooter=3)
     
     # standardise the chrom, position and allele column names
     data['chrom'] = data['Chromosome']

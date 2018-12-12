@@ -47,7 +47,7 @@ def epi4k_ajhg_de_novos():
     Returns:
         data.frame of de novo mutations
     """
-    data = pandas.read_excel(url, skip_footer=4)
+    data = pandas.read_excel(url, skipfooter=4)
     
     data['chrom'], data['pos'], data['ref'], data['alt'] = fix_coordinates_with_allele( \
         data['hg19 coordinates (chr:position)'], data["Ref/Alt alleles"])

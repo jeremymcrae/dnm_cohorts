@@ -17,7 +17,7 @@ def de_rubeis_nature_de_novos():
          (VEP format), chromosome, nucleotide position
     """
     
-    data = pandas.read_excel(url, sheet_name="De Novo", skip_footer=1)
+    data = pandas.read_excel(url, sheet_name="De Novo", skipfooter=1)
     
     # rename columns to match the other de novo datasets
     data = data.rename(columns={'Chr': 'chrom', 'Pos': 'pos',
