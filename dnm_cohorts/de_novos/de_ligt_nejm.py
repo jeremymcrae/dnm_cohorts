@@ -1,11 +1,9 @@
 
-
-import tempfile
 import re
 
 import pandas
 
-from dnm_cohorts.download_file import download_file
+from dnm_cohorts.download_file import download_with_cookies
 from dnm_cohorts.person import Person
 from dnm_cohorts.convert_pdf_table import extract_pages, convert_page
 from dnm_cohorts.fix_hgvs import fix_hgvs_coordinates
@@ -68,9 +66,7 @@ def de_ligt_nejm_de_novos():
     Variants sourced from Supplementary Table S3.
     """
     
-    temp = tempfile.NamedTemporaryFile()
-    download_file(url, temp.name)
-    
+    temp = download_with_cookies(url)
     data = extract_table(temp)
     data = clean_table(data)
     

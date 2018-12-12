@@ -1,10 +1,9 @@
 
-import tempfile
 import re
 
 import pandas
 
-from dnm_cohorts.download_file import download_file
+from dnm_cohorts.download_file import download_with_cookies
 from dnm_cohorts.person import Person
 from dnm_cohorts.convert_pdf_table import extract_pages, convert_page
 
@@ -47,8 +46,7 @@ def open_de_ligt_cohort():
     supplementary material.
     """
     
-    temp = tempfile.NamedTemporaryFile()
-    download_file(url, temp.name)
+    temp = download_with_cookies(url)
     
     data = extract_table(temp)
     data['person_id'] += '|de_ligt'
