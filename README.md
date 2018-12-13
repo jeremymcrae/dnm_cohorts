@@ -41,9 +41,9 @@ reference   |   year   |  unique individuals  |   phenotype
 [Rauch _et al_. _Lancet_ 380:1674-1682](https://doi.org/10.1016/S0140-6736%2812%2961480-9)    | 2012 |   51 | intellectual disability
 [Sanders _et al_. _Nature_ 485:237-241](https://doi.org/10.1038/nature10945)                  | 2012 |  452 (238 asd, 214 unaffected) | autism spectrum disorder,  unaffected siblings
 [Epi4K Consortium. _Nature_ 501:217-221](https://doi.org/10.1038/nature12439)                 | 2013 |  264 | epilepsy
-[De Rubeis _et al_. _Nature_ 515:209-215](https://doi.org/10.1038/nature13772)                | 2013 | 1604 (1443 asd, 161 unaffected) | autism spectrum disorder, unaffected siblings
 [EuroEPINOMICS-RES Consortium. _AJHG_ 95:360-370](https://doi.org/10.1016/j.ajhg.2014.08.013) | 2014 |   92 | epilepsy
 [Gilissen _et al_. _Nature_ 511:344-347](https://doi.org/10.1038/nature13394)                 | 2014 |    0 | intellectual disability
+[De Rubeis _et al_. _Nature_ 515:209-215](https://doi.org/10.1038/nature13772)                | 2014 | 1604 (1443 asd, 161 unaffected) | autism spectrum disorder, unaffected siblings
 [Iossifov _et al_. _Nature_ 498:216-221](https://doi.org/10.1038/nature13908)                 | 2014 | 3095 (1726 asd, 1369 unaffected) | autism spectrum disorder, unaffected siblings
 [Sanders _et al_. _Neuron_ 87:1215-1233](https://doi.org/10.1016/j.neuron.2015.09.016)        | 2015 |  750 (314 asd, 436 unaffected) | autism spectrum disorder, unaffected siblings
 [Homsy _et al_. _Science_ 350:1262-1266](https://doi.org/10.1126/science.aac9396)             | 2015 | 1213 | congenital heart disease
