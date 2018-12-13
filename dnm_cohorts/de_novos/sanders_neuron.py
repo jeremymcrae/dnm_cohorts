@@ -24,7 +24,7 @@ def sanders_neuron_de_novos():
     data = data[~data.patientID.isin(remove)]
     
     data['person_id'] = data['patientID'].astype(str) + '|asd_cohorts'
-    data['chrom'] = data['Chr']
+    data['chrom'] = data['Chr'].astype(str)
     data['pos'] = data['Pos(hg19)']
     data['ref'] = data['Ref']
     data['alt'] = data['Alt']

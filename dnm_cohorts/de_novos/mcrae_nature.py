@@ -18,7 +18,7 @@ def mcrae_nature_de_novos():
     data = pandas.read_excel(url, sheet_name='Supplementary Table 1')
     
     data['person_id'] = data['Individual ID']
-    data['chrom'] = data['Chromosome']
+    data['chrom'] = data['Chromosome'].astype(str)
     data['pos'] = data['Position (GRCh37)']
     data['ref'] = data['Reference allele']
     data['alt'] = data['Alternate allele']

@@ -57,7 +57,7 @@ def oroak_nature_de_novos():
     data = pandas.read_excel(url, sheet_name="Supplementary Table 3", skipfooter=3)
     
     # standardise the chrom, position and allele column names
-    data['chrom'] = data['Chromosome']
+    data['chrom'] = data['Chromosome'].astype(str)
     data['pos'] = data['Position (hg19)'].astype(int)
     data['ref'] = data['Ref']
     data['alt'] = data['Allele']
