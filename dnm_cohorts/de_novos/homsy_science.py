@@ -25,7 +25,7 @@ def homsy_science_de_novos():
         handle = zipped.open('homsy_database_S02.xlsx')
         data = pandas.read_excel(handle, 'Database S2', skiprows=1)
     
-    data['person_id'] = data['Blinded ID']
+    data['person_id'] = data['Blinded ID'].astype(str)
     data['person_id'] += '|homsy'
     data['chrom'] = data['CHROM'].astype(str)
     data['pos'] = data['POS']
