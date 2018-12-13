@@ -85,7 +85,7 @@ def open_de_novos():
         epi4k_ajhg_de_novos(), homsy_science_de_novos(),
         lelieveld_nn_de_novos(), rauch_lancet_de_novos(), mcrae_nature_de_novos()]
     
-    return drop_inperson_duplicates(cohorts)
+    return [drop_inperson_duplicates(x) for x in cohorts]
 
 def main():
     args = get_options()
