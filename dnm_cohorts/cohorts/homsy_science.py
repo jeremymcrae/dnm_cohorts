@@ -28,6 +28,7 @@ def open_homsy_science_cohort():
     data = data.drop(0, axis=0)
     
     data['person_id'] = data['Blinded ID']
+    data['person_id'] += '|homsy'
     status = 'congenital_heart_disease'
     
     # estimate male fraction from proportion in Zaidi et al 2013, since the
