@@ -69,7 +69,7 @@ class Ensembl:
     def check_retry(self, response):
         """ check for http request errors which permit a retry
         """
-        if response.status_code == 503:
+        if response.status_code == 500 or response.status_code == 503:
             # if the server is down, briefly pause
             time.sleep(30)
             return True
