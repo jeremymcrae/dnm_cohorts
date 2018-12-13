@@ -2,7 +2,7 @@
 class Person(dict):
     
     def __init__(self, person_id, sex, phenotype):
-        self.person_id = person_id
+        self.person_id = str(person_id)
         self.sex = sex
         self.phenotype = phenotype
     

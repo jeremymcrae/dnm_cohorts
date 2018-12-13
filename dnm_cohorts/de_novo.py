@@ -6,8 +6,8 @@ class DeNovo:
     
     def __init__(self, person_id, chrom, pos, ref, alt, study, confidence,
             symbol=None, consequence=None):
-        self.person_id = person_id
-        self.chrom = chrom
+        self.person_id = str(person_id)
+        self.chrom = str(chrom)
         self.pos = int(pos)
         self.ref = ref
         self.alt = alt
