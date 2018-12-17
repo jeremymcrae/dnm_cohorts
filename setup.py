@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup (name="dnm_cohorts",
     description='Package for obtaining cohorts used for de novo mutation analysis',
-    version="1.0.0",
+    version="1.1.0",
     author="Jeremy McRae",
     author_email="jmcrae@illumina.com",
     url='https://github.com/jeremymcrae/dnm_cohorts',
@@ -20,4 +20,3 @@ setup (name="dnm_cohorts",
         "Development Status :: 3 - Alpha",
         "Topic :: Scientific/Engineering :: Bio-Informatics",
     ])
-
