@@ -31,4 +31,4 @@ class Person(dict):
         return hash(self) == hash(other)
     
     def __gt__(self, other):
-        return self.id > other.id
+        return self.person_id > other.person_id
