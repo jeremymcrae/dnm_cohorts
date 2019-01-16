@@ -15,7 +15,9 @@ def add_mock_probands(persons, required, prefix, suffix, phenotype):
         phenotype: phenotype of probands (some studies include affected and
             unaffected).
     """
-    random.seed(str(persons[0]))
+    # ensure IDs and sexes are repeatable between runs by setting the random
+    # seed with the first known person for each cohort.
+    random.seed(hash(persons[0]))
     
     affected = [ x for x in persons if x.phenotype == phenotype ]
     # use the current individuals to estimate the proportion of males, so we
