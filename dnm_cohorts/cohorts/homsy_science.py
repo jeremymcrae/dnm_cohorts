@@ -1,6 +1,7 @@
 
 import os
 import random
+random.seed(1)
 import tempfile
 from zipfile import ZipFile
 
