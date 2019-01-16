@@ -2,6 +2,7 @@ dist/
 build/
 __pycache__/
 *.egg-info/
+.eggs/
 *.pyc
 *.log
 *.DS_Store
