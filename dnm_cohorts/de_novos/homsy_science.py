@@ -1,6 +1,5 @@
 
 import os
-import random
 import tempfile
 from zipfile import ZipFile
 
