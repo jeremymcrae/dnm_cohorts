@@ -27,16 +27,10 @@ class DeNovo:
         return '\t'.join(map(str, list(self)))
     
     def __iter__(self):
-        self._idx = 0
-        return self
-    
-    def __next__(self):
-        self._idx += 1
-        if self._idx > 9:
-            raise StopIteration
-        
-        return [self.person_id, self.chrom, self.pos, self.ref, self.alt,
-            self.study, self.confidence, self.symbol, self.consequence][self._idx - 1]
+        group = [self.person_id, self.chrom, self.pos, self.ref, self.alt,
+            self.study, self.confidence, self.symbol, self.consequence]
+        for x in group:
+            yield x
     
     def __hash__(self):
         string = '{}-{}-{}'.format(self.person_id, self.chrom, self.pos)
