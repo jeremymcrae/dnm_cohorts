@@ -1,6 +1,5 @@
 
 import random
-random.seed(1)
 
 import pandas
 
@@ -15,6 +14,7 @@ def open_lelieveld_cohort():
     doi: 10.1038/nn.4352
     Supplementary table S2.
     """
+    random.seed(1)
     data = pandas.read_excel(url, sheet_name='Supplementary Table 2')
     
     phenotype = 'intellectual_disability'

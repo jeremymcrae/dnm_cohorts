@@ -1,7 +1,6 @@
 
 import os
 import random
-random.seed(1)
 import tempfile
 from zipfile import ZipFile
 
@@ -18,7 +17,7 @@ def open_homsy_science_cohort():
     Supplementary Database 1 from:
     Homsy et al. Science 350: 1262-1266, doi: 10.1126/science.aac9396
     """
-    
+    random.seed(1)
     zipf = tempfile.NamedTemporaryFile()
     download_file(url, zipf.name)
     

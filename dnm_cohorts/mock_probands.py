@@ -17,12 +17,12 @@ def add_mock_probands(persons, required, prefix, suffix, phenotype):
     """
     # ensure IDs and sexes are repeatable between runs by setting the random
     # seed with the first known person for each cohort.
-    random.seed(hash(min(persons)))
+    random.seed(str(min(persons)))
     
     affected = [ x for x in persons if x.phenotype == phenotype ]
     # use the current individuals to estimate the proportion of males, so we
     # can sample according to that fraction, to avoid changing the ratio.
-    male_ratio = sum(x.sex == 'male' for x in persons)/len(affected)
+    male_ratio = sum(x.sex == 'male' for x in affected)/len(affected)
     
     for x in range(required - len(affected)):
         person_id = '{}_{}|{}'.format(prefix, random_id(), suffix)
