@@ -14,7 +14,7 @@ class Person(dict):
         return '{}\t{}\t{}'.format(self.person_id, self.sex, self.phenotype)
     
     def __hash__(self):
-        return hash(str(self))
+        return hash('{}\t{}'.format(self.person_id, self.phenotype))
     
     def __eq__(self, other):
         return hash(self) == hash(other)
