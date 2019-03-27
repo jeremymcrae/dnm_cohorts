@@ -102,7 +102,7 @@ def main():
     
     _ = args.output.write('\t'.join(header) + '\n')
     for cohort in data:
-        for x in cohort:
+        for x in sorted(cohort):
             if args.de_novos:
                 x.consequence, x.symbol = cq_and_symbol(x.chrom, x.pos, x.ref, x.alt)
             
