@@ -21,7 +21,7 @@ def download_with_cookies(url):
     # start a requests session and get cookies for the hostname
     session = requests.session()
     parsed = urlparse(url)
-    _ = session.get('{}://{}'.format(parsed.scheme, parsed.hostname))
+    _ = session.get(f'{parsed.scheme}://{parsed.hostname}')
     
     # I don't know why this is necessary, but it is. Otherwise we get perpetual
     # redirects with www.nejm.org

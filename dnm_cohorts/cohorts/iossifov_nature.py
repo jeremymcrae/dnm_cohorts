@@ -48,7 +48,7 @@ def open_iossifov_nature_cohort():
             
             status = 'autism' if member[0] == 'p' else 'unaffected'
             sex = 'male' if sex == 'M' else 'female'
-            person_id = '{}.{}'.format(fam, member) + '|asd_cohorts'
+            person_id = f'{fam}.{member}|asd_cohorts'
             
             person = Person(person_id, sex, status)
             persons.add(person)

@@ -33,8 +33,7 @@ class DeNovo:
             yield x
     
     def __hash__(self):
-        string = '{}-{}-{}'.format(self.person_id, self.chrom, self.pos)
-        return hash(string)
+        return hash(f'{self.person_id}-{self.chrom}-{self.pos}')
     
     def __eq__(self, other):
         """ check if two variants are the same (permit fuzzy distance matches)

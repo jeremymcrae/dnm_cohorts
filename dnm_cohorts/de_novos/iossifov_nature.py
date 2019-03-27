@@ -43,7 +43,7 @@ def get_person_ids(data, sample_ids):
     person_ids = []
     for fam, samples in zip(fam_ids, children):
         persons = ( sample_ids[fam][x] for x in samples if x != '' )
-        persons = [ '{}.{}'.format(fam, x) for x in persons ]
+        persons = [ f'{fam}.{x}' for x in persons ]
         person_ids.append(persons)
     
     return person_ids

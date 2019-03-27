@@ -29,12 +29,12 @@ def open_iossifov_neuron_cohort():
     persons = set()
     for fam, children in zip(fam_ids, members):
         for affected, sex in possible:
-            string = '{}{}'.format(affected,sex)
+            string = f'{affected}{sex}'
             if string in children:
                 status = 'unaffected' if affected != 'aut' else 'autism'
                 member = 's1' if affected != 'aut' else 'p1'
                 sex = 'female' if sex == 'F' else 'male'
-                person_id = '{}.{}'.format(fam, member) + '|asd_cohorts'
+                person_id = f'{fam}.{member}|asd_cohorts'
                 
                 person = Person(person_id, sex, status)
                 persons.add(person)

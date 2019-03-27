@@ -7,14 +7,13 @@ class Person(dict):
         self.phenotype = phenotype
     
     def __repr__(self):
-        return 'Person("{}", "{}", "{}")'.format(self.person_id, self.sex,
-            self.phenotype)
+        return f'Person("{self.person_id}", "{self.sex}", "{self.phenotype}"'
     
     def __str__(self):
-        return '{}\t{}\t{}'.format(self.person_id, self.sex, self.phenotype)
+        return f'{self.person_id}\t{self.sex}\t{self.phenotype}'
     
     def __hash__(self):
-        return hash('{}\t{}'.format(self.person_id, self.phenotype))
+        return hash(f'{self.person_id}\t{self.phenotype}')
     
     def __eq__(self, other):
         return hash(self) == hash(other)

@@ -43,19 +43,19 @@ class Ensembl:
             raise ValueError('too many attempts accessing')
         self._rate_limit()
         
-        url = 'http://{}/{}'.format(self.base, ext)
+        url = f'http://{self.base}/{ext}'
         
         if data is None:
             logging.info(url)
             response = self.session.get(url, headers=self.headers)
         else:
-            logging.info('{}\t{}'.format(url, data))
+            logging.info(f'{url}\t{data}')
             response = self.session.post(url, headers=self.headers, data=data)
             
         if self.check_retry(response):
             return self.__call__(ext, data, attempt + 1)
         
-        logging.info('{}\t{}'.format(url, response.status_code))
+        logging.info(f'{url}\t{response.status_code}')
         response.raise_for_status()
         
         return response.json()
@@ -84,7 +84,7 @@ class Ensembl:
             if 'Cannot allocate memory' in error:
                 time.sleep(30)
                 return True
-            logging.info('{}\tERROR 400: {}'.format(response.url, error))
+            logging.info(f'{response.url}\tERROR 400: {error}')
         
         return False
 
@@ -110,7 +110,7 @@ def cq_and_symbol(chrom, pos, ref, alt):
     if alt == "":
         alt = "-"  # correct deletion allele for ensembl API
     
-    ext = "vep/human/region/{}:{}:{}/".format(chrom, pos, pos + len(ref) - 1)
+    ext = f"vep/human/region/{chrom}:{pos}:{pos + len(ref) - 1}/"
     
     try:
         data = ensembl(ext + alt)
@@ -217,7 +217,7 @@ def genome_sequence(chrom, start, end, build="grch37"):
     if end < start:
         end = start
     
-    ext = "sequence/region/human/{}:{}:{}:1".format(chrom, start, end)
+    ext = f"sequence/region/human/{chrom}:{start}:{end}:1"
     data = ensembl(ext)
     
     if len(data) > 0:

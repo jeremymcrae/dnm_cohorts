@@ -25,7 +25,7 @@ def add_mock_probands(persons, required, prefix, suffix, phenotype):
     male_ratio = sum(x.sex == 'male' for x in affected)/len(affected)
     
     for x in range(required - len(affected)):
-        person_id = '{}_{}|{}'.format(prefix, random_id(), suffix)
+        person_id = f'{prefix}_{random_id()}|{suffix}'
         sex = 'male' if random.random() < male_ratio else 'female'
         person = Person(person_id, sex, phenotype)
         persons.add(person)

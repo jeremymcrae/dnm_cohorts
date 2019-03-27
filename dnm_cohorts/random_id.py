@@ -23,7 +23,7 @@ def random_id(size=12):
     # the randomness, but enforces evaluation as a string.
     string = None
     while string is None or is_number(string) or len(string) != size:
-        string = "{:x}".format(random.getrandbits(size*4))
+        string = f"{random.getrandbits(size*4):x}"
         string = string.strip()
     
     return string
