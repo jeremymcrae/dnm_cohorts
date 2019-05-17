@@ -7,7 +7,7 @@ class Person(dict):
         self.phenotype = phenotype
     
     def __repr__(self):
-        return f'Person("{self.person_id}", "{self.sex}", "{self.phenotype}"'
+        return f'Person("{self.person_id}", "{self.sex}", "{self.phenotype}")'
     
     def __str__(self):
         return f'{self.person_id}\t{self.sex}\t{self.phenotype}'
