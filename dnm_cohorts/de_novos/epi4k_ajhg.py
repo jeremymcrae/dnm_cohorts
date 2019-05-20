@@ -61,7 +61,7 @@ def epi4k_ajhg_de_novos():
     vars = set()
     for i, row in data.iterrows():
         var = DeNovo(row.person_id, row.chrom, row.pos, row.ref, row.alt,
-            row.study, row.confidence)
+            row.study, row.confidence, 'grch37')
         vars.add(var)
     
     return vars
