@@ -21,12 +21,26 @@ from dnm_cohorts.exclude_duplicates import drop_inperson_duplicates
 
 def get_options():
     parser = argparse.ArgumentParser()
-    group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument('--de-novos', default=False, action='store_true')
-    group.add_argument('--cohorts', default=False, action='store_true')
+    parent = argparse.ArgumentParser(add_help=False)
     
-    parser.add_argument('--output', default=sys.stdout, help='where to save output')
-    parser.add_argument('--log', default=os.devnull, help='where to write log output')
+    parent.add_argument('--output', default=sys.stdout, help='where to save output')
+    parent.add_argument('--log', default=os.devnull, help='where to write log output')
+    
+    subparsers = parser.add_subparsers(required=True)
+    de_novos = subparsers.add_parser('de-novos', parents=[parent],
+        description='Gets de novo mutations from publically available datasets.')
+    de_novos.add_argument('--de-novos', default=True)
+    de_novos.add_argument('--cohorts', default=False)
+    cohort = subparsers.add_parser('cohort', parents=[parent],
+        description='Gets cohort info for de novo datasets')
+    cohort.add_argument('--cohorts', default=True)
+    cohort.add_argument('--de-novos', default=False)
+    lifter = subparsers.add_parser('lift', parents=[parent],
+        description='Converts de novo mutations to a different genome build')
+    lifter.add_argument('--input', required=True, help='path to input de novos')
+    lifter.add_argument('--to', required=True,
+        help='genome build to lift variant on to. Variants start with a build' \
+             'associated with them, so no need to supply a from-build')
     
     args = parser.parse_args()
     
@@ -34,6 +48,9 @@ def get_options():
         args.output = open(args.output, 'w')
     except TypeError:
         pass
+    
+    if hasattr(args, 'input'):
+        args.input = open(args.input, 'r')
     
     return args
 
@@ -92,6 +109,16 @@ def get_de_novos(output, header):
         x.consequence, x.symbol = cq_and_symbol(x.chrom, x.pos, x.ref, x.alt)
         _ = output.write(str(x) + '\n')
 
+def change_build(input, output, build, header):
+    ''' shift variants onto a new genome build
+    '''
+    _ = input.readline()
+    _ = output.write('\t'.join(header) + '\n')
+    for line in input:
+        var = DeNovo(*line.strip('\n').split('\t'))
+        remapped = var.to_build(build)
+        _ = output.write(str(remapped) + '\n')
+
 def main():
     args = get_options()
     FORMAT = '%(asctime)-15s %(message)s'
@@ -100,10 +127,14 @@ def main():
     if args.cohorts:
         header = ['person_id', 'sex', 'phenotype']
         get_cohorts(args.output, header)
-    else:
+    elif args.de_novos:
         header = ['person_id', 'chrom', 'pos', 'ref', 'alt', 'study',
             'confidence', 'build', 'symbol', 'consequence']
         get_de_novos(args.output, header)
+    else:
+        header = ['person_id', 'chrom', 'pos', 'ref', 'alt', 'study',
+            'confidence', 'build', 'symbol', 'consequence']
+        change_build(args.input, args.output, args.to, header)
     
 
 if __name__ == '__main__':
