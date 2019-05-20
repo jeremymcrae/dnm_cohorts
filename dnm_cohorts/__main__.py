@@ -37,7 +37,7 @@ def get_options():
     
     return args
 
-def open_cohorts():
+def get_cohorts(output, header):
     ''' get list of all individuals in all cohorts
     '''
     # open ASD cohort info, then drop duplicate samples from the ASD cohorts
@@ -54,7 +54,9 @@ def open_cohorts():
         open_epi4k_ajhg_cohort(), open_homsy_science_cohort(),
         open_lelieveld_cohort(), open_mcrae_nature_cohort()]
     
-    return samples
+    _ = output.write('\t'.join(header) + '\n')
+    for x in flatten(samples):
+        _ = output.write(str(x) + '\n')
 
 def remove_duplicate_dnms(cohorts):
     """ only include unique variants
@@ -67,7 +69,7 @@ def remove_duplicate_dnms(cohorts):
     
     return shrunken
 
-def open_de_novos():
+def get_de_novos(output, header):
     """ get list of all de novos in all cohorts
     """
     # open ASD cohort info, then drop duplicate samples from the ASD cohorts
@@ -85,7 +87,10 @@ def open_de_novos():
         epi4k_ajhg_de_novos(), homsy_science_de_novos(),
         lelieveld_nn_de_novos(), rauch_lancet_de_novos(), mcrae_nature_de_novos()]
     
-    return [drop_inperson_duplicates(x) for x in cohorts]
+    _ = output.write('\t'.join(header) + '\n')
+    for x in drop_inperson_duplicates(flatten(x)):
+        x.consequence, x.symbol = cq_and_symbol(x.chrom, x.pos, x.ref, x.alt)
+        _ = output.write(str(x) + '\n')
 
 def main():
     args = get_options()
@@ -93,20 +98,13 @@ def main():
     logging.basicConfig(filename=args.log, format=FORMAT, level=logging.INFO)
     
     if args.cohorts:
-        data = open_cohorts()
         header = ['person_id', 'sex', 'phenotype']
+        get_cohorts(args.output, header)
     else:
-        data = open_de_novos()
         header = ['person_id', 'chrom', 'pos', 'ref', 'alt', 'study',
-            'confidence', 'symbol', 'consequence']
+            'confidence', 'build', 'symbol', 'consequence']
+        get_de_novos(args.output, header)
     
-    _ = args.output.write('\t'.join(header) + '\n')
-    for cohort in data:
-        for x in sorted(cohort):
-            if args.de_novos:
-                x.consequence, x.symbol = cq_and_symbol(x.chrom, x.pos, x.ref, x.alt)
-            
-            _ = args.output.write(str(x) + '\n')
 
 if __name__ == '__main__':
     main()
