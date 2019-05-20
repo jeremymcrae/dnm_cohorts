@@ -10,12 +10,13 @@ from dnm_cohorts.cohorts import (open_de_ligt_cohort, open_rauch_cohort,
     open_de_rubeis_cohort, open_epi4k_ajhg_cohort, open_iossifov_nature_cohort,
     open_iossifov_neuron_cohort, open_oroak_cohort, open_sanders_nature_cohort,
     open_sanders_neuron_cohort, open_lelieveld_cohort, open_mcrae_nature_cohort,
-    open_homsy_science_cohort)
+    open_homsy_science_cohort, open_an_science_cohort)
 from dnm_cohorts.de_novos import (de_ligt_nejm_de_novos,
     de_rubeis_nature_de_novos, epi4k_ajhg_de_novos, gilissen_nature_de_novos,
     iossifov_neuron_de_novos, iossifov_nature_de_novos, lelieveld_nn_de_novos,
     mcrae_nature_de_novos, oroak_nature_de_novos, rauch_lancet_de_novos,
-    sanders_nature_de_novos, sanders_neuron_de_novos, homsy_science_de_novos)
+    sanders_nature_de_novos, sanders_neuron_de_novos, homsy_science_de_novos,
+    an_science_de_novos)
 from dnm_cohorts.convert_pdf_table import flatten
 from dnm_cohorts.exclude_duplicates import drop_inperson_duplicates
 
@@ -60,7 +61,8 @@ def get_cohorts(output, header):
     # open ASD cohort info, then drop duplicate samples from the ASD cohorts
     asd = [open_sanders_neuron_cohort(), open_de_rubeis_cohort(),
         open_iossifov_nature_cohort(), open_iossifov_neuron_cohort(),
-        open_oroak_cohort(), open_sanders_nature_cohort()]
+        open_oroak_cohort(), open_sanders_nature_cohort(),
+        open_an_science_cohort()]
     
     for a, b in itertools.combinations(asd, 2):
         a -= b
@@ -92,7 +94,8 @@ def get_de_novos(output, header):
     # open ASD cohort info, then drop duplicate samples from the ASD cohorts
     asd = [sanders_neuron_de_novos(), de_rubeis_nature_de_novos(),
         iossifov_nature_de_novos(), iossifov_neuron_de_novos(),
-        oroak_nature_de_novos(), sanders_nature_de_novos()]
+        oroak_nature_de_novos(), sanders_nature_de_novos(),
+        an_science_de_novos()]
     
     for a, b in itertools.combinations(asd, 2):
         # remove the easy matches
