@@ -19,6 +19,7 @@ from dnm_cohorts.de_novos import (de_ligt_nejm_de_novos,
     an_science_de_novos)
 from dnm_cohorts.convert_pdf_table import flatten
 from dnm_cohorts.exclude_duplicates import drop_inperson_duplicates
+from dnm_cohorts.de_novo import DeNovo
 
 def get_options():
     parser = argparse.ArgumentParser()
@@ -42,6 +43,8 @@ def get_options():
     lifter.add_argument('--to', required=True,
         help='genome build to lift variant on to. Variants start with a build' \
              'associated with them, so no need to supply a from-build')
+    lifter.add_argument('--cohorts', default=False)
+    lifter.add_argument('--de-novos', default=False)
     
     args = parser.parse_args()
     
@@ -108,7 +111,7 @@ def get_de_novos(output, header):
         lelieveld_nn_de_novos(), rauch_lancet_de_novos(), mcrae_nature_de_novos()]
     
     _ = output.write('\t'.join(header) + '\n')
-    for x in drop_inperson_duplicates(flatten(x)):
+    for x in drop_inperson_duplicates(flatten(cohorts)):
         x.consequence, x.symbol = cq_and_symbol(x.chrom, x.pos, x.ref, x.alt)
         _ = output.write(str(x) + '\n')
 
@@ -119,6 +122,8 @@ def change_build(input, output, build, header):
     _ = output.write('\t'.join(header) + '\n')
     for line in input:
         var = DeNovo(*line.strip('\n').split('\t'))
+        if not var:
+            continue
         remapped = var.to_build(build)
         _ = output.write(str(remapped) + '\n')
 
