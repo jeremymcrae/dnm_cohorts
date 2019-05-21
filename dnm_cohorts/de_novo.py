@@ -112,5 +112,5 @@ class DeNovo:
             ref = revcomp(self.ref)
             alt = revcomp(self.alt)
         
-        return Denovo(self.person_id, chrom, pos, ref, alt, self.study,
+        return DeNovo(self.person_id, chrom, pos, ref, alt, self.study,
                       self.confidence, build, self.symbol, self.consequence)
