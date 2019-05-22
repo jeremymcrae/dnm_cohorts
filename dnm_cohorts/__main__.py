@@ -110,9 +110,12 @@ def get_de_novos(output, header):
         epi4k_ajhg_de_novos(), homsy_science_de_novos(),
         lelieveld_nn_de_novos(), rauch_lancet_de_novos(), mcrae_nature_de_novos()]
     
-    _ = output.write('\t'.join(header) + '\n')
-    for x in drop_inperson_duplicates(flatten(cohorts)):
+    cohorts = flatten(cohorts)
+    for x in cohorts:
         x.consequence, x.symbol = cq_and_symbol(x.chrom, x.pos, x.ref, x.alt)
+    
+    _ = output.write('\t'.join(header) + '\n')
+    for x in drop_inperson_duplicates(cohorts):
         _ = output.write(str(x) + '\n')
 
 def change_build(input, output, build, header):
