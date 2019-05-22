@@ -28,7 +28,7 @@ def get_options():
     parent.add_argument('--output', default=sys.stdout, help='where to save output')
     parent.add_argument('--log', default=os.devnull, help='where to write log output')
     
-    subparsers = parser.add_subparsers(required=True)
+    subparsers = parser.add_subparsers()
     de_novos = subparsers.add_parser('de-novos', parents=[parent],
         description='Gets de novo mutations from publically available datasets.')
     de_novos.add_argument('--de-novos', default=True)
