@@ -29,7 +29,7 @@ def an_science_de_novos():
     vars = set()
     for i, row in data.iterrows():
         var = DeNovo(row.person_id, row.chrom, row.pos, row.ref, row.alt,
-            row.study, row.confidence, 'grch38', data.consequence, data.symbol)
+            row.study, row.confidence, 'grch38', row.consequence, row.symbol)
         vars.add(var)
     
     return vars
