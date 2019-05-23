@@ -112,7 +112,7 @@ def get_de_novos(output, header):
     
     cohorts = flatten(cohorts)
     for x in cohorts:
-        x.consequence, x.symbol = cq_and_symbol(x.chrom, x.pos, x.ref, x.alt)
+        x.consequence, x.symbol = cq_and_symbol(x.chrom, x.pos, x.ref, x.alt, x.build)
     
     _ = output.write('\t'.join(header) + '\n')
     for x in drop_inperson_duplicates(cohorts):

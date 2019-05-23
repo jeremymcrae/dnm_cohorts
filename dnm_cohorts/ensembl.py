@@ -30,20 +30,14 @@ class Ensembl:
     headers = {'content-type': 'application/json'}
     session = requests.Session()
     
-    def __init__(self, build='grch37'):
-        build = build.lower()
-        assert build in ["grch37", "grch38"]
-        if build == "grch37":
-            self.base = "grch37." + self.base
-        else:
-            self.base = self.base
-    
-    def __call__(self, ext, data=None, attempt=0):
+    def __call__(self, ext, data=None, attempt=0, build='grch37'):
         if attempt > 5:
             raise ValueError('too many attempts accessing')
         self._rate_limit()
         
-        url = f'http://{self.base}/{ext}'
+        assert build in ["grch37", "grch38"]
+        build = build + '.' if build == "grch37" else ''
+        url = f'http://{build}{self.base}/{ext}'
         
         if data is None:
             logging.info(url)
@@ -90,7 +84,7 @@ class Ensembl:
 
 ensembl = Ensembl('grch37')
 
-def cq_and_symbol(chrom, pos, ref, alt):
+def cq_and_symbol(chrom, pos, ref, alt, build='grch37'):
     """find the VEP consequence for a variant
     
     Args:
@@ -113,9 +107,9 @@ def cq_and_symbol(chrom, pos, ref, alt):
     ext = f"vep/human/region/{chrom}:{pos}:{pos + len(ref) - 1}/"
     
     try:
-        data = ensembl(ext + alt)
+        data = ensembl(ext + alt, build=build)
     except HTTPError:
-        data = ensembl(ext + ref)
+        data = ensembl(ext + ref, build=build)
     
     return find_most_severe_transcript(data[0])
 
@@ -218,7 +212,7 @@ def genome_sequence(chrom, start, end, build="grch37"):
         end = start
     
     ext = f"sequence/region/human/{chrom}:{start}:{end}:1"
-    data = ensembl(ext)
+    data = ensembl(ext, build=build)
     
     if len(data) > 0:
         return data['seq']
