@@ -113,48 +113,6 @@ def cq_and_symbol(chrom, pos, ref, alt, build='grch37'):
     
     return find_most_severe_transcript(data[0])
 
-def chunks(l, n):
-    # For item i in a range that is a length of l,
-    for i in range(0, len(l), n):
-        # Create an index range for l of n items:
-        yield l[i:i+n]
-
-def flatten(nested):
-    return [ x for sublist in nested for x in sublist ]
-
-def break_large_lists(chroms, positions, refs, alts):
-    """ break large lists into separate ensembl requests
-    """
-    
-    grouped = list(zip(chroms, positions, refs, alts))
-    
-    cqs, symbols = [], []
-    for group in chunks(grouped, 100):
-        cq, symbol = cq_and_symbols(*zip(*group))
-        cqs += cq
-        symbols += symbol
-    
-    return cqs, symbols
-
-def cq_and_symbols(chroms, positions, refs, alts, attempt=0):
-    """ get consequence and symbol for multiple variants
-    """
-    
-    if len(chroms) > 100:
-        break_large_lists(chroms, positions, refs, alts)
-    
-    variants = []
-    for chrom, pos, ref, alt in zip(chroms, positions, refs, alts):
-        variants.append(f'{chrom} {pos} {pos + len(ref) - 1} {ref} {alt} . . .')
-    
-    data = str({'variants': variants}).replace("'", '"')
-    ext = "vep/homo_sapiens/region"
-    
-    response = ensembl(ext, data)
-    
-    values = [ find_most_severe_transcript(x) for x in response ]
-    return tuple(zip(*values))
-
 def find_most_severe_transcript(data, exclude_bad=True):
     """ find the most severe transcript from Ensembl data
     
