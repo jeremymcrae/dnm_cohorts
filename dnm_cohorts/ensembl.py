@@ -82,7 +82,7 @@ class Ensembl:
         
         return False
 
-ensembl = Ensembl('grch37')
+ensembl = Ensembl()
 
 def cq_and_symbol(chrom, pos, ref, alt, build='grch37'):
     """find the VEP consequence for a variant
