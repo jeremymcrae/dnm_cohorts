@@ -4,7 +4,7 @@ import time
 import logging
 
 import requests
-from requests.exceptions import HTTPError
+from requests.exceptions import HTTPError, ConnectionError
 
 # consequence list, as sorted at http://www.ensembl.org/info/genome/variation/predicted_data.html
 consequences = ["transcript_ablation", "splice_donor_variant",
@@ -41,13 +41,21 @@ class Ensembl:
         
         if data is None:
             logging.info(url)
-            response = self.session.get(url, headers=self.headers)
+            try:
+                response = self.session.get(url, headers=self.headers)
+            except ConnectionError:
+                logging.info(f'{url}\tConnectionError')
+                return self.__call__(ext, data, attempt + 1, build)
         else:
             logging.info(f'{url}\t{data}')
-            response = self.session.post(url, headers=self.headers, data=data)
+            try:
+                response = self.session.post(url, headers=self.headers, data=data)
+            except ConnectionError:
+                logging.info(f'{url}\tConnectionError')
+                return self.__call__(ext, data, attempt + 1, build)
             
         if self.check_retry(response):
-            return self.__call__(ext, data, attempt + 1)
+            return self.__call__(ext, data, attempt + 1, bbuild)
         
         logging.info(f'{url}\t{response.status_code}')
         response.raise_for_status()
