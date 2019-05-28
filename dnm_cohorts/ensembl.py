@@ -35,7 +35,7 @@ class Ensembl:
             raise ValueError('too many attempts accessing')
         self._rate_limit()
         
-        assert build in ["grch37", "grch38"]
+        assert build in ["grch37", "grch38"], f'unknown build: {build}'
         build = build + '.' if build == "grch37" else ''
         url = f'http://{build}{self.base}/{ext}'
         
