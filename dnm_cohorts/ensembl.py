@@ -36,8 +36,8 @@ class Ensembl:
         self._rate_limit()
         
         assert build in ["grch37", "grch38"], f'unknown build: {build}'
-        build = build + '.' if build == "grch37" else ''
-        url = f'http://{build}{self.base}/{ext}'
+        ver = build + '.' if build == "grch37" else ''
+        url = f'http://{ver}{self.base}/{ext}'
         
         if data is None:
             logging.info(url)
@@ -55,7 +55,7 @@ class Ensembl:
                 return self.__call__(ext, data, attempt + 1, build)
             
         if self.check_retry(response):
-            return self.__call__(ext, data, attempt + 1, bbuild)
+            return self.__call__(ext, data, attempt + 1, build)
         
         logging.info(f'{url}\t{response.status_code}')
         response.raise_for_status()
