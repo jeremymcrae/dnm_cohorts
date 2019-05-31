@@ -30,7 +30,7 @@ class Ensembl:
     headers = {'content-type': 'application/json'}
     session = requests.Session()
     
-    def __call__(self, ext, data=None, attempt=0, build='grch37'):
+    def __call__(self, ext, attempt=0, build='grch37'):
         if attempt > 5:
             raise ValueError('too many attempts accessing')
         self._rate_limit()
@@ -39,23 +39,14 @@ class Ensembl:
         ver = build + '.' if build == "grch37" else ''
         url = f'http://{ver}{self.base}/{ext}'
         
-        if data is None:
-            logging.info(url)
-            try:
-                response = self.session.get(url, headers=self.headers)
-            except ConnectionError:
-                logging.info(f'{url}\tConnectionError')
-                return self.__call__(ext, data, attempt + 1, build)
-        else:
-            logging.info(f'{url}\t{data}')
-            try:
-                response = self.session.post(url, headers=self.headers, data=data)
-            except ConnectionError:
-                logging.info(f'{url}\tConnectionError')
-                return self.__call__(ext, data, attempt + 1, build)
-            
+        try:
+            response = self.session.get(url, headers=self.headers)
+        except ConnectionError:
+            logging.info(f'{url}\tConnectionError')
+            return self.__call__(ext, attempt + 1, build)
+        
         if self.check_retry(response):
-            return self.__call__(ext, data, attempt + 1, build)
+            return self.__call__(ext, attempt + 1, build)
         
         logging.info(f'{url}\t{response.status_code}')
         response.raise_for_status()
@@ -72,10 +63,12 @@ class Ensembl:
         """ check for http request errors which permit a retry
         """
         if response.status_code == 500 or response.status_code == 503:
+            logging.info(f'{response.url}\tERROR 500: server down')
             # if the server is down, briefly pause
             time.sleep(30)
             return True
         elif response.status_code == 429:
+            logging.info(f'{response.url}\tERROR 429: exceeded ratelimit')
             # if we exceed the server limits, pause for required time
             time.sleep(float(response.headers['retry-after']))
             return True
@@ -84,10 +77,11 @@ class Ensembl:
             error = data['error']
             # account for some EBI REST server failures
             if 'Cannot allocate memory' in error:
+                logging.info(f'{response.url}\tERROR 400: {error}')
                 time.sleep(30)
                 return True
-            logging.info(f'{response.url}\tERROR 400: {error}')
         
+        logging.info(f'{response.url}\tERROR {response.status_code}')
         return False
 
 ensembl = Ensembl()
