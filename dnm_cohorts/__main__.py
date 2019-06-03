@@ -4,6 +4,7 @@ import argparse
 import sys
 import os
 import logging
+from itertools import groupby
 
 from dnm_cohorts.ensembl import cq_and_symbol
 from dnm_cohorts.cohorts import (open_de_ligt_cohort, open_rauch_cohort,
@@ -84,12 +85,19 @@ def remove_duplicate_dnms(cohorts):
     """ only include unique variants
     """
     
-    shrunken = set()
-    for var in flatten(cohorts):
-        if not any( var == x for x in shrunken ):
-            shrunken.add(var)
+    unique = set()
+    for id, group in groupby(flatten(cohorts), key=lambda x: x.person_id):
+        # within variants for an individual, check to see if any are the same
+        # variant by seeing if any already included overlap the same range.
+        # We can't just check for inclusion inside the set, as that would use
+        # the position, not the range.
+        shrunken = set()
+        for var in group:
+            if not any( var == x for x in shrunken ):
+                shrunken.add(var)
+        unique |= shrunken
     
-    return shrunken
+    return unique
 
 def get_de_novos(output, header):
     """ get list of all de novos in all cohorts
