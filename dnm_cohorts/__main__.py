@@ -6,7 +6,7 @@ import os
 import logging
 from itertools import groupby
 
-from dnm_cohorts.ensembl import cq_and_symbol
+from dnm_cohorts.ensembl import get_consequences
 from dnm_cohorts.cohorts import (open_de_ligt_cohort, open_rauch_cohort,
     open_de_rubeis_cohort, open_epi4k_ajhg_cohort, open_iossifov_nature_cohort,
     open_iossifov_neuron_cohort, open_oroak_cohort, open_sanders_nature_cohort,
@@ -118,9 +118,7 @@ def get_de_novos(output, header):
         epi4k_ajhg_de_novos(), homsy_science_de_novos(),
         lelieveld_nn_de_novos(), rauch_lancet_de_novos(), mcrae_nature_de_novos()]
     
-    cohorts = flatten(cohorts)
-    for x in cohorts:
-        x.consequence, x.symbol = cq_and_symbol(x.chrom, x.pos, x.ref, x.alt, x.build)
+    cohorts = get_consequences(flatten(cohorts))
     
     _ = output.write('\t'.join(header) + '\n')
     for x in drop_inperson_duplicates(cohorts):
