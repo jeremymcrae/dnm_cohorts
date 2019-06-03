@@ -1,4 +1,6 @@
 
+import logging
+
 import pandas
 
 from dnm_cohorts.fix_hgvs import fix_coordinates_with_allele
@@ -36,7 +38,7 @@ def iossifov_neuron_de_novos():
         data frame of de novos, with standardised genome coordinates and VEP
         consequences for each variant.
     """
-    
+    logging.info('getting Iossifov et al Neuron 2012 de novos')
     snvs = pandas.read_excel(snv_url, sheet_name='SNV.v4.1-normlized')
     indels = pandas.read_excel(indel_url, sheet_name='ID.v4.1-normlized')
     

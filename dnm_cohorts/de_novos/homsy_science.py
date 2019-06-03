@@ -1,5 +1,6 @@
 
 import os
+import logging
 import tempfile
 from zipfile import ZipFile
 
@@ -16,7 +17,7 @@ def homsy_science_de_novos():
     Supplementary Database 1 from:
     Homsy et al. Science 350: 1262-1266, doi: 10.1126/science.aac9396
     """
-    
+    logging.info('getting Homsy et al Science 2015 de novos')
     zipf = tempfile.NamedTemporaryFile()
     download_file(url, zipf.name)
     

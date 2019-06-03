@@ -1,4 +1,5 @@
 
+import logging
 import tempfile
 
 import pandas
@@ -86,7 +87,7 @@ def rauch_lancet_de_novos():
         data frame of de novos, including gene symbol, functional consequence
         (VEP format), chromosome, nucleotide position
     """
-    
+    logging.info('getting Rauch et al Lancet 2012 de novos')
     # obtain the supplementary material
     temp = tempfile.NamedTemporaryFile()
     download_file(url, temp.name)

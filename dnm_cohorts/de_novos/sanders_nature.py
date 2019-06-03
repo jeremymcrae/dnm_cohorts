@@ -1,4 +1,6 @@
 
+import logging
+
 import pandas
 
 from dnm_cohorts.ensembl import genome_sequence
@@ -32,7 +34,7 @@ def sanders_nature_de_novos():
         data frame of de novos, with standardised genome coordinates and VEP
         consequences for each variant
     """
-    
+    logging.info('getting Sanders et al Nature 2012 de novos')
     probands = pandas.read_excel(url, sheet_name='Probands')
     siblings = pandas.read_excel(url, sheet_name='Siblings')
     data = probands.append(siblings, ignore_index=True)

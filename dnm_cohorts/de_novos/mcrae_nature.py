@@ -1,4 +1,6 @@
 
+import logging
+
 import pandas
 
 from dnm_cohorts.de_novo import DeNovo
@@ -15,6 +17,7 @@ def mcrae_nature_de_novos():
     Returns:
         dataframe of de novo mutations
     """
+    logging.info('getting McRae et al Nature 2017 de novos')
     data = pandas.read_excel(url, sheet_name='Supplementary Table 1')
     
     data['person_id'] = data['Individual ID']

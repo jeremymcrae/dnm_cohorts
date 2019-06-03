@@ -1,5 +1,6 @@
 
 import re
+import logging
 
 import pandas
 
@@ -47,6 +48,7 @@ def epi4k_ajhg_de_novos():
     Returns:
         data.frame of de novo mutations
     """
+    logging.info('getting Epi4K et al AJHG 2014 de novos')
     data = pandas.read_excel(url, skipfooter=4)
     
     data['chrom'], data['pos'], data['ref'], data['alt'] = fix_coordinates_with_allele( \

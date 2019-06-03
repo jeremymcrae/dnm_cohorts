@@ -1,4 +1,5 @@
 
+import logging
 import tempfile
 import math
 import re
@@ -70,7 +71,7 @@ def iossifov_nature_de_novos():
     Variants sourced from Supplementary tables S2, with person IDs sourced from
     Table S1.
     """
-    
+    logging.info('getting Iossifov et al Nature 2014 de novos')
     temp = tempfile.NamedTemporaryFile()
     download_file(url, temp.name)
     

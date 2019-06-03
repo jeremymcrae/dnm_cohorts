@@ -1,5 +1,5 @@
 
-
+import logging
 import tempfile
 import re
 
@@ -67,7 +67,7 @@ def gilissen_nature_de_novos():
     Nature 511: 344-347 2014, doi:10.1038/nature13394
     Supplementary table S8.
     """
-    
+    logging.info('getting Gilissen et al Nature 2014 de novos')
     temp = tempfile.NamedTemporaryFile()
     download_file(url, temp.name)
     

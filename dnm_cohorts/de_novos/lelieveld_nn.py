@@ -1,4 +1,6 @@
 
+import logging
+
 import pandas
 
 from dnm_cohorts.ensembl import genome_sequence
@@ -41,7 +43,7 @@ def lelieveld_nn_de_novos():
         data frame of de novos, including gene symbol, functional consequence
         (VEP format), chromosome, nucleotide position and SNV or INDEL type
     """
-    
+    logging.info('getting Lelieveld et al Nature Neuroscience 2016 de novos')
     data = pandas.read_excel(url, sheet_name='Supplementary Table 2')
     
     data['person_id'] = data['Patient key'].astype(str)

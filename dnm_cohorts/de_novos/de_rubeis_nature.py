@@ -1,4 +1,6 @@
 
+import logging
+
 import pandas
 
 from dnm_cohorts.de_novo import DeNovo
@@ -17,6 +19,7 @@ def de_rubeis_nature_de_novos():
          (VEP format), chromosome, nucleotide position
     """
     
+    logging.info('getting De Rubeis et al Nature 2013 de novos')
     data = pandas.read_excel(url, sheet_name="De Novo", skipfooter=1)
     
     # rename columns to match the other de novo datasets

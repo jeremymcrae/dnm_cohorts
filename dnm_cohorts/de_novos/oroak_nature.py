@@ -1,4 +1,6 @@
 
+import logging
+
 import pandas
 
 from dnm_cohorts.ensembl import genome_sequence
@@ -54,6 +56,7 @@ def oroak_nature_de_novos():
         data frame of de novos, with standardised genome coordinates and VEP
         consequences for each variant
     """
+    logging.info('getting O\'Roak et al Nature 2012 de novos')
     data = pandas.read_excel(url, sheet_name="Supplementary Table 3", skipfooter=3)
     
     # standardise the chrom, position and allele column names
