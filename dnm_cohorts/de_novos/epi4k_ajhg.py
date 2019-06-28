@@ -7,7 +7,7 @@ import pandas
 from dnm_cohorts.fix_hgvs import fix_coordinates_with_allele
 from dnm_cohorts.de_novo import DeNovo
 
-url = 'https://ars.els-cdn.com/content/image/1-s2.0-S0002929714003838-mmc2.xlsx'
+url = 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4185114/bin/mmc2.xlsx'
 
 def get_person_ids(data):
     """ lean up the person IDs
