@@ -150,7 +150,7 @@ async def async_get_consequences(variants):
     '''
     async with Ensembl() as ensembl:
         tasks = []
-        semaphore = asyncio.BoundedSemaphore(30)
+        semaphore = asyncio.BoundedSemaphore(20)
         for x in variants:
             await semaphore.acquire()
             await asyncio.sleep(1 / REQS_PER_SECOND)
