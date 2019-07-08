@@ -3,6 +3,7 @@
 import time
 import logging
 import asyncio
+import random
 
 import aiohttp
 
@@ -48,7 +49,7 @@ class Ensembl:
         
         try:
             async with self.session.get(url, headers=self.headers) as resp:
-                if await self.check_retry(resp):
+                if await self.check_retry(resp, attempt):
                     return await self.__call__(ext, attempt + 1, build)
                 
                 logging.info(f'{url}\t{resp.status}')
@@ -57,13 +58,14 @@ class Ensembl:
         except (aiohttp.ServerDisconnectedError) as err:
             return await self.__call__(ext, attempt + 1, build)
     
-    async def check_retry(self, response):
+    async def check_retry(self, response, attempt):
         """ check for http request errors which permit a retry
         """
+        backoff = 2 ** (attempt + 1) + random.random()
         if response.status == 500 or response.status == 503:
             logging.info(f'{response.url}\tERROR 500: server down')
             # if the server is down, briefly pause
-            await asyncio.sleep(30)
+            await asyncio.sleep(backoff + 20 * random.random())
             return True
         elif response.status == 429:
             logging.info(f'{response.url}\tERROR 429: exceeded ratelimit')
@@ -71,42 +73,43 @@ class Ensembl:
             await asyncio.sleep(float(response.headers['retry-after']))
             return True
         elif response.status == 400:
-            data = response.json()
+            data = await response.json()
             error = data['error']
             # account for some EBI REST server failures
             if 'Cannot allocate memory' in error:
                 logging.info(f'{response.url}\tERROR 400: {error}')
-                await asyncio.sleep(30)
+                await asyncio.sleep(backoff)
                 return True
         
         return False
 
-async def cq_and_symbol(ensembl, chrom, pos, ref, alt, build='grch37'):
+async def cq_and_symbol(ensembl, var):
     """find the VEP consequence for a variant
     
-    Args:
-        chrom: chromosome
-        pos: nucleotide position
-        ref: reference allele
-        alt: alternate allele
-        build: genome build to find consequences on
+    annotates the consequence and symbol attributes of the variant passed in.
     
-    Returns:
-        a string containing the most severe consequence, as per VEP formats.
+    Args:
+        ensembl: object for asynchronously calling ensembl REST API
+        var: object with chrom, pos, ref and alt attributes. Optionally define
+            genome build with 'build' attribute.
     
     Examples:
-        get_vep_consequence("1", 1000000, "A", "G")
+        from collections import namedtuple
+        from dnm_cohorts.ensembl import Ensembl, get_consequences
+        Var = namedtuple('Var', ['chrom', 'pos', 'ref', 'alt'])
+        ens = Ensembl()
+        var = Var('1', 1000000, "A", "G")
+        get_vep_consequence(ens, var)
     """
     
-    if alt == "":
-        alt = "-"  # correct deletion allele for ensembl API
+    # correct deletion allele for ensembl API
+    alt = '-' if var.alt == "" else var.alt
     
-    ext = f"vep/human/region/{chrom}:{pos}:{pos + len(ref) - 1}/"
-    
-    data = await ensembl(ext + alt, build=build)
-    return await find_most_severe_transcript(data[0])
+    ext = f"vep/human/region/{var.chrom}:{var.pos}:{var.pos + len(var.ref) - 1}/{alt}"
+    data = await ensembl(ext, build=var.build)
+    var.consequence, var.symbol = find_most_severe_transcript(data[0])
 
-async def find_most_severe_transcript(data, exclude_bad=True):
+def find_most_severe_transcript(data, exclude_bad=True):
     """ find the most severe transcript from Ensembl data
     
     Args:
@@ -131,14 +134,14 @@ async def find_most_severe_transcript(data, exclude_bad=True):
         transcripts = [ x for x in transcripts if x['biotype'] not in noncoding ]
     
     if len(transcripts) == 0:
-        return await find_most_severe_transcript(data, exclude_bad=False)
+        return find_most_severe_transcript(data, exclude_bad=False)
     
     for tx in transcripts:
         # get consequence for current transcript
         tx['cq'] = min(tx['consequence_terms'], key=lambda x: severity[x])
         tx['not_hgnc'] = tx['gene_symbol_source'] != "HGNC" # sort HGNC first
     
-    # return the most severe conequence, prefer transcripts with HGNC symbols
+    # return the most severe consequence, prefer transcripts with HGNC symbols
     tx = min(transcripts, key=lambda x: (severity[x['cq']], x['not_hgnc']))
     return tx['cq'], tx['gene_symbol']
 
@@ -147,32 +150,31 @@ async def async_get_consequences(variants):
     '''
     async with Ensembl() as ensembl:
         tasks = []
+        semaphore = asyncio.BoundedSemaphore(20)
         for x in variants:
+            await semaphore.acquire()
             await asyncio.sleep(1 / REQS_PER_SECOND)
-            task = asyncio.ensure_future(cq_and_symbol(ensembl, x.chrom, x.pos,
-                                                       x.ref, x.alt, x.build))
+            task = asyncio.create_task(cq_and_symbol(ensembl, x))
+            task.add_done_callback(lambda task: tasks.remove(task))
+            task.add_done_callback(lambda task: semaphore.release())
             tasks.append(task)
-        return await asyncio.gather(*tasks)
+        for f in asyncio.as_completed(set(tasks)):
+            _ = await f
 
 def get_consequences(variants):
     ''' asynchronously annotate consequence and gene symbol for many variants
     '''
-    # loop = asyncio.get_event_loop()
-    # cqs = loop.run_until_complete(async_get_consequences(variants))
-    cqs = asyncio.run(async_get_consequences(variants))
-    
-    for var, (cq, symbol) in zip(variants, cqs):
-        var.cq, var.symbol = cq, symbol
-    
+    asyncio.run(async_get_consequences(variants))
     return variants
 
 async def async_genome_sequence(ensembl, chrom, start, end, build="grch37"):
     """ find genomic sequence within a region
     
     Args:
-        chrom:
-        start:
-        end:
+        ensembl: object for asynchronously calling ensembl REST API
+        chrom: chromosome
+        start: start position
+        end: end position
         build: genome build to find consequences on
         verbose: flag indicating whether to print variants as they are checked
     
