@@ -55,14 +55,14 @@ class Ensembl:
                 logging.info(f'{url}\t{resp.status}')
                 resp.raise_for_status()
                 return await resp.json()
-        except (aiohttp.ServerDisconnectedError) as err:
+        except (aiohttp.ServerDisconnectedError, asyncio.TimeoutError) as err:
             return await self.__call__(ext, attempt + 1, build)
     
     async def check_retry(self, response, attempt):
         """ check for http request errors which permit a retry
         """
         backoff = 2 ** (attempt + 1) + random.random()
-        if response.status == 500 or response.status == 503:
+        if response.status in [500, 503, 504]:
             logging.info(f'{response.url}\tERROR 500: server down')
             # if the server is down, briefly pause
             await asyncio.sleep(backoff + 20 * random.random())
@@ -150,7 +150,7 @@ async def async_get_consequences(variants):
     '''
     async with Ensembl() as ensembl:
         tasks = []
-        semaphore = asyncio.BoundedSemaphore(20)
+        semaphore = asyncio.BoundedSemaphore(30)
         for x in variants:
             await semaphore.acquire()
             await asyncio.sleep(1 / REQS_PER_SECOND)
