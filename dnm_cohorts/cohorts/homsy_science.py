@@ -26,10 +26,14 @@ def open_homsy_science_cohort():
         data = pandas.read_excel(handle, 'Database S1', skiprows=1)
     
     data = data.drop(0, axis=0)
+    data = data.rename(columns={
+        'NDD determination if PCGC cohort': 'Developmental Delay',
+        'Unnamed: 6': 'Learning Disability',
+        'Unnamed: 7': 'Mental Retardation',
+        'Unnamed: 8': 'Autism Spectrum'})
     
     data['person_id'] = data['Blinded ID']
     data['person_id'] += '|homsy'
-    status = 'congenital_heart_disease'
     
     # estimate male fraction from proportion in Zaidi et al 2013, since the
     # sex isn't provided for individuals, nor the count of people per sex.
@@ -37,7 +41,14 @@ def open_homsy_science_cohort():
     
     persons = set()
     for i, row in data.iterrows():
+        status = ['HP:0001627']
         sex = 'male' if random.random() < male_fraction else 'female'
+        if row['Developmental Delay'] == 'Yes':
+            status.append('HP:0001263')
+        if row['Mental Retardation'] == 'Yes':
+            status.append('HP:0001249')
+        if row['Autism Spectrum'] == 'Yes':
+            status.append('HP:0000717')
         
         person = Person(row.person_id, sex, status)
         persons.add(person)

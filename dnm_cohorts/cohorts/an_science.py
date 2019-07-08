@@ -20,9 +20,9 @@ def open_an_science_cohort():
             # ignore parental samples
             continue
         
-        status = 'autism'
-        if row.Pheno == 'control':
-            status = 'unaffected'
+        status = ['unaffected'] if row.Pheno == 'control' else ['HP:0000717']
+        if isinstance(row.NVIQ, int) and row.NVIQ < 70:
+            status.append('HP:0001249')
         
         person = Person(row.SampleID + '|asd_cohorts', row.Sex, status)
         persons.add(person)

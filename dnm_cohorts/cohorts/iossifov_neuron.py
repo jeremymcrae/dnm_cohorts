@@ -31,7 +31,7 @@ def open_iossifov_neuron_cohort():
         for affected, sex in possible:
             string = f'{affected}{sex}'
             if string in children:
-                status = 'unaffected' if affected != 'aut' else 'autism'
+                status = ['unaffected'] if affected != 'aut' else ['HP:0000717']
                 member = 's1' if affected != 'aut' else 'p1'
                 sex = 'female' if sex == 'F' else 'male'
                 person_id = f'{fam}.{member}|asd_cohorts'

@@ -17,7 +17,7 @@ def open_lelieveld_cohort():
     random.seed(1)
     data = pandas.read_excel(url, sheet_name='Supplementary Table 2')
     
-    phenotype = 'intellectual_disability'
+    phenotype = ['HP:0001249']
     
     ids = list(range(1, max(data['Patient key']) + 1))
     ids = [ str(x) + '|lelieveld' for x in ids ]

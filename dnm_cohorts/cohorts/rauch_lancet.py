@@ -47,7 +47,7 @@ def open_rauch_cohort():
     data = extract_table(temp)
     data['person_id'] += '|rauch'
     
-    status = 'intellectual_disability'
+    status = ['HP:0001249']
     persons = set()
     for i, row in data.iterrows():
         

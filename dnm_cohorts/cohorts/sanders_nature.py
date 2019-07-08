@@ -20,9 +20,9 @@ def open_sanders_nature_cohort():
             # ignore parental samples
             continue
         
-        status = 'autism'
+        status = ['HP:0000717']
         if row.Role == 'Unaffected_Sibling':
-            status = 'unaffected'
+            status = ['unaffected']
         
         person = Person(row.Sample + '|asd_cohorts', row.Gender.lower(), status)
         persons.add(person)

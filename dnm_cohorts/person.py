@@ -10,10 +10,10 @@ class Person(dict):
         return f'Person("{self.person_id}", "{self.sex}", "{self.phenotype}")'
     
     def __str__(self):
-        return f'{self.person_id}\t{self.sex}\t{self.phenotype}'
+        return f'{self.person_id}\t{self.sex}\t{",".join(self.phenotype)}'
     
     def __hash__(self):
-        return hash(f'{self.person_id}\t{self.phenotype}')
+        return hash(f'{self.person_id}\t{tuple(self.phenotype)}')
     
     def __eq__(self, other):
         return hash(self) == hash(other)

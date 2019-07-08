@@ -16,7 +16,7 @@ def open_mcrae_nature_cohort():
     data = pandas.read_excel(url, sheet_name='Supplementary Table 1')
     data['Individual ID'] += '|DDD'
     
-    phenotype = 'intellectual_disability'
+    phenotype = ['HP:0001249']
     
     persons = set()
     for i, row in data.iterrows():

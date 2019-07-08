@@ -1,5 +1,6 @@
 
 import re
+import tempfile
 
 import pandas
 
@@ -45,13 +46,13 @@ def open_de_ligt_cohort():
     Proband details sourced from 'Clinical description of patients' section in
     supplementary material.
     """
-    
-    temp = download_with_cookies(url)
+    temp = tempfile.NamedTemporaryFile()
+    download_with_cookies(url, temp.name)
     
     data = extract_table(temp)
     data['person_id'] += '|de_ligt'
     
-    status = 'intellectual_disability'
+    status = ['HP:0001249']
     persons = set()
     for i, row in data.iterrows():
         person = Person(row.person_id, row.sex, status)

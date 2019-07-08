@@ -15,7 +15,7 @@ def open_additional():
     data = data[data.Study == 'ASC_DeRubeis']
     data['person_id'] = data['patientID']
     data['sex'] = data['Sex'].map({1: 'male', 2: 'female'})
-    data['phenotype'] = data['Phenotype'].map({1: 'unaffected', 2: 'autism'})
+    data['phenotype'] = data['Phenotype'].map({1: ['unaffected'], 2: ['HP:0000717']})
     
     return data[['person_id', 'sex', 'phenotype']]
 
@@ -31,7 +31,7 @@ def open_de_rubeis_cohort():
     # clean up a couple of columns
     data['person_id'] = data.Child_ID
     data['sex'] = data.Child_Sex.map({1: 'male', 2: 'female'})
-    data['phenotype'] = data['Child_AffectedStatus'].map({1: 'unaffected', 2: 'autism'})
+    data['phenotype'] = data['Child_AffectedStatus'].map({1: ['unaffected'], 2: ['HP:0000717']})
     data = data[['person_id', 'sex', 'phenotype']]
     
     additional = open_additional()
@@ -44,6 +44,6 @@ def open_de_rubeis_cohort():
         person = Person(row.person_id, row.sex, row.phenotype)
         persons.add(person)
     
-    persons = add_mock_probands(persons, 1445, 'asd', 'asd_cohorts', 'autism')
+    persons = add_mock_probands(persons, 1445, 'asd', 'asd_cohorts', ['HP:0000717'])
     
     return persons

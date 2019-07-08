@@ -57,7 +57,7 @@ def open_epi4k_ajhg_cohort():
     data = extract_table(temp)
     
     data['person_id'] += '|epi4k'
-    status = 'seizures'
+    status = ['HP:0001250']
     persons = set()
     for i, row in data.iterrows():
         

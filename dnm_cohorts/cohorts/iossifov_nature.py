@@ -46,7 +46,9 @@ def open_iossifov_nature_cohort():
         for member in get_members(row):
             sex = row['probandGender'] if member[0] == 'p' else row['siblingGender']
             
-            status = 'autism' if member[0] == 'p' else 'unaffected'
+            status = ['HP:0000717'] if member[0] == 'p' else ['unaffected']
+            if member[0] == 'p' and (row.probandVIQ < 70 or row.probandNVIQ < 70):
+                status.append('HP:0001249')
             sex = 'male' if sex == 'M' else 'female'
             person_id = f'{fam}.{member}|asd_cohorts'
             
