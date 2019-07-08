@@ -1,6 +1,7 @@
 
 import re
 import logging
+import tempfile
 
 import pandas
 
@@ -67,7 +68,8 @@ def de_ligt_nejm_de_novos():
     Variants sourced from Supplementary Table S3.
     """
     logging.info('getting De ligt et al NEJM 2012 de novos')
-    temp = download_with_cookies(url)
+    temp = tempfile.NamedTemporaryFile()
+    download_with_cookies(url, temp.name)
     data = extract_table(temp)
     data = clean_table(data)
     
