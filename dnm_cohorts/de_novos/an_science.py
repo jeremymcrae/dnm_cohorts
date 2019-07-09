@@ -16,15 +16,9 @@ def an_science_de_novos():
     logging.info('getting An et al Science 2018 de novos')
     data = pandas.read_excel(url, sheet_name='Table S2 de novo mutations', skiprows=1)
     
-    data['person_id'] = data['SampleID']
     data['chrom'] = data['Chr'].astype(str)
-    data['pos'] = data['Pos']
-    data['ref'] = data['Ref']
-    data['alt'] = data['Alt']
-    data['consequence'] = data['Consequence']
-    data['symbol'] = data['SYMBOL']
     
-    data['person_id'] += '|asd_cohorts'
+    data['SampleID'] += '|asd_cohorts'
     data['study'] = '10.1126/science.aat6576'
     data['confidence'] = 'high'
     
