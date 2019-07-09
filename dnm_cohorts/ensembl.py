@@ -1,13 +1,8 @@
 # functions to extract data from the ensembl REST API
 
-import time
-import logging
-import asyncio
-import random
 import json
-import functools
 
-import aiohttp
+from dnm_cohorts.rate_limiter import RateLimter
 
 REQS_PER_SECOND = 15
 
@@ -29,83 +24,6 @@ consequences = ["transcript_ablation", "splice_donor_variant",
     "regulatory_region_variant", "feature_elongation", "feature_truncation",
     "intergenic_variant"]
 severity = dict(zip(consequences, range(len(consequences))))
-
-def retry(retries=5):
-    ''' perform all the error handling for the request
-    
-    retries up to N times under certain error conditions, and increases waiting
-    time between requests, unless we've hit rate limits, when it uses the stated
-    retry time.
-    '''
-    def decorator(func):
-        @functools.wraps(func)
-        async def wrapper(*args, **kwargs):
-            result = None
-            last_exception = None
-            for i in range(retries):
-                try:
-                    return await func(*args, **kwargs)
-                except (aiohttp.ServerDisconnectedError, aiohttp.ClientOSError,
-                        asyncio.TimeoutError) as err:
-                    last_exception = err
-                except aiohttp.ClientResponseError as err:
-                    last_exception = err
-                    # 500, 503, 504 are server down issues. 429 exceeds rate
-                    # limits. 400 is server memory issue. Raises other errors.
-                    if err.status not in [500, 503, 504, 429, 400]:
-                        raise err
-                    delay = random.uniform(0, 2 ** (i + 2))
-                    if err.status == 429:
-                        delay = float(dict(err.headers)['Retry-After'])
-                await asyncio.sleep(delay)
-            if last_exception is not None:
-                raise type(last_exception) from last_exception
-            return result
-        return wrapper
-    return decorator
-
-class RateLimiter:
-    MAX_TOKENS = 10
-    def __init__(self, per_second=10):
-        self.tokens = self.MAX_TOKENS
-        self.RATE = per_second
-        self.updated_at = time.monotonic()
-    async def __aenter__(self):
-        self.client = aiohttp.ClientSession()
-        return self
-    async def __aexit__(self, *err):
-        await self.client.close()
-        self.client = None
-    
-    @retry(retries=9)
-    async def get(self, url, headers=None):
-        ''' perform asynchronous http get
-        '''
-        if not headers:
-            headers = {'content-type': 'application/json'}
-        await self.wait_for_token()
-        async with self.client.get(url, headers=headers) as resp:
-            logging.info(f'{url}\t{resp.status}')
-            resp.raise_for_status()
-            return await resp.read()
-    
-    async def wait_for_token(self):
-        ''' pause until tokens are refilled
-        '''
-        while self.tokens < 1:
-            self.add_new_tokens()
-            await asyncio.sleep(1 / self.RATE)
-        self.tokens -= 1
-    
-    def add_new_tokens(self):
-        ''' add new tokens if sufficient time has passed
-        '''
-        now = time.monotonic()
-        time_since_update = now - self.updated_at
-        new_tokens = time_since_update * self.RATE
-        if self.tokens + new_tokens >= 1:
-            self.tokens = min(self.tokens + new_tokens, self.MAX_TOKENS)
-            self.updated_at = now
 
 def get_base_url(build):
     assert build in ["grch37", "grch38"], f'unknown build: {build}'
