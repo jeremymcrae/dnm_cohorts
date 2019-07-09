@@ -4,6 +4,8 @@ import time
 import logging
 import asyncio
 import random
+import json
+import functools
 
 import aiohttp
 
@@ -28,61 +30,87 @@ consequences = ["transcript_ablation", "splice_donor_variant",
     "intergenic_variant"]
 severity = dict(zip(consequences, range(len(consequences))))
 
-class Ensembl:
-    base = 'rest.ensembl.org'
-    headers = {'content-type': 'application/json'}
+def retry(retries=5):
+    ''' perform all the error handling for the request
     
+    retries up to N times under certain error conditions, and increases waiting
+    time between requests, unless we've hit rate limits, when it uses the stated
+    retry time.
+    '''
+    def decorator(func):
+        @functools.wraps(func)
+        async def wrapper(*args, **kwargs):
+            result = None
+            last_exception = None
+            for i in range(retries):
+                try:
+                    return await func(*args, **kwargs)
+                except (aiohttp.ServerDisconnectedError, aiohttp.ClientOSError,
+                        asyncio.TimeoutError) as err:
+                    last_exception = err
+                except aiohttp.ClientResponseError as err:
+                    last_exception = err
+                    # 500, 503, 504 are server down issues. 429 exceeds rate
+                    # limits. 400 is server memory issue. Raises other errors.
+                    if err.status not in [500, 503, 504, 429, 400]:
+                        raise err
+                    delay = random.uniform(0, 2 ** (i + 2))
+                    if err.status == 429:
+                        delay = float(dict(err.headers)['Retry-After'])
+                await asyncio.sleep(delay)
+            if last_exception is not None:
+                raise type(last_exception) from last_exception
+            return result
+        return wrapper
+    return decorator
+
+class RateLimiter:
+    MAX_TOKENS = 10
+    def __init__(self, per_second=10):
+        self.tokens = self.MAX_TOKENS
+        self.RATE = per_second
+        self.updated_at = time.monotonic()
     async def __aenter__(self):
-        self.session = aiohttp.ClientSession()
+        self.client = aiohttp.ClientSession()
         return self
     async def __aexit__(self, *err):
-        await self.session.close()
-        self.session = None
+        await self.client.close()
+        self.client = None
     
-    async def __call__(self, ext, attempt=0, build='grch37'):
-        if attempt > 9:
-            raise ValueError('too many attempts accessing')
-        
-        assert build in ["grch37", "grch38"], f'unknown build: {build}'
-        ver = build + '.' if build == "grch37" else ''
-        url = f'http://{ver}{self.base}/{ext}'
-        
-        try:
-            async with self.session.get(url, headers=self.headers) as resp:
-                if await self.check_retry(resp, attempt):
-                    return await self.__call__(ext, attempt + 1, build)
-                
-                logging.info(f'{url}\t{resp.status}')
-                resp.raise_for_status()
-                return await resp.json()
-        except (aiohttp.ServerDisconnectedError, aiohttp.ClientOSError,
-                asyncio.TimeoutError) as err:
-            return await self.__call__(ext, attempt + 1, build)
+    @retry(retries=9)
+    async def get(self, url, headers=None):
+        ''' perform asynchronous http get
+        '''
+        if not headers:
+            headers = {'content-type': 'application/json'}
+        await self.wait_for_token()
+        async with self.client.get(url, headers=headers) as resp:
+            logging.info(f'{url}\t{resp.status}')
+            resp.raise_for_status()
+            return await resp.read()
     
-    async def check_retry(self, response, attempt):
-        """ check for http request errors which permit a retry
-        """
-        backoff = 2 ** (attempt + 2) + random.random()
-        if response.status in [500, 503, 504]:
-            logging.info(f'{response.url}\tERROR {response.status}: server down')
-            # if the server is down, briefly pause
-            await asyncio.sleep(backoff + 20 * random.random())
-            return True
-        elif response.status == 429:
-            logging.info(f'{response.url}\tERROR 429: exceeded ratelimit')
-            # if we exceed the server limits, pause for required time
-            await asyncio.sleep(float(response.headers['retry-after']))
-            return True
-        elif response.status == 400:
-            data = await response.json()
-            error = data['error']
-            # account for some EBI REST server failures
-            if 'Cannot allocate memory' in error:
-                logging.info(f'{response.url}\tERROR 400: {error}')
-                await asyncio.sleep(backoff)
-                return True
-        
-        return False
+    async def wait_for_token(self):
+        ''' pause until tokens are refilled
+        '''
+        while self.tokens < 1:
+            self.add_new_tokens()
+            await asyncio.sleep(1 / self.RATE)
+        self.tokens -= 1
+    
+    def add_new_tokens(self):
+        ''' add new tokens if sufficient time has passed
+        '''
+        now = time.monotonic()
+        time_since_update = now - self.updated_at
+        new_tokens = time_since_update * self.RATE
+        if self.tokens + new_tokens >= 1:
+            self.tokens = min(self.tokens + new_tokens, self.MAX_TOKENS)
+            self.updated_at = now
+
+def get_base_url(build):
+    assert build in ["grch37", "grch38"], f'unknown build: {build}'
+    ver = build + '.' if build == "grch37" else ''
+    return f'http://{ver}rest.ensembl.org'
 
 async def cq_and_symbol(ensembl, var):
     """find the VEP consequence for a variant
@@ -107,16 +135,18 @@ async def cq_and_symbol(ensembl, var):
     alt = '-' if var.alt == "" else var.alt
     
     ext = f"vep/human/region/{var.chrom}:{var.pos}:{var.pos + len(var.ref) - 1}/{alt}"
-    data = await ensembl(ext, build=var.build)
-    var.consequence, var.symbol = find_most_severe_transcript(data[0])
+    url = f'{get_base_url(var.build)}/{ext}'
+    resp = await ensembl.get(url)
+    data = json.loads(resp)
+    var.consequence, var.symbol = most_severe(data[0])
 
-def find_most_severe_transcript(data, exclude_bad=True):
-    """ find the most severe transcript from Ensembl data
+def most_severe(data, exclude_bad=True):
+    """ find the most severe conseuence and gene symbol from Ensembl data
     
     Args:
         data: json data for variant from Ensembl
         exclude_bad: whether to exclude nonsense mediated decay transcripts etc.
-            Only used when we haven't found a transcript during normal usage.
+            Only used when we haven't found a transcript via normal usage.
     
      Returns:
         tuple of VEP consequence, and hgnc symbol
@@ -135,7 +165,7 @@ def find_most_severe_transcript(data, exclude_bad=True):
         transcripts = [ x for x in transcripts if x['biotype'] not in noncoding ]
     
     if len(transcripts) == 0:
-        return find_most_severe_transcript(data, exclude_bad=False)
+        return most_severe(data, exclude_bad=False)
     
     for tx in transcripts:
         # get consequence for current transcript
@@ -149,12 +179,11 @@ def find_most_severe_transcript(data, exclude_bad=True):
 async def async_get_consequences(variants):
     ''' asychronously get variant consequences and symbols from ensembl
     '''
-    async with Ensembl() as ensembl:
+    async with RateLimiter(REQS_PER_SECOND) as ensembl:
         tasks = []
-        semaphore = asyncio.BoundedSemaphore(20)
+        semaphore = asyncio.BoundedSemaphore(50)
         for x in variants:
             await semaphore.acquire()
-            await asyncio.sleep(1 / REQS_PER_SECOND)
             task = asyncio.create_task(cq_and_symbol(ensembl, x))
             task.add_done_callback(lambda task: tasks.remove(task))
             task.add_done_callback(lambda task: semaphore.release())
@@ -190,7 +219,9 @@ async def async_genome_sequence(ensembl, chrom, start, end, build="grch37"):
         end = start
     
     ext = f"sequence/region/human/{chrom}:{start}:{end}:1"
-    data = await ensembl(ext, build=build)
+    url = f'{get_base_url(build)}/{ext}'
+    resp = await ensembl.get(url)
+    data = json.loads(resp)
     
     if len(data) > 0:
         return data['seq']
@@ -198,8 +229,7 @@ async def async_genome_sequence(ensembl, chrom, start, end, build="grch37"):
     return ""
 
 async def waiter(chrom, start, end, build):
-    async with Ensembl() as ensembl:
-        await asyncio.sleep(1 / REQS_PER_SECOND)
+    async with RateLimiter(REQS_PER_SECOND) as ensembl:
         return await async_genome_sequence(ensembl, chrom, start, end, build)
 
 def genome_sequence(chrom, start, end, build='grch37'):
