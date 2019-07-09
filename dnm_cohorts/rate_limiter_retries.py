@@ -23,6 +23,7 @@ def ensembl_retry(retries=5):
                 except (aiohttp.ServerDisconnectedError, aiohttp.ClientOSError,
                         asyncio.TimeoutError) as err:
                     last_exception = err
+                    delay = 0
                 except aiohttp.ClientResponseError as err:
                     last_exception = err
                     # 500, 503, 504 are server down issues. 429 exceeds rate
