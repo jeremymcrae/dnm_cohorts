@@ -20,7 +20,7 @@ consequences = ["transcript_ablation", "splice_donor_variant",
 severity = dict(zip(consequences, range(len(consequences))))
 
 def drop_inperson_duplicates(de_novos):
-    """ get indepenmdent mutation events per person
+    """ get independent mutation events per person
     
     Occasionally an individual will have multiple de novo mutations within a
     gene. We only want to count the mutated gene once per individual, while
