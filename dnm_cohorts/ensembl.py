@@ -2,7 +2,7 @@
 
 import json
 
-from dnm_cohorts.rate_limiter import RateLimter
+from dnm_cohorts.rate_limiter import RateLimiter
 
 REQS_PER_SECOND = 15
 
