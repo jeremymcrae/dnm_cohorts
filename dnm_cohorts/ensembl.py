@@ -1,6 +1,7 @@
 # functions to extract data from the ensembl REST API
 
 import json
+import asyncio
 
 from dnm_cohorts.rate_limiter import RateLimiter
 
