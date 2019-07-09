@@ -40,7 +40,7 @@ class Ensembl:
         self.session = None
     
     async def __call__(self, ext, attempt=0, build='grch37'):
-        if attempt > 5:
+        if attempt > 9:
             raise ValueError('too many attempts accessing')
         
         assert build in ["grch37", "grch38"], f'unknown build: {build}'
@@ -55,15 +55,16 @@ class Ensembl:
                 logging.info(f'{url}\t{resp.status}')
                 resp.raise_for_status()
                 return await resp.json()
-        except (aiohttp.ServerDisconnectedError, asyncio.TimeoutError) as err:
+        except (aiohttp.ServerDisconnectedError, aiohttp.ClientOSError,
+                asyncio.TimeoutError) as err:
             return await self.__call__(ext, attempt + 1, build)
     
     async def check_retry(self, response, attempt):
         """ check for http request errors which permit a retry
         """
-        backoff = 2 ** (attempt + 1) + random.random()
+        backoff = 2 ** (attempt + 2) + random.random()
         if response.status in [500, 503, 504]:
-            logging.info(f'{response.url}\tERROR 500: server down')
+            logging.info(f'{response.url}\tERROR {response.status}: server down')
             # if the server is down, briefly pause
             await asyncio.sleep(backoff + 20 * random.random())
             return True
