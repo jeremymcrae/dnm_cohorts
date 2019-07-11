@@ -32,6 +32,9 @@ dnm_cohorts --cohorts --output test.txt
 dnm_cohorts --de-novos --output test.txt
 ```
 
+The package contains a dataset of de novos on their original genome build (the
+default), as well as a dataset lifted to GRCh37 and a dataset lifted to GRCh38.
+
 #### Cohorts
 reference   |   year   |  unique individuals  |   phenotype   |   assay   
 ----        |   ----   |        ----          |   ----        |   ----
