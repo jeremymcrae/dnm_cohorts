@@ -134,7 +134,8 @@ def change_build(input, output, build, header):
         if not var:
             continue
         remapped = var.to_build(build)
-        _ = output.write(str(remapped) + '\n')
+        if remapped:
+            _ = output.write(str(remapped) + '\n')
 
 def main():
     args = get_options()
