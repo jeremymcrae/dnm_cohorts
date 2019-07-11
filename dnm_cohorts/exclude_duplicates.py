@@ -29,9 +29,9 @@ def drop_inperson_duplicates(de_novos):
     Args:
         list of DeNovo objects
     """
-    # make sure the dataset is sorted, this will sort by person ID then chrom
-    # and pos, so all the variants in a single gene will be grouped
-    de_novos = sorted(de_novos)
+    # make sure the dataset is sorted by person ID and symbol, so we can group
+    # consecutive variants in the same person and gene
+    de_novos = sorted(de_novos, key=lambda x: (x.person_id, x.symbol))
     
     included = []
     for (_, symbol), group in groupby(de_novos, key=lambda x: (x.person_id, x.symbol)):
