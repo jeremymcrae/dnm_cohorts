@@ -9,7 +9,7 @@ from dnm_cohorts.de_novo import DeNovo
 
 url = 'http://www.nature.com/nature/journal/v485/n7397/extref/nature10945-s3.xls'
 
-def fix_alleles(data):
+async def fix_alleles(limiter, data):
     
     alt = list(data['alt'])
     ref = list(data['ref'])
@@ -17,12 +17,12 @@ def fix_alleles(data):
     for i, (chrom, pos, a, r) in enumerate(zip(data.chrom, data.pos, alt, ref)):
         if not ':' in a:
             continue
-        alt[i] = genome_sequence(chrom, pos, pos)
-        ref[i] = genome_sequence(chrom, pos, pos + len(a.split(':')[1]))
+        alt[i] = await genome_sequence(limiter, chrom, pos, pos)
+        ref[i] = await genome_sequence(limiter, chrom, pos, pos + len(a.split(':')[1]))
     
     return ref, alt
 
-def sanders_nature_de_novos():
+async def sanders_nature_de_novos(limiter):
     """ get de novo data from the Sanders et al autism exome study
     
     Supplementary table 2 (where the excel sheets for the probands and
@@ -46,7 +46,7 @@ def sanders_nature_de_novos():
     data['alt'] = data['Alt']
     
     # clean up the alleles
-    data['ref'], data['alt'] = fix_alleles(data)
+    data['ref'], data['alt'] = await fix_alleles(limiter, data)
     alleles = [ fix_het_alleles(x.ref, x.alt) for i, x in data.iterrows() ]
     data['ref'], data['alt'] = list(zip(*alleles))
     

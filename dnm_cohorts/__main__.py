@@ -1,6 +1,7 @@
 
 import itertools
 import argparse
+import asyncio
 import sys
 import os
 import logging
@@ -21,6 +22,7 @@ from dnm_cohorts.de_novos import (de_ligt_nejm_de_novos,
 from dnm_cohorts.convert_pdf_table import flatten
 from dnm_cohorts.exclude_duplicates import drop_inperson_duplicates
 from dnm_cohorts.de_novo import DeNovo
+from dnm_cohorts.rate_limiter import RateLimiter
 
 def get_options():
     parser = argparse.ArgumentParser()
@@ -99,30 +101,33 @@ def remove_duplicate_dnms(cohorts):
     
     return unique
 
-def get_de_novos(output, header):
+async def get_de_novos(output, header):
     """ get list of all de novos in all cohorts
     """
-    # open ASD cohort info, then drop duplicate samples from the ASD cohorts
-    asd = [sanders_neuron_de_novos(), de_rubeis_nature_de_novos(),
-        iossifov_nature_de_novos(), iossifov_neuron_de_novos(),
-        oroak_nature_de_novos(), sanders_nature_de_novos(),
-        an_science_de_novos()]
-    
-    for a, b in itertools.combinations(asd, 2):
-        # remove the easy matches
-        a -= b
-    
-    asd = remove_duplicate_dnms(reversed(asd))
-    
-    cohorts = [asd] + [de_ligt_nejm_de_novos(), gilissen_nature_de_novos(),
-        epi4k_ajhg_de_novos(), homsy_science_de_novos(),
-        lelieveld_nn_de_novos(), rauch_lancet_de_novos(), mcrae_nature_de_novos()]
-    
-    cohorts = get_consequences(flatten(cohorts))
-    
-    _ = output.write('\t'.join(header) + '\n')
-    for x in drop_inperson_duplicates(cohorts):
-        _ = output.write(str(x) + '\n')
+    async with RateLimiter(15) as limiter:
+        # open ASD cohort info, then drop duplicate samples from the ASD cohorts
+        asd = [sanders_neuron_de_novos(), de_rubeis_nature_de_novos(),
+            iossifov_nature_de_novos(), iossifov_neuron_de_novos(limiter),
+            oroak_nature_de_novos(limiter), sanders_nature_de_novos(limiter),
+            an_science_de_novos()]
+        asd = await asyncio.gather(*asd)
+        
+        for a, b in itertools.combinations(asd, 2):
+            # remove the easy matches
+            a -= b
+        
+        asd = remove_duplicate_dnms(reversed(asd))
+        non_asd = [de_ligt_nejm_de_novos(limiter), gilissen_nature_de_novos(limiter),
+            epi4k_ajhg_de_novos(limiter), homsy_science_de_novos(),
+            lelieveld_nn_de_novos(limiter), rauch_lancet_de_novos(limiter),
+            mcrae_nature_de_novos()]
+        
+        cohorts = list(asd) + flatten(await asyncio.gather(*non_asd))
+        cohorts = await get_consequences(limiter, cohorts)
+        
+        _ = output.write('\t'.join(header) + '\n')
+        for x in drop_inperson_duplicates(cohorts):
+            _ = output.write(str(x) + '\n')
 
 def change_build(input, output, build, header):
     ''' shift variants onto a new genome build
@@ -137,7 +142,7 @@ def change_build(input, output, build, header):
         if remapped:
             _ = output.write(str(remapped) + '\n')
 
-def main():
+async def _main():
     args = get_options()
     FORMAT = '%(asctime)-15s %(message)s'
     logging.basicConfig(filename=args.log, format=FORMAT, level=logging.INFO)
@@ -148,12 +153,15 @@ def main():
     elif args.de_novos:
         header = ['person_id', 'chrom', 'pos', 'ref', 'alt', 'study',
             'confidence', 'build', 'symbol', 'consequence']
-        get_de_novos(args.output, header)
+        await get_de_novos(args.output, header)
     else:
         header = ['person_id', 'chrom', 'pos', 'ref', 'alt', 'study',
             'confidence', 'build', 'symbol', 'consequence']
         change_build(args.input, args.output, args.to, header)
-    
+
+def main():
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(_main())
 
 if __name__ == '__main__':
     main()

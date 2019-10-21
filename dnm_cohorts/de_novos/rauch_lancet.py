@@ -76,7 +76,7 @@ def extract_table_s3(handle):
     header = ['person_id', 'symbol', 'hgvs_genomic']
     return pandas.DataFrame.from_records(records, columns=header)
 
-def rauch_lancet_de_novos():
+async def rauch_lancet_de_novos(limiter):
     """ get de novo data for Rauch et al. intellectual disability exome study
     
      De novo mutation data sourced from supplementary tables 2 and 3 from
@@ -97,7 +97,7 @@ def rauch_lancet_de_novos():
     s3 = extract_table_s3(temp)
     data = s2.append(s3, ignore_index=True)
     
-    coords = fix_hgvs_coordinates(data['hgvs_genomic'])
+    coords = await fix_hgvs_coordinates(limiter, data['hgvs_genomic'])
     data['chrom'], data['pos'], data['ref'], data['alt'] = coords
     
     # define the study details

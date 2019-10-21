@@ -59,7 +59,7 @@ def clean_table(data):
     
     return data
 
-def de_ligt_nejm_de_novos():
+async def de_ligt_nejm_de_novos(limiter):
     """ get de novo mutations from De Ligt et al., 2012
     
     De Ligt et al., (2012) N Engl J Med 367:1921-1929
@@ -73,7 +73,7 @@ def de_ligt_nejm_de_novos():
     data = extract_table(temp)
     data = clean_table(data)
     
-    chrom, pos, ref, alt = fix_hgvs_coordinates(data.hgvs_genomic)
+    chrom, pos, ref, alt = await fix_hgvs_coordinates(limiter, data.hgvs_genomic)
     data['chrom'], data['pos'], data['ref'], data['alt'] = chrom, pos, ref, alt
     
     data['person_id'] += '|de_ligt'

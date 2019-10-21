@@ -7,14 +7,15 @@ from dnm_cohorts.de_novo import DeNovo
 
 url = 'https://science.sciencemag.org/content/sci/suppl/2018/12/12/362.6420.eaat6576.DC1/aat6576_Table-S2.xlsx'
 
-def an_science_de_novos():
+async def an_science_de_novos():
     """ get de novo mutations from An et al, Autism dataset
     
     Table S2 from:
     An et al. Science 362: eaat6576, doi: 10.1126/science.aat6576
     """
     logging.info('getting An et al Science 2018 de novos')
-    data = pandas.read_excel(url, sheet_name='Table S2 de novo mutations', skiprows=1)
+    data = pandas.read_excel(url, sheet_name='Table S2 de novo mutations',
+        skiprows=1, usecols=8)
     
     data['chrom'] = data['Chr'].astype(str)
     

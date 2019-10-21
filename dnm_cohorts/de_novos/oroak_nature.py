@@ -1,4 +1,5 @@
 
+import asyncio
 import logging
 
 import pandas
@@ -21,7 +22,7 @@ def tidy_complex_alts(alts):
     
     return alts
 
-def fix_alleles(data):
+async def fix_alleles(limiter, data):
     
     ref = data['ref'].copy()
     alt = data['alt'].copy()
@@ -32,8 +33,10 @@ def fix_alleles(data):
     
     # find the reference sequence at the site. Deletions use this as the
     # alternate allele, whereas the insertions use this as the reference allele
-    dels_alt = [ genome_sequence(x.chrom, x.pos, x.pos) for i, x in data[dels].iterrows() ]
-    ins_ref = [ genome_sequence(x.chrom, x.pos, x.pos) for i, x in data[ins].iterrows() ]
+    tasks = [genome_sequence(limiter, x.chrom, x.pos, x.pos, x.build) for i, x in data[dels].iterrows()]
+    dels_alt = await asyncio.gather(*tasks)
+    tasks = [genome_sequence(limiter, x.chrom, x.pos, x.pos, x.build) for i, x in data[ins].iterrows()]
+    ins_ref = await asyncio.gather(*tasks)
     
     # tidy up the deletion alleles
     ref[dels] = dels_alt + alt[dels].str.replace('\dD, *-', '')
@@ -45,7 +48,7 @@ def fix_alleles(data):
     
     return ref, alt
 
-def oroak_nature_de_novos():
+async def oroak_nature_de_novos(limiter):
     """ get de novo data from the O'Roak et al autism exome study
     
     Supplementary table 3 from:
@@ -64,9 +67,10 @@ def oroak_nature_de_novos():
     data['pos'] = data['Position (hg19)'].astype(int)
     data['ref'] = data['Ref']
     data['alt'] = data['Allele']
+    data['build'] = 'grch37'
     
     data['alt'] = tidy_complex_alts(data['alt'])
-    data['ref'], data['alt'] = fix_alleles(data)
+    data['ref'], data['alt'] = await fix_alleles(limiter, data)
     
     alleles = [ fix_het_alleles(x.ref, x.alt) for i, x in data.iterrows() ]
     data['ref'], data['alt'] = list(zip(*alleles))
@@ -78,7 +82,7 @@ def oroak_nature_de_novos():
     vars = set()
     for i, row in data.iterrows():
         var = DeNovo(row.person_id, row.chrom, row.pos, row.ref, row.alt,
-            row.study, row.confidence, 'grch37')
+            row.study, row.confidence, row.build)
         vars.add(var)
     
     return vars

@@ -3,8 +3,6 @@
 import json
 import asyncio
 
-from dnm_cohorts.rate_limiter import RateLimiter
-
 REQS_PER_SECOND = 15
 
 # consequence list, as sorted at
@@ -31,13 +29,13 @@ def get_base_url(build):
     ver = build + '.' if build == "grch37" else ''
     return f'http://{ver}rest.ensembl.org'
 
-async def cq_and_symbol(ensembl, var):
+async def cq_and_symbol(limiter, var):
     """find the VEP consequence for a variant
     
     annotates the consequence and symbol attributes of the variant passed in.
     
     Args:
-        ensembl: object for asynchronously calling ensembl REST API
+        limiter: object for asynchronously calling ensembl REST API
         var: object with chrom, pos, ref and alt attributes. Optionally define
             genome build with 'build' attribute.
     
@@ -55,9 +53,10 @@ async def cq_and_symbol(ensembl, var):
     
     ext = f"vep/human/region/{var.chrom}:{var.pos}:{var.pos + len(var.ref) - 1}/{alt}"
     url = f'{get_base_url(var.build)}/{ext}'
-    resp = await ensembl.get(url)
+    resp = await limiter.get(url)
     data = json.loads(resp)
     var.consequence, var.symbol = most_severe(data[0])
+    return var
 
 def most_severe(data, exclude_bad=True):
     """ find the most severe conseuence and gene symbol from Ensembl data
@@ -95,28 +94,17 @@ def most_severe(data, exclude_bad=True):
     tx = min(transcripts, key=lambda x: (severity[x['cq']], x['not_hgnc']))
     return tx['cq'], tx['gene_symbol']
 
-async def async_get_consequences(variants):
+async def get_consequences(limiter, variants):
     ''' asychronously get variant consequences and symbols from ensembl
     '''
-    async with RateLimiter(REQS_PER_SECOND) as ensembl:
-        tasks = []
-        semaphore = asyncio.BoundedSemaphore(50)
-        for x in variants:
-            await semaphore.acquire()
-            task = asyncio.create_task(cq_and_symbol(ensembl, x))
-            task.add_done_callback(lambda task: tasks.remove(task))
-            task.add_done_callback(lambda task: semaphore.release())
-            tasks.append(task)
-        for f in asyncio.as_completed(set(tasks)):
-            _ = await f
+    tasks = []
+    for x in variants:
+        task = asyncio.create_task(cq_and_symbol(limiter, x))
+        task.add_done_callback(lambda task: tasks.remove(task))
+        tasks.append(task)
+    return asyncio.gather(*tasks)
 
-def get_consequences(variants):
-    ''' asynchronously annotate consequence and gene symbol for many variants
-    '''
-    asyncio.run(async_get_consequences(variants))
-    return variants
-
-async def async_genome_sequence(ensembl, chrom, start, end, build="grch37"):
+async def genome_sequence(ensembl, chrom, start, end, build='grch37'):
     """ find genomic sequence within a region
     
     Args:
@@ -146,15 +134,3 @@ async def async_genome_sequence(ensembl, chrom, start, end, build="grch37"):
         return data['seq']
     
     return ""
-
-async def waiter(chrom, start, end, build):
-    async with RateLimiter(REQS_PER_SECOND) as ensembl:
-        return await async_genome_sequence(ensembl, chrom, start, end, build)
-
-def genome_sequence(chrom, start, end, build='grch37'):
-    ''' grab genome sequence for a single genome region
-    
-    This has been awkwardly shoehorned to the asynchronous ensembl class, but
-    needs to be cleaned up, since it doesn't benefit from the asynchronocity.
-    '''
-    return asyncio.run(waiter(chrom, start, end, build))

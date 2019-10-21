@@ -61,7 +61,7 @@ def clean_table(data):
     
     return data
 
-def gilissen_nature_de_novos():
+async def gilissen_nature_de_novos(limiter):
     """ load de novos from Gilissen et al Nature 2014
     
     Nature 511: 344-347 2014, doi:10.1038/nature13394
@@ -74,7 +74,7 @@ def gilissen_nature_de_novos():
     data = extract_table(temp)
     data = clean_table(data)
     
-    chrom, pos, ref, alt = fix_hgvs_coordinates(data.hgvs_genomic)
+    chrom, pos, ref, alt = await fix_hgvs_coordinates(limiter, data.hgvs_genomic)
     data['chrom'], data['pos'], data['ref'], data['alt'] = chrom, pos, ref, alt
     
     data['person_id'] += '|de_ligt'

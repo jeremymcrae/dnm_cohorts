@@ -33,7 +33,7 @@ def get_person_ids(data):
     
     return cleaned
 
-def epi4k_ajhg_de_novos():
+async def epi4k_ajhg_de_novos(limiter):
     """ get de novo data for the Epi4K epilepsy exome study
     
     De novo mutation data from the most recent EPI4K publication:
@@ -51,7 +51,7 @@ def epi4k_ajhg_de_novos():
     logging.info('getting Epi4K et al AJHG 2014 de novos')
     data = pandas.read_excel(url, skipfooter=4)
     
-    data['chrom'], data['pos'], data['ref'], data['alt'] = fix_coordinates_with_allele( \
+    data['chrom'], data['pos'], data['ref'], data['alt'] = await fix_coordinates_with_allele(limiter, \
         data['hg19 coordinates (chr:position)'], data["Ref/Alt alleles"])
     
     data['study'] = "10.1016/j.ajhg.2014.08.013"

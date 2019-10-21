@@ -1,4 +1,5 @@
 
+import asyncio
 import logging
 
 import pandas
@@ -8,7 +9,7 @@ from dnm_cohorts.de_novo import DeNovo
 
 url = "http://www.nature.com/neuro/journal/v19/n9/extref/nn.4352-S3.xlsx"
 
-def fix_alleles(data):
+async def fix_alleles(limiter, data):
     """ clean up ref and alt alleles in a dataset
     
     Requires dataset to have columns for chrom, pos, ref and alt
@@ -19,7 +20,8 @@ def fix_alleles(data):
     alt = data['alt'].copy()
     
     idx = ref.isnull()
-    ref[idx] = [ genome_sequence(x.chrom, x.pos, x.pos) for i, x in data[idx].iterrows() ]
+    tasks = [genome_sequence(limiter, x.chrom, x.pos, x.pos, x.build) for i, x in data[idx].iterrows()]
+    ref[idx] = await asyncio.gather(*tasks)
     
     # add the reference base to insertions
     alt[idx] = ref[idx] + alt[idx]
@@ -29,7 +31,7 @@ def fix_alleles(data):
     
     return ref, alt
 
-def lelieveld_nn_de_novos():
+async def lelieveld_nn_de_novos(limiter):
     """ get de novo data for Lelieveld et al. intellectual disability exome study
     
     De novo mutation data sourced from supplementary table 1 from:
@@ -51,8 +53,9 @@ def lelieveld_nn_de_novos():
     data['pos'] = data['Start position']
     data['ref'] = data['Reference Allele']
     data['alt'] = data['Variant Allele']
+    data['build'] = 'grch37'
     
-    data['ref'], data['alt'] = fix_alleles(data)
+    data['ref'], data['alt'] = await fix_alleles(limiter, data)
     
     data['person_id'] += '|lelieveld'
     data['study'] = '10.1038/nn.4352'
@@ -61,7 +64,7 @@ def lelieveld_nn_de_novos():
     vars = set()
     for i, row in data.iterrows():
         var = DeNovo(row.person_id, row.chrom, row.pos, row.ref, row.alt,
-            row.study, row.confidence, 'grch37')
+            row.study, row.confidence, row.build)
         vars.add(var)
     
     return vars

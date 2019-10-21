@@ -11,7 +11,7 @@ from dnm_cohorts.de_novo import DeNovo
 
 url = 'http://science.sciencemag.org/highwire/filestream/646355/field_highwire_adjunct_files/1/aac9396_SupportingFile_Other_seq1_v4.zip'
 
-def homsy_science_de_novos():
+async def homsy_science_de_novos():
     """ get de novo variants for Homsy et al Science 2015
     
     Supplementary Database 1 from:

@@ -26,7 +26,7 @@ def get_person_ids(data):
     
     return person_ids
 
-def iossifov_neuron_de_novos():
+async def iossifov_neuron_de_novos(limiter):
     """ get de novo data from the 2012 Iossifov et al autism exome study in Neuron
     
     Supplementary table 1 (where the non-coding SNVs have been excluded) and
@@ -52,7 +52,7 @@ def iossifov_neuron_de_novos():
     data = snvs.append(indels, ignore_index=True)
     
     # get the coordinates
-    coords = fix_coordinates_with_allele(data['location'], data['variant'])
+    coords = await fix_coordinates_with_allele(limiter, data['location'], data['variant'])
     data['chrom'], data['pos'], data['ref'], data['alt'] = coords
     
     data['person_id'] = get_person_ids(data)

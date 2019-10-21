@@ -5,7 +5,7 @@ import re
 
 from dnm_cohorts.ensembl import genome_sequence
 
-def fix_substitution(chrom, start, end, alleles):
+async def fix_substitution(chrom, start, end, alleles):
     """fix substitution allele codes
     
     fix the allele column for variants with allele columns that are structured
@@ -26,7 +26,7 @@ def fix_substitution(chrom, start, end, alleles):
     sep = re.compile('-[&gt;|>]*')
     return sep.split(alleles)
 
-def fix_deletion(chrom, start, end, allele):
+async def fix_deletion(limiter, chrom, start, end, allele):
     """ fix deletion allele codes
     
     fix the allele column for variants with allele columns that are structured
@@ -43,12 +43,12 @@ def fix_deletion(chrom, start, end, allele):
     pat = re.compile('\(|\)|del')
     distance = int(pat.sub('', allele))
     
-    alt = genome_sequence(chrom, start, end)
-    ref = genome_sequence(chrom, start, end + distance)
+    alt = await genome_sequence(limiter, chrom, start, end)
+    ref = await genome_sequence(limiter, chrom, start, end + distance)
     
     return ref, alt
 
-def fix_insertion(chrom, start, end, allele):
+async def fix_insertion(limiter, chrom, start, end, allele):
     """ fix insertion allele codes
     
     fix the allele column for variants with allele columns that are structured
@@ -65,13 +65,13 @@ def fix_insertion(chrom, start, end, allele):
     pat = re.compile('\(|\)|ins')
     insert = pat.sub('', allele)
     
-    ref = genome_sequence(chrom, start - 1, end - 1)
+    ref = await genome_sequence(limiter, chrom, start - 1, end - 1)
     alt = ref + insert
     
     return ref, alt
 
 
-def fix_duplication(chrom, start, end, allele):
+async def fix_duplication(limiter, chrom, start, end, allele):
     """ fix duplication allele codes
     
     fix the allele column for variants with allele columns that are structured
@@ -85,7 +85,7 @@ def fix_duplication(chrom, start, end, allele):
         a data frame with start_pos, end_pos and allele columns.
     """
     
-    ref = genome_sequence(chrom, start - 1, end - 1)
+    ref = await genome_sequence(limiter, chrom, start - 1, end - 1)
     alt = ref * 2
     
     return start, ref, alt

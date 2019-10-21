@@ -7,7 +7,7 @@ from dnm_cohorts.de_novo import DeNovo
 
 url = "http://www.nature.com/nature/journal/v515/n7526/extref/nature13772-s4.xlsx"
 
-def de_rubeis_nature_de_novos():
+async def de_rubeis_nature_de_novos():
     """ get de novo data from the 2014 De Rubeis et al. autism exome study in Nature
     
     De novo mutation data sourced from Supplementary table 3:

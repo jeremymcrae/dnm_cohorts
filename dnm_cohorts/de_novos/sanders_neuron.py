@@ -7,7 +7,7 @@ from dnm_cohorts.de_novo import DeNovo
 
 url = 'https://www.cell.com/cms/attachment/2118908541/2086568191'
 
-def sanders_neuron_de_novos():
+async def sanders_neuron_de_novos():
     """ get de novo data from the Sanders et al Neuron autism exome study
     
     Supplementary table 5 from:

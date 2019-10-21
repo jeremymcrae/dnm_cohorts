@@ -6,7 +6,7 @@ from hgvs.parser import Parser
 from dnm_cohorts.ensembl import genome_sequence
 from dnm_cohorts.fix_alleles import fix_substitution, fix_deletion, fix_insertion
 
-def fix_hgvs_coordinates(coords):
+async def fix_hgvs_coordinates(limiter, coords):
     """ extract genomic coordinates for variants encoded as HGVS genomic
     
     Args:
@@ -31,18 +31,18 @@ def fix_hgvs_coordinates(coords):
         ref = var.posedit.edit.ref
         
         if type == 'del':
-            ref = genome_sequence(chrom, pos, end + 1)
+            ref = await genome_sequence(limiter, chrom, pos, end + 1)
             alt = ref[0]
         elif type == 'delins':
-            ref = genome_sequence(chrom, pos, end)
+            ref = await genome_sequence(limiter, chrom, pos, end)
             alt = var.posedit.edit.alt
         elif type == 'ins':
-            ref = genome_sequence(chrom, pos, end)
+            ref = await genome_sequence(limiter, chrom, pos, end)
             alt = ref + var.posedit.edit.alt
         elif type == 'sub':
             alt = var.posedit.edit.alt
         elif type == 'dup':
-            ref = genome_sequence(chrom, pos, end + 1)
+            ref = await genome_sequence(limiter, chrom, pos, end + 1)
             alt = ref + ref
         
         chroms.append(chrom)
@@ -69,7 +69,7 @@ def fix_coordinates(coords, alleles):
     
     return chroms, positions, refs, alts
 
-def fix_coordinates_with_allele(coords, alleles):
+async def fix_coordinates_with_allele(limiter, coords, alleles):
     """
     fix_coordinates_with_allele(["chr1:10000"], ["A/G"])
     fix_coordinates_with_allele(["chr1:10000", "chr2:20000"], ["A/G", "T/C"])
@@ -78,7 +78,6 @@ def fix_coordinates_with_allele(coords, alleles):
     fix_coordinates_with_allele(["chr1:10000"], ["del(1)"])
     fix_coordinates_with_allele(["chr1:10000"], ["ins(ATG)"])
     """
-    
     chroms, positions, refs, alts = [], [], [], []
     for coord, allele in zip(coords, alleles):
         chrom, start = coord.split(':')
@@ -87,11 +86,11 @@ def fix_coordinates_with_allele(coords, alleles):
         end = start
         
         if 'sub' in allele:
-            ref, alt = fix_substitution(chrom, start, end, allele)
+            ref, alt = await fix_substitution(chrom, start, end, allele)
         elif 'del' in allele:
-            ref, alt = fix_deletion(chrom, start, end, allele)
+            ref, alt = await fix_deletion(limiter, chrom, start, end, allele)
         elif 'ins' in allele:
-            ref, alt = fix_insertion(chrom, start, end, allele)
+            ref, alt = await fix_insertion(limiter, chrom, start, end, allele)
         else:
             ref, alt = allele.split('/')
         
