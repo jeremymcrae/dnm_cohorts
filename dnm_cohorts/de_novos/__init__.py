@@ -13,3 +13,4 @@ from dnm_cohorts.de_novos.sanders_nature import sanders_nature_de_novos
 from dnm_cohorts.de_novos.sanders_neuron import sanders_neuron_de_novos
 from dnm_cohorts.de_novos.homsy_science import homsy_science_de_novos
 from dnm_cohorts.de_novos.an_science import an_science_de_novos
+from dnm_cohorts.de_novos.kaplanis_biorxiv import kaplanis_biorxiv_de_novos

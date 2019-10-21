@@ -53,3 +53,4 @@ reference   |   year   |  unique individuals  |   phenotype   |   assay
 [Lelieveld _et al_. _Nature Neuroscience_ 19:1194-1196](https://doi.org/10.1038/nn.4352)      | 2016 |  820 | intellectual disability   |    exome
 [McRae _et al_. _Nature_ 19:1194-1196](https://doi.org/10.1038/nature21062)                   | 2017 | 4293 | intellectual disability   |    exome
 [An _et al_. _Science_ 362:eaat6576](https://doi.org/10.1126/science.aat6576)                 | 2018 | 1902 affected, 1902 unaffected | autism spectrum disorder, unaffected siblings   |    genome
+[Kaplanis _et al_. _BioRxiv_](https://doi.org/10.1101/797787)                 | 2019 | 31058 | intellectual disability, supercedes Lelieveld et al and McRae et al cohorts   |    exome

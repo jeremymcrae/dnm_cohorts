@@ -12,3 +12,4 @@ from dnm_cohorts.cohorts.lelieveld_nn import open_lelieveld_cohort
 from dnm_cohorts.cohorts.mcrae_nature import open_mcrae_nature_cohort
 from dnm_cohorts.cohorts.homsy_science import open_homsy_science_cohort
 from dnm_cohorts.cohorts.an_science import open_an_science_cohort
+from dnm_cohorts.cohorts.kaplanis_biorxiv import kaplanis_biorxiv_cohort
