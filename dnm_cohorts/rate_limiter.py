@@ -5,7 +5,7 @@ import asyncio
 import random
 import functools
 
-import aiohttp
+from aiohttp import ClientSession, TCPConnector
 
 from dnm_cohorts.rate_limiter_retries import ensembl_retry as retry
 
@@ -26,7 +26,8 @@ class RateLimiter:
         self.RATE = per_second
         self.updated_at = time.monotonic()
     async def __aenter__(self):
-        self.client = aiohttp.ClientSession()
+        conn = TCPConnector(limit=50)
+        self.client = ClientSession(connector=conn)
         return self
     async def __aexit__(self, *err):
         await self.client.close()
