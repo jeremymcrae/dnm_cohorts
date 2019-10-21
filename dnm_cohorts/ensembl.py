@@ -102,7 +102,7 @@ async def get_consequences(limiter, variants):
         task = asyncio.create_task(cq_and_symbol(limiter, x))
         task.add_done_callback(lambda task: tasks.remove(task))
         tasks.append(task)
-    return asyncio.gather(*tasks)
+    return await asyncio.gather(*tasks)
 
 async def genome_sequence(ensembl, chrom, start, end, build='grch37'):
     """ find genomic sequence within a region
