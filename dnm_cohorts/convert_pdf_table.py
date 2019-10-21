@@ -1,5 +1,6 @@
 
 import itertools
+import logging
 
 from pdfminer.pdfparser import PDFParser
 from pdfminer.pdfdocument import PDFDocument
@@ -12,6 +13,8 @@ from pdfminer.converter import PDFPageAggregator
 from pdfminer.layout import LTTextContainer
 
 import pdfminer
+
+logging.getLogger('pdfminer').setLevel(logging.WARNING)
 
 TEXT_ELEMENTS = [
     pdfminer.layout.LTTextBox,
