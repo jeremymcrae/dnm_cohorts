@@ -1,4 +1,5 @@
 
+import asyncio
 import logging
 
 import pandas
@@ -11,16 +12,20 @@ url = 'http://www.nature.com/nature/journal/v485/n7397/extref/nature10945-s3.xls
 
 async def fix_alleles(limiter, data):
     
-    alt = list(data['alt'])
-    ref = list(data['ref'])
+    alt = data['alt'].copy()
+    ref = data['ref'].copy()
     
-    for i, (chrom, pos, a, r) in enumerate(zip(data.chrom, data.pos, alt, ref)):
-        if not ':' in a:
-            continue
-        alt[i] = await genome_sequence(limiter, chrom, pos, pos)
-        ref[i] = await genome_sequence(limiter, chrom, pos, pos + len(a.split(':')[1]))
+    idx = alt.str.contains(':')
     
-    return ref, alt
+    tasks = [genome_sequence(limiter, x.chrom, x.pos, x.pos) for i, x in data[idx].iterrows()]
+    alts = await asyncio.gather(*tasks)
+    tasks = [genome_sequence(limiter, x.chrom, x.pos, x.pos + len(x.alt.split(':')[1])) for i, x in data[idx].iterrows()]
+    refs = await asyncio.gather(*tasks)
+    
+    alt[idx] = alts
+    ref[idx] = refs
+    
+    return list(ref), list(alt)
 
 async def sanders_nature_de_novos(limiter):
     """ get de novo data from the Sanders et al autism exome study
@@ -44,6 +49,7 @@ async def sanders_nature_de_novos(limiter):
     data['pos'] = data['Pos (hg19)']
     data['ref'] = data['Ref']
     data['alt'] = data['Alt']
+    data['build'] = 'grch37'
     
     # clean up the alleles
     data['ref'], data['alt'] = await fix_alleles(limiter, data)
@@ -57,7 +63,7 @@ async def sanders_nature_de_novos(limiter):
     vars = set()
     for i, row in data.iterrows():
         var = DeNovo(row.person_id, row.chrom, row.pos, row.ref, row.alt,
-            row.study, row.confidence, 'grch37')
+            row.study, row.confidence, row.build)
         vars.add(var)
     
     return vars
