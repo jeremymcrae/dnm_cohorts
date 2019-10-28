@@ -6,6 +6,8 @@ from hgvs.parser import Parser
 from dnm_cohorts.ensembl import genome_sequence
 from dnm_cohorts.fix_alleles import fix_substitution, fix_deletion, fix_insertion
 
+hgvs_parser = Parser()
+
 async def fix_hgvs_coordinates(limiter, coords):
     """ extract genomic coordinates for variants encoded as HGVS genomic
     
@@ -20,7 +22,6 @@ async def fix_hgvs_coordinates(limiter, coords):
     fix_hgvs_coordinates(['chr7:g.155556643G>A',
         'chr3:g.11060365_11060365del', 'chr13:g.50057690_50057691insA'])
     """
-    hgvs_parser = Parser()
     chroms, positions, refs, alts = [], [], [], []
     for coord in coords:
         var = hgvs_parser.parse_hgvs_variant(coord)
