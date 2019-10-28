@@ -29,7 +29,7 @@ def get_options():
     parent = argparse.ArgumentParser(add_help=False)
     
     parent.add_argument('--output', default=sys.stdout, help='where to save output')
-    parent.add_argument('--log', default=os.devnull, help='where to write log output')
+    parent.add_argument('--log', default=sys.stderr, help='where to write log output')
     
     subparsers = parser.add_subparsers()
     de_novos = subparsers.add_parser('de-novos', parents=[parent],
@@ -53,6 +53,11 @@ def get_options():
     
     try:
         args.output = open(args.output, 'w')
+    except TypeError:
+        pass
+    
+    try:
+        args.log = open(args.log, 'w')
     except TypeError:
         pass
     
@@ -144,7 +149,7 @@ def change_build(input, output, build, header):
 async def _main():
     args = get_options()
     FORMAT = '%(asctime)-15s %(message)s'
-    logging.basicConfig(filename=args.log, format=FORMAT, level=logging.INFO)
+    logging.basicConfig(stream=args.log, format=FORMAT, level=logging.INFO)
     
     if args.cohorts:
         header = ['person_id', 'sex', 'phenotype']
