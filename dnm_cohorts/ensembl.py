@@ -94,15 +94,36 @@ def most_severe(data, exclude_bad=True):
     tx = min(transcripts, key=lambda x: (severity[x['cq']], x['not_hgnc']))
     return tx['cq'], tx['gene_symbol']
 
+class TaskPool(object):
+    def __init__(self, workers):
+        self._semaphore = asyncio.BoundedSemaphore(workers)
+        self._tasks = set()
+    async def put(self, coro):
+        await self._semaphore.acquire()
+        task = asyncio.create_task(coro)
+        self._tasks.add(task)
+        task.add_done_callback(self._on_task_done)
+        return task
+    def _on_task_done(self, task):
+        self._tasks.remove(task)
+        self._semaphore.release()
+    async def __aenter__(self):
+        return self
+    async def __aexit__(self, exc_type, exc, tb):
+        return
+
 async def get_consequences(limiter, variants):
     ''' asychronously get variant consequences and symbols from ensembl
     '''
-    tasks = []
-    for x in variants:
-        task = asyncio.create_task(cq_and_symbol(limiter, x))
-        task.add_done_callback(lambda task: tasks.remove(task))
-        tasks.append(task)
-    return await asyncio.gather(*tasks)
+    # use a taskpool to lower memory requirements, and prevent creating hundreds
+    # of thousands of tasks upfront. This loses some of the asynchronous
+    # simultaneous advantagaes, but still works quickly.
+    async with TaskPool(100) as pool:
+        tasks = []
+        for x in variants:
+            x = await pool.put(cq_and_symbol(limiter, x))
+            tasks.append(x)
+        return await asyncio.gather(*tasks)
 
 async def genome_sequence(ensembl, chrom, start, end, build='grch37'):
     """ find genomic sequence within a region
