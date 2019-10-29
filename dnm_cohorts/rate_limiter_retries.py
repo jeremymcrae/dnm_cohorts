@@ -4,7 +4,8 @@ import random
 import functools
 
 from asyncio import TimeoutError
-from aiohttp import ServerDisconnectedError, ClientOSError, ClientResponseError
+from aiohttp import ServerDisconnectedError, ClientOSError, ClientResponseError, \
+    RequestInfo
 
 def ensembl_retry(retries=5):
     ''' perform all the error handling for the request
@@ -25,7 +26,8 @@ def ensembl_retry(retries=5):
                     last_exception = err
                     delay = 0
                 except ClientResponseError as err:
-                    last_exception = ClientResponseError(err.request_info, ())
+                    info = err.request_info
+                    last_exception = ClientResponseError(RequestInfo(info.url, info.method, {}), ())
                     # 500, 503, 504 are server down issues. 429 exceeds rate
                     # limits. 400 is server memory issue. Raises other errors.
                     if err.status not in [500, 503, 504, 429, 400]:
