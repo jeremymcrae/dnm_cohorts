@@ -36,21 +36,21 @@ The package contains a dataset of de novos on their original genome build (the
 default), as well as a dataset lifted to GRCh37 and a dataset lifted to GRCh38.
 
 #### Cohorts
-reference   |   year   |  unique individuals  |   phenotype   |   assay   
-----        |   ----   |        ----          |   ----        |   ----
-[De Ligt _et al_. _N Engl J Med_ 367:1921-1929](https://doi.org/10.1056/NEJMoa1206524)        | 2012 |  100 | intellectual disability    |    exome
-[Iossifov _et al_. _Neuron_ 74:285-299](https://doi.org/10.1016/j.neuron.2012.04.009)         | 2012 |  686 (343 asd, 343 unaffected) | autism spectrum disorder,  unaffected siblings   |    exome
-[O'Roak _et al_. _Nature_ 485:246-250](https://doi.org/10.1038/nature10989)                   | 2012 |  206 | autism spectrum disorder   |    exome
-[Rauch _et al_. _Lancet_ 380:1674-1682](https://doi.org/10.1016/S0140-6736%2812%2961480-9)    | 2012 |   51 | intellectual disability   |    exome
-[Sanders _et al_. _Nature_ 485:237-241](https://doi.org/10.1038/nature10945)                  | 2012 |  452 (238 asd, 214 unaffected) | autism spectrum disorder,  unaffected siblings   |    exome
-[Epi4K Consortium. _Nature_ 501:217-221](https://doi.org/10.1038/nature12439)                 | 2013 |  264 | epilepsy   |    exome
-[EuroEPINOMICS-RES Consortium. _AJHG_ 95:360-370](https://doi.org/10.1016/j.ajhg.2014.08.013) | 2014 |   92 | epilepsy   |    exome
-[Gilissen _et al_. _Nature_ 511:344-347](https://doi.org/10.1038/nature13394)                 | 2014 |    0 | intellectual disability   |    exome
-[De Rubeis _et al_. _Nature_ 515:209-215](https://doi.org/10.1038/nature13772)                | 2014 | 1604 (1443 asd, 161 unaffected) | autism spectrum disorder, unaffected siblings   |    exome
-[Iossifov _et al_. _Nature_ 498:216-221](https://doi.org/10.1038/nature13908)                 | 2014 | 3095 (1726 asd, 1369 unaffected) | autism spectrum disorder, unaffected siblings   |    exome
-[Sanders _et al_. _Neuron_ 87:1215-1233](https://doi.org/10.1016/j.neuron.2015.09.016)        | 2015 |  750 (314 asd, 436 unaffected) | autism spectrum disorder, unaffected siblings   |    exome
-[Homsy _et al_. _Science_ 350:1262-1266](https://doi.org/10.1126/science.aac9396)             | 2015 | 1213 | congenital heart disease   |    exome
-[Lelieveld _et al_. _Nature Neuroscience_ 19:1194-1196](https://doi.org/10.1038/nn.4352)      | 2016 |  820 | intellectual disability   |    exome
-[McRae _et al_. _Nature_ 19:1194-1196](https://doi.org/10.1038/nature21062)                   | 2017 | 4293 | intellectual disability   |    exome
-[An _et al_. _Science_ 362:eaat6576](https://doi.org/10.1126/science.aat6576)                 | 2018 | 1902 affected, 1902 unaffected | autism spectrum disorder, unaffected siblings   |    genome
-[Kaplanis _et al_. _BioRxiv_](https://doi.org/10.1101/797787)                 | 2019 | 31058 | intellectual disability, supercedes Lelieveld et al and McRae et al cohorts   |    exome
+reference   |   year   |  unique individuals  |   phenotype   |   assay   | deprecated
+----        |   ----   |        ----          |   ----        |   ----    |   -----
+[De Ligt _et al_. _N Engl J Med_ 367:1921-1929](https://doi.org/10.1056/NEJMoa1206524)        | 2012 |  100 | intellectual disability    |    exome    |    no
+[Iossifov _et al_. _Neuron_ 74:285-299](https://doi.org/10.1016/j.neuron.2012.04.009)         | 2012 |  686 (343 asd, 343 unaffected) | autism spectrum disorder,  unaffected siblings   |    exome    |    no
+[O'Roak _et al_. _Nature_ 485:246-250](https://doi.org/10.1038/nature10989)                   | 2012 |  206 | autism spectrum disorder   |    exome    |    no
+[Rauch _et al_. _Lancet_ 380:1674-1682](https://doi.org/10.1016/S0140-6736%2812%2961480-9)    | 2012 |   51 | intellectual disability   |    exome    |    no
+[Sanders _et al_. _Nature_ 485:237-241](https://doi.org/10.1038/nature10945)                  | 2012 |  452 (238 asd, 214 unaffected) | autism spectrum disorder,  unaffected siblings   |    exome    |    no
+[Epi4K Consortium. _Nature_ 501:217-221](https://doi.org/10.1038/nature12439)                 | 2013 |  264 | epilepsy   |    exome    |    no
+[EuroEPINOMICS-RES Consortium. _AJHG_ 95:360-370](https://doi.org/10.1016/j.ajhg.2014.08.013) | 2014 |   92 | epilepsy   |    exome    |    no
+[Gilissen _et al_. _Nature_ 511:344-347](https://doi.org/10.1038/nature13394)                 | 2014 |    0 | intellectual disability   |    exome    |    no, but only extends De ligt et al
+[De Rubeis _et al_. _Nature_ 515:209-215](https://doi.org/10.1038/nature13772)                | 2014 | 1604 (1443 asd, 161 unaffected) | autism spectrum disorder, unaffected siblings   |    exome    |    no
+[Iossifov _et al_. _Nature_ 498:216-221](https://doi.org/10.1038/nature13908)                 | 2014 | 3095 (1726 asd, 1369 unaffected) | autism spectrum disorder, unaffected siblings   |    exome    |    no
+[Sanders _et al_. _Neuron_ 87:1215-1233](https://doi.org/10.1016/j.neuron.2015.09.016)        | 2015 |  750 (314 asd, 436 unaffected) | autism spectrum disorder, unaffected siblings   |    exome    |    no
+[Homsy _et al_. _Science_ 350:1262-1266](https://doi.org/10.1126/science.aac9396)             | 2015 | 1213 | congenital heart disease   |    exome    |   no
+[Lelieveld _et al_. _Nature Neuroscience_ 19:1194-1196](https://doi.org/10.1038/nn.4352)      | 2016 |  820 | intellectual disability   |    exome    |   yes, superceded by Kaplanis et al cohort
+[McRae _et al_. _Nature_ 19:1194-1196](https://doi.org/10.1038/nature21062)                   | 2017 | 4293 | intellectual disability   |    exome    |   yes, superceded by Kaplanis et al cohort
+[An _et al_. _Science_ 362:eaat6576](https://doi.org/10.1126/science.aat6576)                 | 2018 | 1902 affected, 1902 unaffected | autism spectrum disorder, unaffected siblings   |    genome    |    no
+[Kaplanis _et al_. _BioRxiv_](https://doi.org/10.1101/797787)                 | 2019 | 31058 | intellectual disability, supercedes Lelieveld et al and McRae et al cohorts   |    exome    |    no
