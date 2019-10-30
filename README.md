@@ -49,8 +49,9 @@ reference   |   year   |  unique individuals  |   phenotype   |   assay   | depr
 [De Rubeis _et al_. _Nature_ 515:209-215](https://doi.org/10.1038/nature13772)                | 2014 | 1604 (1443 asd, 161 unaffected) | autism spectrum disorder, unaffected siblings   |    exome    |    no
 [Iossifov _et al_. _Nature_ 498:216-221](https://doi.org/10.1038/nature13908)                 | 2014 | 3095 (1726 asd, 1369 unaffected) | autism spectrum disorder, unaffected siblings   |    exome    |    no
 [Sanders _et al_. _Neuron_ 87:1215-1233](https://doi.org/10.1016/j.neuron.2015.09.016)        | 2015 |  750 (314 asd, 436 unaffected) | autism spectrum disorder, unaffected siblings   |    exome    |    no
-[Homsy _et al_. _Science_ 350:1262-1266](https://doi.org/10.1126/science.aac9396)             | 2015 | 1213 | congenital heart disease   |    exome    |   no
+[Homsy _et al_. _Science_ 350:1262-1266](https://doi.org/10.1126/science.aac9396)             | 2015 | 1213 | congenital heart disease   |    exome    |   yes, superceded by Jin et al cohort
 [Lelieveld _et al_. _Nature Neuroscience_ 19:1194-1196](https://doi.org/10.1038/nn.4352)      | 2016 |  820 | intellectual disability   |    exome    |   yes, superceded by Kaplanis et al cohort
 [McRae _et al_. _Nature_ 19:1194-1196](https://doi.org/10.1038/nature21062)                   | 2017 | 4293 | intellectual disability   |    exome    |   yes, superceded by Kaplanis et al cohort
+[Jin _et al_. _Nature Genetics_ 49:1593-1601](https://doi.org/10.1038/ng.3970)                | 2017 | 2465 | congenital heart disease   |    exome    |    no
 [An _et al_. _Science_ 362:eaat6576](https://doi.org/10.1126/science.aat6576)                 | 2018 | 1902 affected, 1902 unaffected | autism spectrum disorder, unaffected siblings   |    genome    |    no
 [Kaplanis _et al_. _BioRxiv_](https://doi.org/10.1101/797787)                 | 2019 | 31058 | intellectual disability, supercedes Lelieveld et al and McRae et al cohorts   |    exome    |    no
