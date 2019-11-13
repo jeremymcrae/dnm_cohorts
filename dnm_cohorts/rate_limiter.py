@@ -2,10 +2,8 @@
 import time
 import logging
 import asyncio
-import random
-import functools
 
-from aiohttp import ClientSession, TCPConnector
+from aiohttp import ClientSession
 
 from dnm_cohorts.rate_limiter_retries import ensembl_retry as retry
 
@@ -33,17 +31,37 @@ class RateLimiter:
         self.client = None
 
     @retry(retries=9)
-    async def get(self, url, headers=None):
+    async def get(self, url, *args, **kwargs):
         ''' perform asynchronous http get
 
         Args:
             url: url to get
             headers: http headers to pass in with the get query
         '''
-        if not headers:
-            headers = {'content-type': 'application/json'}
+        if 'headers' not in kwargs:
+            kwargs['headers'] = {'content-type': 'application/json'}
+        if 'params' not in kwargs:
+            kwargs['params'] = {}
         await self.wait_for_token()
-        async with self.client.get(url, headers=headers) as resp:
+        async with self.client.get(url, *args, **kwargs) as resp:
+            logging.info(f'{url}\t{resp.status}')
+            resp.raise_for_status()
+            return await resp.read()
+    
+    @retry(retries=3)
+    async def post(self, url, *args, **kwargs):
+        ''' perform asynchronous http post
+
+        Args:
+            url: url to get
+            headers: http headers to pass in with the get query
+        '''
+        if 'headers' not in kwargs:
+            kwargs['headers'] = {'content-type': 'application/json'}
+        if 'data' not in kwargs:
+            kwargs['data'] = {}
+        await self.wait_for_token()
+        async with self.client.post(url, *args, **kwargs) as resp:
             logging.info(f'{url}\t{resp.status}')
             resp.raise_for_status()
             return await resp.read()
