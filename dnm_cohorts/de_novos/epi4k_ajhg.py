@@ -33,7 +33,7 @@ def get_person_ids(data):
     
     return cleaned
 
-async def epi4k_ajhg_de_novos(limiter):
+async def epi4k_ajhg_de_novos(result, limiter):
     """ get de novo data for the Epi4K epilepsy exome study
     
     De novo mutation data from the most recent EPI4K publication:
@@ -66,4 +66,4 @@ async def epi4k_ajhg_de_novos(limiter):
             row.study, row.confidence, 'grch37')
         vars.add(var)
     
-    return vars
+    result.append(vars)

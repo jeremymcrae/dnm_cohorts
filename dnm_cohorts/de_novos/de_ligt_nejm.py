@@ -59,7 +59,7 @@ def clean_table(data):
     
     return data
 
-async def de_ligt_nejm_de_novos(limiter):
+async def de_ligt_nejm_de_novos(result, limiter):
     """ get de novo mutations from De Ligt et al., 2012
     
     De Ligt et al., (2012) N Engl J Med 367:1921-1929
@@ -86,4 +86,4 @@ async def de_ligt_nejm_de_novos(limiter):
             row.study, row.confidence, 'grch37')
         vars.add(var)
     
-    return vars
+    result.append(vars)

@@ -7,7 +7,7 @@ from dnm_cohorts.de_novo import DeNovo
 
 url = 'https://science.sciencemag.org/content/sci/suppl/2018/12/12/362.6420.eaat6576.DC1/aat6576_Table-S2.xlsx'
 
-async def an_science_de_novos():
+async def an_science_de_novos(result):
     """ get de novo mutations from An et al, Autism dataset
     
     Table S2 from:
@@ -29,4 +29,4 @@ async def an_science_de_novos():
             row.study, row.confidence, 'grch38')
         vars.add(var)
     
-    return vars
+    result.append(vars)

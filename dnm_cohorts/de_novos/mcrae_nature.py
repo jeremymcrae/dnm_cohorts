@@ -7,7 +7,7 @@ from dnm_cohorts.de_novo import DeNovo
 
 url = 'http://www.nature.com/nature/journal/v542/n7642/extref/nature21062-s2.xlsx'
 
-async def mcrae_nature_de_novos():
+async def mcrae_nature_de_novos(result):
     """ load de novo mutations from McRae et al Nature 2017
     
     These de novos are loaded from Supplementary Table 1 from
@@ -39,4 +39,4 @@ async def mcrae_nature_de_novos():
             row.study, row.confidence, 'grch37')
         vars.add(var)
     
-    return vars
+    result.append(vars)

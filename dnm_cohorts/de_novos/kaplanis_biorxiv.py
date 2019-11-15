@@ -8,7 +8,7 @@ from dnm_cohorts.de_novos.lelieveld_nn import fix_alleles
 
 url = 'https://www.biorxiv.org/content/biorxiv/early/2019/10/16/797787/DC2/embed/media-2.txt'
 
-async def kaplanis_biorxiv_de_novos(limiter):
+async def kaplanis_biorxiv_de_novos(result, limiter):
     """ load de novo mutations from Kaplanis et al BioRxiv 2019
     
     These de novos are loaded from Supplementary Table 1 from
@@ -36,4 +36,4 @@ async def kaplanis_biorxiv_de_novos(limiter):
             row.study, row.confidence, row.build)
         vars.add(var)
     
-    return vars
+    result.append(vars)

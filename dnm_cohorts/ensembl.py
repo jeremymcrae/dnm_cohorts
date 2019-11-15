@@ -1,7 +1,7 @@
 # functions to extract data from the ensembl REST API
 
 import json
-import asyncio
+import trio
 
 REQS_PER_SECOND = 15
 
@@ -29,7 +29,7 @@ def get_base_url(build):
     ver = build + '.' if build == "grch37" else ''
     return f'http://{ver}rest.ensembl.org'
 
-async def cq_and_symbol(limiter, var):
+async def cq_and_symbol(limiter, var, sem):
     """find the VEP consequence for a variant
     
     annotates the consequence and symbol attributes of the variant passed in.
@@ -53,10 +53,10 @@ async def cq_and_symbol(limiter, var):
     
     ext = f"vep/human/region/{var.chrom}:{var.pos}:{var.pos + len(var.ref) - 1}/{alt}"
     url = f'{get_base_url(var.build)}/{ext}'
-    resp = await limiter.get(url)
+    async with sem:
+        resp = await limiter.get(url)
     data = json.loads(resp)
     var.consequence, var.symbol = most_severe(data[0])
-    return var
 
 def most_severe(data, exclude_bad=True):
     """ find the most severe conseuence and gene symbol from Ensembl data
@@ -94,36 +94,14 @@ def most_severe(data, exclude_bad=True):
     tx = min(transcripts, key=lambda x: (severity[x['cq']], x['not_hgnc']))
     return tx['cq'], tx['gene_symbol']
 
-class TaskPool(object):
-    def __init__(self, workers):
-        self._semaphore = asyncio.BoundedSemaphore(workers)
-        self._tasks = set()
-    async def put(self, coro):
-        await self._semaphore.acquire()
-        task = asyncio.create_task(coro)
-        self._tasks.add(task)
-        task.add_done_callback(self._on_task_done)
-        return task
-    def _on_task_done(self, task):
-        self._tasks.remove(task)
-        self._semaphore.release()
-    async def __aenter__(self):
-        return self
-    async def __aexit__(self, exc_type, exc, tb):
-        return
-
 async def get_consequences(limiter, variants):
     ''' asychronously get variant consequences and symbols from ensembl
     '''
-    # use a taskpool to lower memory requirements, and prevent creating hundreds
-    # of thousands of tasks upfront. This loses some of the asynchronous
-    # simultaneous advantagaes, but still works quickly.
-    async with TaskPool(100) as pool:
-        tasks = []
+    sem = trio.CapacityLimiter(50)
+    async with trio.open_nursery() as nursery:
         for x in variants:
-            x = await pool.put(cq_and_symbol(limiter, x))
-            tasks.append(x)
-        return await asyncio.gather(*tasks)
+            nursery.start_soon(cq_and_symbol, limiter, x, sem)
+    return variants
 
 async def genome_sequence(ensembl, chrom, start, end, build='grch37'):
     """ find genomic sequence within a region
@@ -155,3 +133,8 @@ async def genome_sequence(ensembl, chrom, start, end, build='grch37'):
         return data['seq']
     
     return ""
+
+async def parallel_sequence(ensembl, chrom, start, end, seqs, build='grch37'):
+    ''' this enables parallelisation by storing genome seq in a dict passed in
+    '''
+    seqs[(chrom, start, end, build)] = await genome_sequence(ensembl, chrom, start, end, build)

@@ -26,7 +26,7 @@ def get_person_ids(data):
     
     return person_ids
 
-async def iossifov_neuron_de_novos(limiter):
+async def iossifov_neuron_de_novos(result, limiter):
     """ get de novo data from the 2012 Iossifov et al autism exome study in Neuron
     
     Supplementary table 1 (where the non-coding SNVs have been excluded) and
@@ -68,4 +68,4 @@ async def iossifov_neuron_de_novos(limiter):
             row.study, row.confidence, 'grch37')
         vars.add(var)
     
-    return vars
+    result.append(vars)

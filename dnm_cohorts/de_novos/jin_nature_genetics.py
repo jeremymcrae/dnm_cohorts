@@ -7,7 +7,7 @@ from dnm_cohorts.de_novo import DeNovo
 
 url = 'https://media.nature.com/original/nature-assets/ng/journal/v49/n11/extref/ng.3970-S3.xlsx'
 
-async def jin_nature_genetics_de_novos():
+async def jin_nature_genetics_de_novos(result):
     """ gets individual level data for Jin et al congenital heart disease
     
     Supplementary Table 9 from:
@@ -30,4 +30,4 @@ async def jin_nature_genetics_de_novos():
             row.study, row.confidence, 'grch37')
         vars.add(var)
     
-    return vars
+    result.append(vars)

@@ -1,10 +1,10 @@
 
-import asyncio
+import trio
 import logging
 
 import pandas
 
-from dnm_cohorts.ensembl import genome_sequence
+from dnm_cohorts.ensembl import parallel_sequence
 from dnm_cohorts.fix_alleles import fix_het_alleles
 from dnm_cohorts.de_novo import DeNovo
 
@@ -17,17 +17,19 @@ async def fix_alleles(limiter, data):
     
     idx = alt.str.contains(':')
     
-    tasks = [genome_sequence(limiter, x.chrom, x.pos, x.pos) for i, x in data[idx].iterrows()]
-    alts = await asyncio.gather(*tasks)
-    tasks = [genome_sequence(limiter, x.chrom, x.pos, x.pos + len(x.alt.split(':')[1])) for i, x in data[idx].iterrows()]
-    refs = await asyncio.gather(*tasks)
+    seqs = {}
+    alts_coords = [(x.chrom, x.pos, x.pos, x.build) for i, x in data[idx].iterrows()]
+    refs_coords = [(x.chrom, x.pos, x.pos + len(x.alt.split(':')[1]), x.build) for i, x in data[idx].iterrows()]
+    async with trio.open_nursery() as nursery:
+        for x in alts_coords + refs_coords:
+            nursery.start_soon(parallel_sequence, limiter, *x[:3], seqs, x[3])
     
-    alt[idx] = alts
-    ref[idx] = refs
+    alt[idx] = [seqs[x] for x in alts_coords]
+    ref[idx] = [seqs[x] for x in refs_coords]
     
     return list(ref), list(alt)
 
-async def sanders_nature_de_novos(limiter):
+async def sanders_nature_de_novos(result, limiter):
     """ get de novo data from the Sanders et al autism exome study
     
     Supplementary table 2 (where the excel sheets for the probands and
@@ -66,4 +68,4 @@ async def sanders_nature_de_novos(limiter):
             row.study, row.confidence, row.build)
         vars.add(var)
     
-    return vars
+    result.append(vars)

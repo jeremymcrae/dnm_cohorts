@@ -1,10 +1,10 @@
 
-import asyncio
+import trio
 import logging
 
 import pandas
 
-from dnm_cohorts.ensembl import genome_sequence
+from dnm_cohorts.ensembl import parallel_sequence
 from dnm_cohorts.fix_alleles import fix_het_alleles
 from dnm_cohorts.de_novo import DeNovo
 
@@ -33,22 +33,26 @@ async def fix_alleles(limiter, data):
     
     # find the reference sequence at the site. Deletions use this as the
     # alternate allele, whereas the insertions use this as the reference allele
-    tasks = [genome_sequence(limiter, x.chrom, x.pos, x.pos, x.build) for i, x in data[dels].iterrows()]
-    dels_alt = await asyncio.gather(*tasks)
-    tasks = [genome_sequence(limiter, x.chrom, x.pos, x.pos, x.build) for i, x in data[ins].iterrows()]
-    ins_ref = await asyncio.gather(*tasks)
+    seqs = {}
+    dels_coords = [(x.chrom, x.pos, x.pos, x.build) for i, x in data[dels].iterrows()]
+    ins_coords = [(x.chrom, x.pos, x.pos, x.build) for i, x in data[ins].iterrows()]
+    async with trio.open_nursery() as nursery:
+        for x in dels_coords + ins_coords:
+            nursery.start_soon(parallel_sequence, limiter, *x[:3], seqs, x[3])
     
     # tidy up the deletion alleles
+    dels_alt = [seqs[x] for x in dels_coords]
     ref[dels] = dels_alt + alt[dels].str.replace('\dD, *-', '')
     alt[dels] = dels_alt
     
     # tidy up the insertion alleles
+    ins_ref = [seqs[x] for x in ins_coords]
     ref[ins] = ins_ref
     alt[ins] = ins_ref + alt[ins].str.replace('\dI, *\+', '')
     
     return ref, alt
 
-async def oroak_nature_de_novos(limiter):
+async def oroak_nature_de_novos(result, limiter):
     """ get de novo data from the O'Roak et al autism exome study
     
     Supplementary table 3 from:
@@ -85,4 +89,4 @@ async def oroak_nature_de_novos(limiter):
             row.study, row.confidence, row.build)
         vars.add(var)
     
-    return vars
+    result.append(vars)

@@ -61,7 +61,7 @@ def clean_table(data):
     
     return data
 
-async def gilissen_nature_de_novos(limiter):
+async def gilissen_nature_de_novos(result, limiter):
     """ load de novos from Gilissen et al Nature 2014
     
     Nature 511: 344-347 2014, doi:10.1038/nature13394
@@ -87,4 +87,4 @@ async def gilissen_nature_de_novos(limiter):
             row.study, row.confidence, 'grch37')
         vars.add(var)
     
-    return vars
+    result.append(vars)

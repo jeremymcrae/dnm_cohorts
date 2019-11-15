@@ -1,9 +1,10 @@
 
 import time
 import logging
-import asyncio
+import trio
 
-from aiohttp import ClientSession
+import asks
+asks.init('trio')
 
 from dnm_cohorts.rate_limiter_retries import ensembl_retry as retry
 
@@ -23,8 +24,9 @@ class RateLimiter:
         self.tokens = self.MAX_TOKENS
         self.RATE = per_second
         self.updated_at = time.monotonic()
+        self.count = 0
     async def __aenter__(self):
-        self.client = ClientSession()
+        self.client = asks.Session(connections=50)
         return self
     async def __aexit__(self, *err):
         await self.client.close()
@@ -43,10 +45,12 @@ class RateLimiter:
         if 'params' not in kwargs:
             kwargs['params'] = {}
         await self.wait_for_token()
-        async with self.client.get(url, *args, **kwargs) as resp:
-            logging.info(f'{url}\t{resp.status}')
-            resp.raise_for_status()
-            return await resp.read()
+        self.count += 1
+        n = self.count
+        resp = await self.client.get(url, *args, **kwargs)
+        logging.info(f'{url}\t{resp.status_code}\t{n}')
+        resp.raise_for_status()
+        return resp.text
     
     @retry(retries=3)
     async def post(self, url, *args, **kwargs):
@@ -61,17 +65,19 @@ class RateLimiter:
         if 'data' not in kwargs:
             kwargs['data'] = {}
         await self.wait_for_token()
-        async with self.client.post(url, *args, **kwargs) as resp:
-            logging.info(f'{url}\t{resp.status}')
-            resp.raise_for_status()
-            return await resp.read()
+        self.count += 1
+        n = self.count
+        resp = await self.client.post(url, *args, **kwargs)
+        logging.info(f'{url}\t{resp.status_code}\t{n}')
+        resp.raise_for_status()
+        return resp.text
 
     async def wait_for_token(self):
         ''' pause until tokens are refilled
         '''
         while self.tokens < 1:
             self.add_new_tokens()
-            await asyncio.sleep(1 / self.RATE)
+            await trio.sleep(1 / self.RATE)
         self.tokens -= 1
 
     def add_new_tokens(self):

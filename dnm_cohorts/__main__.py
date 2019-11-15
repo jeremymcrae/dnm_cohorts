@@ -1,7 +1,7 @@
 
 import itertools
 import argparse
-import asyncio
+import trio
 import sys
 import os
 import logging
@@ -110,24 +110,33 @@ def remove_duplicate_dnms(cohorts):
 async def get_de_novos(output, header):
     """ get list of all de novos in all cohorts
     """
-    async with RateLimiter(15) as limiter:
+    async with RateLimiter(14) as limiter:
         # open ASD cohort info, then drop duplicate samples from the ASD cohorts
-        asd = [sanders_neuron_de_novos(), de_rubeis_nature_de_novos(),
-            iossifov_nature_de_novos(), iossifov_neuron_de_novos(limiter),
-            oroak_nature_de_novos(limiter), sanders_nature_de_novos(limiter),
-            an_science_de_novos()]
-        asd = await asyncio.gather(*asd)
+        asd = []
+        async with trio.open_nursery() as nursery:
+            nursery.start_soon(sanders_neuron_de_novos, asd)
+            nursery.start_soon(de_rubeis_nature_de_novos, asd)
+            nursery.start_soon(iossifov_nature_de_novos, asd)
+            nursery.start_soon(iossifov_neuron_de_novos, asd, limiter)
+            nursery.start_soon(oroak_nature_de_novos, asd, limiter)
+            nursery.start_soon(sanders_nature_de_novos, asd, limiter)
+            nursery.start_soon(an_science_de_novos, asd)
         
         for a, b in itertools.combinations(asd, 2):
             # remove the easy matches
             a -= b
         
         asd = remove_duplicate_dnms(reversed(asd))
-        non_asd = [de_ligt_nejm_de_novos(limiter), gilissen_nature_de_novos(limiter),
-            epi4k_ajhg_de_novos(limiter), jin_nature_genetics_de_novos(),
-            rauch_lancet_de_novos(limiter), kaplanis_biorxiv_de_novos(limiter)]
+        non_asd = []
+        async with trio.open_nursery() as nursery:
+            nursery.start_soon(de_ligt_nejm_de_novos, non_asd, limiter)
+            nursery.start_soon(gilissen_nature_de_novos, non_asd, limiter)
+            nursery.start_soon(epi4k_ajhg_de_novos, non_asd, limiter)
+            nursery.start_soon(jin_nature_genetics_de_novos, non_asd)
+            nursery.start_soon(rauch_lancet_de_novos, non_asd, limiter)
+            nursery.start_soon(kaplanis_biorxiv_de_novos, non_asd, limiter)
         
-        cohorts = list(asd) + flatten(await asyncio.gather(*non_asd))
+        cohorts = list(asd) + flatten(non_asd)
         cohorts = await get_consequences(limiter, cohorts)
         
         _ = output.write('\t'.join(header) + '\n')
@@ -165,8 +174,7 @@ async def _main():
         change_build(args.input, args.output, args.to, header)
 
 def main():
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(_main())
+    trio.run(_main)
 
 if __name__ == '__main__':
     main()

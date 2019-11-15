@@ -64,7 +64,7 @@ def tidy_families(data):
     
     return pandas.DataFrame.from_records(cleaned)
 
-async def iossifov_nature_de_novos():
+async def iossifov_nature_de_novos(result):
     """ get de novo variants fromn Iossifov et al., Nature 2014
     
     Nature (2014) 515: 216-221, doi:10.1038/nature13908
@@ -98,4 +98,4 @@ async def iossifov_nature_de_novos():
             row.study, row.confidence, 'grch37')
         vars.add(var)
     
-    return vars
+    result.append(vars)

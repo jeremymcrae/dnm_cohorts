@@ -1,10 +1,10 @@
 
-import asyncio
+import trio
 import logging
 
 import pandas
 
-from dnm_cohorts.ensembl import genome_sequence
+from dnm_cohorts.ensembl import parallel_sequence
 from dnm_cohorts.de_novo import DeNovo
 
 url = "http://www.nature.com/neuro/journal/v19/n9/extref/nn.4352-S3.xlsx"
@@ -20,8 +20,14 @@ async def fix_alleles(limiter, data):
     alt = data['alt'].copy()
     
     idx = ref.isnull()
-    tasks = [genome_sequence(limiter, x.chrom, x.pos, x.pos, x.build) for i, x in data[idx].iterrows()]
-    ref[idx] = await asyncio.gather(*tasks)
+    
+    seqs = {}
+    coords = [(x.chrom, x.pos, x.pos, x.build) for i, x in data[idx].iterrows()]
+    async with trio.open_nursery() as nursery:
+        for x in coords:
+            nursery.start_soon(parallel_sequence, limiter, *x[:3], seqs, x[3])
+    
+    ref[idx] = [seqs[x] for x in coords]
     
     # add the reference base to insertions
     alt[idx] = ref[idx] + alt[idx]
@@ -31,7 +37,7 @@ async def fix_alleles(limiter, data):
     
     return ref, alt
 
-async def lelieveld_nn_de_novos(limiter):
+async def lelieveld_nn_de_novos(result, limiter):
     """ get de novo data for Lelieveld et al. intellectual disability exome study
     
     De novo mutation data sourced from supplementary table 1 from:
@@ -67,4 +73,4 @@ async def lelieveld_nn_de_novos(limiter):
             row.study, row.confidence, row.build)
         vars.add(var)
     
-    return vars
+    result.append(vars)
