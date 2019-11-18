@@ -45,10 +45,8 @@ class RateLimiter:
         if 'params' not in kwargs:
             kwargs['params'] = {}
         await self.wait_for_token()
-        self.count += 1
-        n = self.count
         resp = await self.client.get(url, *args, **kwargs)
-        logging.info(f'{url}\t{resp.status_code}\t{n}')
+        logging.info(f'{url}\t{resp.status_code}')
         resp.raise_for_status()
         return resp.text
     
@@ -65,10 +63,8 @@ class RateLimiter:
         if 'data' not in kwargs:
             kwargs['data'] = {}
         await self.wait_for_token()
-        self.count += 1
-        n = self.count
         resp = await self.client.post(url, *args, **kwargs)
-        logging.info(f'{url}\t{resp.status_code}\t{n}')
+        logging.info(f'{url}\t{resp.status_code}')
         resp.raise_for_status()
         return resp.text
 
