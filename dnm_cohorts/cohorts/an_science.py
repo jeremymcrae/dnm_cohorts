@@ -12,7 +12,9 @@ def open_an_science_cohort():
     An et al. Science 362: eaat6576, doi: 10.1126/science.aat6576
     """
     
-    data = pandas.read_excel(url, sheet_name='Table S1 Sample information', skiprows=1)
+    data = pandas.read_excel(url, sheet_name='Table S1 Sample information',
+        skiprows=1, engine='openpyxl')
+    data = data[['SampleID', 'FamilyID', 'Sex', 'Pheno', 'NVIQ']]
     
     persons = set()
     for i, row in data.iterrows():

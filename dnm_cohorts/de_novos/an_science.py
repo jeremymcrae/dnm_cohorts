@@ -15,7 +15,7 @@ async def an_science_de_novos(result):
     """
     logging.info('getting An et al Science 2018 de novos')
     data = pandas.read_excel(url, sheet_name='Table S2 de novo mutations',
-        skiprows=1, usecols=8)
+        skiprows=1, usecols=list(range(8)), engine='openpyxl')
     
     data['chrom'] = data['Chr'].astype(str)
     
