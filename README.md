@@ -49,9 +49,14 @@ reference   |   year   |  unique individuals  |   phenotype   |   assay   | depr
 [De Rubeis _et al_. _Nature_ 515:209-215](https://doi.org/10.1038/nature13772)                | 2014 | 1604 (1443 asd, 161 unaffected) | autism spectrum disorder, unaffected siblings   |    exome    |    no
 [Iossifov _et al_. _Nature_ 498:216-221](https://doi.org/10.1038/nature13908)                 | 2014 | 3095 (1726 asd, 1369 unaffected) | autism spectrum disorder, unaffected siblings   |    exome    |    no
 [Sanders _et al_. _Neuron_ 87:1215-1233](https://doi.org/10.1016/j.neuron.2015.09.016)        | 2015 |  750 (314 asd, 436 unaffected) | autism spectrum disorder, unaffected siblings   |    exome    |    no
-[Homsy _et al_. _Science_ 350:1262-1266](https://doi.org/10.1126/science.aac9396)             | 2015 | 1213 | congenital heart disease   |    exome    |   yes, superceded by Jin et al cohort
-[Lelieveld _et al_. _Nature Neuroscience_ 19:1194-1196](https://doi.org/10.1038/nn.4352)      | 2016 |  820 | intellectual disability   |    exome    |   yes, superceded by Kaplanis et al cohort
-[McRae _et al_. _Nature_ 19:1194-1196](https://doi.org/10.1038/nature21062)                   | 2017 | 4293 | intellectual disability   |    exome    |   yes, superceded by Kaplanis et al cohort
+[Homsy _et al_. _Science_ 350:1262-1266](https://doi.org/10.1126/science.aac9396)             | 2015 | 1213 | congenital heart disease   |    exome    |   yes, superseded by Jin et al cohort
+[Lelieveld _et al_. _Nature Neuroscience_ 19:1194-1196](https://doi.org/10.1038/nn.4352)      | 2016 |  820 | intellectual disability   |    exome    |   yes, superseded by Kaplanis et al cohort
+[McRae _et al_. _Nature_ 542:433-438](https://doi.org/10.1038/nature21062)                   | 2017 | 4293 | intellectual disability   |    exome    |   yes, superseded by Kaplanis et al cohort
 [Jin _et al_. _Nature Genetics_ 49:1593-1601](https://doi.org/10.1038/ng.3970)                | 2017 | 2465 | congenital heart disease   |    exome    |    no
 [An _et al_. _Science_ 362:eaat6576](https://doi.org/10.1126/science.aat6576)                 | 2018 | 1902 affected, 1902 unaffected | autism spectrum disorder, unaffected siblings   |    genome    |    no
-[Kaplanis _et al_. _BioRxiv_](https://doi.org/10.1101/797787)                 | 2019 | 31058 | intellectual disability, supercedes Lelieveld et al and McRae et al cohorts   |    exome    |    no
+[Kaplanis _et al_. _BioRxiv_](https://doi.org/10.1101/797787)                 | 2019 | 31058 | intellectual disability, supersedes Lelieveld et al and McRae et al cohorts   |    exome    |    no
+
+#### Excluded cohorts
+We exclude some published cohorts with de novo mutations, for the reasons below:
+ - Helbig _et al_ in _Nature Neuroscience_ 18:898-905. This study only reported the likely pathogenic de novo mutations.
+ - Goldman _et al._ in _Nature Genetics_ 48:935-939. This study includes monozygotic twins, so some de novo mutations are not independent, but does not include sample or family IDs that would permit exclusion of the monozygotic twins.
