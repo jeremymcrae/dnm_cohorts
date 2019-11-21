@@ -12,6 +12,7 @@ from dnm_cohorts.de_novos.rauch_lancet import rauch_lancet_de_novos
 from dnm_cohorts.de_novos.sanders_nature import sanders_nature_de_novos
 from dnm_cohorts.de_novos.sanders_neuron import sanders_neuron_de_novos
 from dnm_cohorts.de_novos.homsy_science import homsy_science_de_novos
+from dnm_cohorts.de_novos.jonsson_nature import jonsson_nature_de_novos
 from dnm_cohorts.de_novos.jin_nature_genetics import jin_nature_genetics_de_novos
 from dnm_cohorts.de_novos.an_science import an_science_de_novos
 from dnm_cohorts.de_novos.kaplanis_biorxiv import kaplanis_biorxiv_de_novos
