@@ -64,7 +64,8 @@ async def oroak_nature_de_novos(result, limiter):
         consequences for each variant
     """
     logging.info('getting O\'Roak et al Nature 2012 de novos')
-    data = pandas.read_excel(url, sheet_name="Supplementary Table 3", skipfooter=3)
+    data = pandas.read_excel(url, sheet_name="Supplementary Table 3",
+        skipfooter=3, engine='xlrd')
     
     # standardise the chrom, position and allele column names
     data['chrom'] = data['Chromosome'].astype(str)

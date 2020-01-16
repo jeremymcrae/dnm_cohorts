@@ -12,7 +12,7 @@ def open_sanders_nature_cohort():
     doi: 10.1038/nature10945
     Supplementary table S1
     """
-    data = pandas.read_excel(url, sheet_name='Sheet1')
+    data = pandas.read_excel(url, sheet_name='Sheet1', engine='xlrd')
     
     persons = set()
     for i, row in data.iterrows():

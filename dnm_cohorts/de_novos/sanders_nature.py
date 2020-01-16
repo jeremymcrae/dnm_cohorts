@@ -42,8 +42,8 @@ async def sanders_nature_de_novos(result, limiter):
         consequences for each variant
     """
     logging.info('getting Sanders et al Nature 2012 de novos')
-    probands = pandas.read_excel(url, sheet_name='Probands')
-    siblings = pandas.read_excel(url, sheet_name='Siblings')
+    probands = pandas.read_excel(url, sheet_name='Probands', engine='xlrd')
+    siblings = pandas.read_excel(url, sheet_name='Siblings', engine='xlrd')
     data = probands.append(siblings, ignore_index=True)
     
     data['person_id'] = data['Child_ID'].astype(str)

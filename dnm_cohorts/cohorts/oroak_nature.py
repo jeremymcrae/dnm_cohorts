@@ -13,7 +13,7 @@ def open_oroak_cohort():
     Supplementary table 1
     """
     data = pandas.read_excel(url, sheet_name='Supplementary Table 1',
-        skipfooter=1)
+        skipfooter=1, engine='xlrd')
     
     persons = set()
     for i, row in data.iterrows():
