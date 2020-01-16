@@ -96,7 +96,12 @@ class DeNovo:
         if key not in self.lifters:
             self.lifters[key] = get_lifter(from_build, to_build)
         
-        coords = self.lifters[key][self.chrom][self.pos]
+        try:
+            coords = self.lifters[key][self.chrom][self.pos]
+        except KeyError:
+            logging.warning(f'cannot liftover: {self.chrom}:{self.pos}' \
+                            f'{self.ref}->{self.alt}')
+            return None
         if not coords:
             logging.warning(f'cannot liftover: {self.chrom}:{self.pos}' \
                             f'{self.ref}->{self.alt}')
