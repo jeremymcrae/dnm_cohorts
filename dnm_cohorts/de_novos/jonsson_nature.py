@@ -11,7 +11,7 @@ import pandas
 from dnm_cohorts.download_file import download_file
 from dnm_cohorts.de_novo import DeNovo
 
-url = "http://www.nature.com/nature/journal/v549/n7673/extref/nature24018-s2.zip"
+url = "https://static-content.springer.com/esm/art%3A10.1038%2Fnature24018/MediaObjects/41586_2017_BFnature24018_MOESM2_ESM.zip"
 
 async def jonsson_nature_de_novos(result):
     """ get de novo variants for Jonsson et al Nature 2017

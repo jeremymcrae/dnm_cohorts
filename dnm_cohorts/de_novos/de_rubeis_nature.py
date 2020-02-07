@@ -5,7 +5,7 @@ import pandas
 
 from dnm_cohorts.de_novo import DeNovo
 
-url = "http://www.nature.com/nature/journal/v515/n7526/extref/nature13772-s4.xlsx"
+url = "https://static-content.springer.com/esm/art%3A10.1038%2Fnature13772/MediaObjects/41586_2014_BFnature13772_MOESM41_ESM.xlsx"
 
 async def de_rubeis_nature_de_novos(result):
     """ get de novo data from the 2014 De Rubeis et al. autism exome study in Nature

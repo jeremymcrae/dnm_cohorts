@@ -5,7 +5,7 @@ import pandas
 
 from dnm_cohorts.de_novo import DeNovo
 
-url = 'http://www.nature.com/nature/journal/v542/n7642/extref/nature21062-s2.xlsx'
+url = 'https://static-content.springer.com/esm/art%3A10.1038%2Fnature21062/MediaObjects/41586_2017_BFnature21062_MOESM34_ESM.xlsx'
 
 async def mcrae_nature_de_novos(result):
     """ load de novo mutations from McRae et al Nature 2017

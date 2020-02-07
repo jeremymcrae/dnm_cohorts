@@ -8,7 +8,7 @@ from dnm_cohorts.ensembl import parallel_sequence
 from dnm_cohorts.fix_alleles import fix_het_alleles
 from dnm_cohorts.de_novo import DeNovo
 
-url = 'http://www.nature.com/nature/journal/v485/n7397/extref/nature10945-s3.xls'
+url = 'https://static-content.springer.com/esm/art%3A10.1038%2Fnature10945/MediaObjects/41586_2012_BFnature10945_MOESM6_ESM.xls'
 
 async def fix_alleles(limiter, data):
     

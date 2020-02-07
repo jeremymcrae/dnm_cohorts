@@ -11,7 +11,7 @@ from dnm_cohorts.convert_pdf_table import extract_pages, convert_page
 from dnm_cohorts.fix_hgvs import fix_hgvs_coordinates
 from dnm_cohorts.de_novo import DeNovo
 
-url = 'http://www.nature.com/nature/journal/v511/n7509/extref/nature13394-s1.pdf'
+url = 'https://static-content.springer.com/esm/art%3A10.1038%2Fnature13394/MediaObjects/41586_2014_BFnature13394_MOESM276_ESM.pdf'
 
 def extract_table(handle):
     
