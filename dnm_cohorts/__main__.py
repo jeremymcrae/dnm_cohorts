@@ -183,7 +183,7 @@ async def _main():
     logging.basicConfig(stream=args.log, format=FORMAT, level=logging.INFO)
     
     if args.cohorts:
-        header = ['person_id', 'sex', 'phenotype']
+        header = ['person_id', 'sex', 'phenotype', 'studies']
         get_cohorts(args.output, header)
     elif args.de_novos:
         header = ['person_id', 'chrom', 'pos', 'ref', 'alt', 'study',
