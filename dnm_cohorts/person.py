@@ -13,7 +13,7 @@ class Person(dict):
         return f'{self.person_id}\t{self.sex}\t{",".join(self.phenotype)}'
     
     def __hash__(self):
-        return hash(f'{self.person_id}\t{tuple(self.phenotype)}')
+        return hash(f'{self.person_id}')
     
     def __eq__(self, other):
         return hash(self) == hash(other)
