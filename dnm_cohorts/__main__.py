@@ -69,6 +69,24 @@ def get_options():
     
     return args
 
+def merge_duplicate_persons(person_lists):
+    ''' merge duplicate persons
+    '''
+    # convert to dicts to be able to set new merged persons
+    person_lists = [dict(zip(x, x)) for x in person_lists]
+    for a, b in itertools.combinations(person_lists, 2):
+        for x in set(a) & set(b):
+            x.phenotype = sorted(set(a[x].phenotype + b[x].phenotype))
+            del a[x]
+            del b[x]
+            a[x] = x
+    
+    person_lists = [set(x) for x in person_lists]
+    for a, b in itertools.combinations(person_lists, 2):
+        a -= b
+    
+    return person_lists
+
 def get_cohorts(output, header):
     ''' get list of all individuals in all cohorts
     '''
@@ -78,14 +96,13 @@ def get_cohorts(output, header):
         open_oroak_cohort(), open_sanders_nature_cohort(),
         open_an_science_cohort()]
     
-    for a, b in itertools.combinations(asd, 2):
-        a -= b
-    
     # TODO: what about the 1 in 1000 people with differing sex between studies?
     # TODO: I've kept them for now, since they are negligle and conservative.
     samples = asd + [open_de_ligt_cohort(), open_rauch_cohort(),
         open_epi4k_ajhg_cohort(), open_jonsson_nature_cohort(),
         open_jin_nature_genetics_cohort(), kaplanis_biorxiv_cohort()]
+    
+    samples = merge_duplicate_persons(samples)
     
     _ = output.write('\t'.join(header) + '\n')
     for x in flatten(samples):
