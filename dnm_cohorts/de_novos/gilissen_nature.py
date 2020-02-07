@@ -17,7 +17,7 @@ def extract_table(handle, delta):
     
     records = []
     for page in extract_pages(handle, start=33, end=37):
-        data = convert_page(page, delta)
+        data = convert_page(page, delta=0.35)
         
         data = sorted(data, reverse=True, key=lambda x: x.y0)
         lines = []
