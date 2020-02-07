@@ -1,4 +1,6 @@
 
+import warnings
+
 import pandas
 
 from dnm_cohorts.person import Person
@@ -11,9 +13,11 @@ def open_an_science_cohort():
     Table S1 from:
     An et al. Science 362: eaat6576, doi: 10.1126/science.aat6576
     """
-    
-    data = pandas.read_excel(url, sheet_name='Table S1 Sample information',
-        skiprows=1, engine='openpyxl')
+    with warnings.catch_warnings():
+        # suppress warning about unknown extension that doesn't affect loading data
+        warnings.simplefilter("ignore")
+        data = pandas.read_excel(url, sheet_name='Table S1 Sample information',
+            skiprows=1, engine='openpyxl')
     data = data[['SampleID', 'FamilyID', 'Sex', 'Pheno', 'NVIQ']]
     
     persons = set()
