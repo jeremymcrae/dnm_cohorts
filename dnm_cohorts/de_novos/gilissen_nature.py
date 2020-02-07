@@ -13,11 +13,11 @@ from dnm_cohorts.de_novo import DeNovo
 
 url = 'https://static-content.springer.com/esm/art%3A10.1038%2Fnature13394/MediaObjects/41586_2014_BFnature13394_MOESM276_ESM.pdf'
 
-def extract_table(handle):
+def extract_table(handle, delta):
     
     records = []
     for page in extract_pages(handle, start=33, end=37):
-        data = convert_page(page, delta=0.5)
+        data = convert_page(page, delta)
         
         data = sorted(data, reverse=True, key=lambda x: x.y0)
         lines = []
@@ -34,12 +34,8 @@ def extract_table(handle):
         
         records += lines
     
-    # tidy up two consecutive lines, where the person ID has gone astray
-    records[20][0] = '9'
-    records[21].insert(0, '9')
-    
     # remove the final few footer lines
-    records = records[:-5]
+    records = records[:-7]
     
     # standardise the columns
     records = [ x[:5] for x in records ]
