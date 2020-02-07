@@ -13,7 +13,7 @@ from dnm_cohorts.de_novo import DeNovo
 
 url = 'https://static-content.springer.com/esm/art%3A10.1038%2Fnature13394/MediaObjects/41586_2014_BFnature13394_MOESM276_ESM.pdf'
 
-def extract_table(handle, delta):
+def extract_table(handle):
     
     records = []
     for page in extract_pages(handle, start=33, end=37):
