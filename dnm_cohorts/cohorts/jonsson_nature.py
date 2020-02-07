@@ -10,7 +10,7 @@ import pandas
 from dnm_cohorts.download_file import download_file
 from dnm_cohorts.person import Person
 
-url = "http://www.nature.com/nature/journal/v549/n7673/extref/nature24018-s2.zip"
+url = "https://static-content.springer.com/esm/art%3A10.1038%2Fnature24018/MediaObjects/41586_2017_BFnature24018_MOESM2_ESM.zip"
 
 def open_jonsson_nature_cohort():
     """ get cohort for Jonsson et al Nature 2017

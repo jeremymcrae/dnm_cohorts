@@ -3,7 +3,7 @@ import pandas
 
 from dnm_cohorts.person import Person
 
-url = 'https://www.nature.com/nature/journal/v485/n7397/extref/nature10989-s2.xls'
+url = 'https://static-content.springer.com/esm/art%3A10.1038%2Fnature10989/MediaObjects/41586_2012_BFnature10989_MOESM11_ESM.xls'
 
 def open_oroak_cohort():
     """ get proband data from the O'Roak et al autism exome study

@@ -6,7 +6,7 @@ import pandas
 from dnm_cohorts.person import Person
 from dnm_cohorts.mock_probands import add_mock_probands
 
-url = 'https://www.nature.com/nature/journal/v515/n7526/extref/nature13772-s4.xlsx'
+url = 'https://static-content.springer.com/esm/art%3A10.1038%2Fnature13772/MediaObjects/41586_2014_BFnature13772_MOESM41_ESM.xlsx'
 alternate = 'http://www.cell.com/cms/attachment/2118908541/2086568191/mmc6.xlsx'
 
 def open_additional():

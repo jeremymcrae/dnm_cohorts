@@ -9,7 +9,7 @@ import pandas
 from dnm_cohorts.person import Person
 from dnm_cohorts.download_file import download_file
 
-url = 'https://www.nature.com/nature/journal/v515/n7526/extref/nature13908-s2.zip'
+url = 'https://static-content.springer.com/esm/art%3A10.1038%2Fnature13908/MediaObjects/41586_2014_BFnature13908_MOESM117_ESM.zip'
 
 def get_members(row):
     '''get the member IDs from the sequencing center columns

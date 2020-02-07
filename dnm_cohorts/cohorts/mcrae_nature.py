@@ -4,7 +4,7 @@ import pandas
 from dnm_cohorts.person import Person
 from dnm_cohorts.mock_probands import add_mock_probands
 
-url = 'https://www.nature.com/nature/journal/v542/n7642/extref/nature21062-s2.xlsx'
+url = 'https://static-content.springer.com/esm/art%3A10.1038%2Fnature21062/MediaObjects/41586_2017_BFnature21062_MOESM34_ESM.xlsx'
 
 def open_mcrae_nature_cohort():
     """ get proband details for McRae et al., Nature 2017
