@@ -25,6 +25,7 @@ def open_iossifov_neuron_cohort():
     sex = ['M', 'F']
     affected = ['aut', 'sib']
     possible = list(itertools.product(affected, sex))
+    study = ['10.1016/j.neuron.2012.04.009']
     
     persons = set()
     for fam, children in zip(fam_ids, members):
@@ -36,7 +37,7 @@ def open_iossifov_neuron_cohort():
                 sex = 'female' if sex == 'F' else 'male'
                 person_id = f'{fam}.{member}|asd_cohorts'
                 
-                person = Person(person_id, sex, status)
+                person = Person(person_id, sex, status, study)
                 persons.add(person)
     
     return persons

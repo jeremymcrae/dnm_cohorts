@@ -34,6 +34,7 @@ def open_homsy_science_cohort():
     
     data['person_id'] = data['Blinded ID']
     data['person_id'] += '|homsy'
+    study = ['10.1126/science.aac9396']
     
     # estimate male fraction from proportion in Zaidi et al 2013, since the
     # sex isn't provided for individuals, nor the count of people per sex.
@@ -50,7 +51,7 @@ def open_homsy_science_cohort():
         if row['Autism Spectrum'] == 'Yes':
             status.append('HP:0000717')
         
-        person = Person(row.person_id, sex, status)
+        person = Person(row.person_id, sex, status, study)
         persons.add(person)
     
     return persons

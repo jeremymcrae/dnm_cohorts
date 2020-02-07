@@ -58,10 +58,11 @@ def open_epi4k_ajhg_cohort():
     
     data['person_id'] += '|epi4k'
     status = ['HP:0001250']
+    study = ['10.1016/j.ajhg.2014.08.013']
     persons = set()
     for i, row in data.iterrows():
         
-        person = Person(row.person_id, row.sex, status)
+        person = Person(row.person_id, row.sex, status, study)
         persons.add(person)
     
     return persons

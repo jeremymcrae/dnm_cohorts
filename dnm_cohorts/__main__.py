@@ -77,6 +77,7 @@ def merge_duplicate_persons(person_lists):
     for a, b in itertools.combinations(person_lists, 2):
         for x in set(a) & set(b):
             x.phenotype = sorted(set(a[x].phenotype + b[x].phenotype))
+            x.studies = sorted(set(a[x].studies + b[x].studies))
             del a[x]
             del b[x]
             a[x] = x

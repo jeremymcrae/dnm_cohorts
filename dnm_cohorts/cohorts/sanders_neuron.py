@@ -18,6 +18,7 @@ def open_sanders_neuron_cohort():
     
     sexes = {'F': 'female', 'female': 'female', 'M': 'male', 'male': 'male',
         'U': 'unknown'}
+    study = ['10.1016/j.neuron.2015.09.016']
     
     persons = set()
     for i, row in data.iterrows():
@@ -34,7 +35,7 @@ def open_sanders_neuron_cohort():
             sex = sexes[row[f'{sample}Sex']]
             phenotype = ['unaffected'] if sample == 'Sibling' else ['HP:0000717']
             
-            person = Person(row[sample] + '|asd_cohorts', sex, phenotype)
+            person = Person(row[sample] + '|asd_cohorts', sex, phenotype, study)
             persons.add(person)
     
     return persons

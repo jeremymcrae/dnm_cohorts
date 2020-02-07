@@ -51,13 +51,14 @@ def open_jonsson_nature_cohort():
     female_remainder = missing_n / (len(set(data.person_id)) - len(females))
     
     phenotype = ['unaffected']
+    study = ['10.1038/nature24018']
     
     persons = set()
     for i, row in data.iterrows():
         # individuals have two chances to be female, 1) if their sample if is in
         # the female group, or 2) 3.4% of the remainder are female.
         sex = 'female' if row.person_id in females or random.random() < female_remainder else 'male'
-        person = Person(row.person_id, sex, phenotype)
+        person = Person(row.person_id, sex, phenotype, study)
         persons.add(person)
     
     return persons

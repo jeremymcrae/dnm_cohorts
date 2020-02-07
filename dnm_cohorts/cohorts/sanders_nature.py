@@ -14,6 +14,7 @@ def open_sanders_nature_cohort():
     """
     data = pandas.read_excel(url, sheet_name='Sheet1', engine='xlrd')
     
+    study = ['10.1038/nature10945']
     persons = set()
     for i, row in data.iterrows():
         if row.Sample.endswith('fa') or row.Sample.endswith('mo'):
@@ -24,7 +25,7 @@ def open_sanders_nature_cohort():
         if row.Role == 'Unaffected_Sibling':
             status = ['unaffected']
         
-        person = Person(row.Sample + '|asd_cohorts', row.Gender.lower(), status)
+        person = Person(row.Sample + '|asd_cohorts', row.Gender.lower(), status, study)
         persons.add(person)
         
     return persons

@@ -38,12 +38,13 @@ def open_de_rubeis_cohort():
     data = data.append(additional, ignore_index=True)
     data['person_id'] = data.person_id.astype(str)
     data['person_id'] += '|asd_cohorts'
+    study = ['10.1038/nature13772']
     
     persons = set()
     for i, row in data.iterrows():
-        person = Person(row.person_id, row.sex, row.phenotype)
+        person = Person(row.person_id, row.sex, row.phenotype, study)
         persons.add(person)
     
-    persons = add_mock_probands(persons, 1445, 'asd', 'asd_cohorts', ['HP:0000717'])
+    persons = add_mock_probands(persons, 1445, 'asd', 'asd_cohorts', ['HP:0000717'], study)
     
     return persons

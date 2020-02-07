@@ -17,12 +17,13 @@ def open_mcrae_nature_cohort():
     data['Individual ID'] += '|DDD'
     
     phenotype = ['HP:0001249']
+    study = ['10.1038/nature21062']
     
     persons = set()
     for i, row in data.iterrows():
-        person = Person(row['Individual ID'], row.Sex, phenotype)
+        person = Person(row['Individual ID'], row.Sex, phenotype, study)
         persons.add(person)
     
-    persons = add_mock_probands(persons, 4293, 'ddd', 'DDD', phenotype)
+    persons = add_mock_probands(persons, 4293, 'ddd', 'DDD', phenotype, study)
     
     return persons

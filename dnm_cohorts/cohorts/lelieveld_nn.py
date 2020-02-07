@@ -18,6 +18,7 @@ def open_lelieveld_cohort():
     data = pandas.read_excel(url, sheet_name='Supplementary Table 2')
     
     phenotype = ['HP:0001249']
+    study = ['10.1038/nn.4352']
     
     ids = list(range(1, max(data['Patient key']) + 1))
     ids = [ str(x) + '|lelieveld' for x in ids ]
@@ -26,7 +27,7 @@ def open_lelieveld_cohort():
     persons = set()
     for person_id in ids:
         sex = 'male' if random.random() < male_fraction else 'female'
-        person = Person(person_id, sex, phenotype)
+        person = Person(person_id, sex, phenotype, study)
         persons.add(person)
     
     return persons

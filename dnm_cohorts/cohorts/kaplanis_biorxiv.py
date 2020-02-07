@@ -8,7 +8,7 @@ from dnm_cohorts.mock_probands import add_mock_probands
 
 url = 'https://www.biorxiv.org/content/biorxiv/early/2019/10/16/797787/DC2/embed/media-2.txt'
 
-def subcohort(rows, counts, prefix, suffix):
+def subcohort(rows, counts, prefix, suffix, study):
     '''
     '''
     phenotype = ['HP:0001249']
@@ -18,11 +18,11 @@ def subcohort(rows, counts, prefix, suffix):
     persons = set()
     for i, row in rows.iterrows():
         sex = 'male' if random.random() < male_fraction else 'female'
-        person = Person(row['person_id'], sex, phenotype)
+        person = Person(row['person_id'], sex, phenotype, study)
         persons.add(person)
     
     # account for individuals without exomic de novo mutations
-    return add_mock_probands(persons, total, prefix, suffix, phenotype)
+    return add_mock_probands(persons, total, prefix, suffix, phenotype, study)
 
 def kaplanis_biorxiv_cohort():
     """ get proband details for Kaplanis et al BioRxiv 2019
@@ -45,10 +45,11 @@ def kaplanis_biorxiv_cohort():
     
     data['person_id'] = data['id'] + '|' + data['study']
     phenotype = ['HP:0001249']
+    doi = ['10.1101/797787']
     
     persons = set()
     for study in counts:
         rows = data[data['study'] == study]
-        persons |= subcohort(rows, counts[study], study.lower(), study)
+        persons |= subcohort(rows, counts[study], study.lower(), study, doi)
     
     return persons

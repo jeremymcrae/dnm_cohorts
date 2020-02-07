@@ -19,6 +19,7 @@ def open_jin_nature_genetics_cohort():
     
     # get male fraction in trios from cohort sex counts in supplemental table 2
     male_fraction = 1691 / (1691 + 1180)
+    study = ['10.1038/ng.3970']
     
     persons = set()
     for i, row in data.iterrows():
@@ -27,7 +28,7 @@ def open_jin_nature_genetics_cohort():
         if row['NDD'] == 'Yes':
             status.append('HP:0001263')
         
-        person = Person(row.person_id, sex, status)
+        person = Person(row.person_id, sex, status, study)
         persons.add(person)
     
     return persons

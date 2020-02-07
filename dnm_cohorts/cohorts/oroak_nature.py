@@ -15,6 +15,7 @@ def open_oroak_cohort():
     data = pandas.read_excel(url, sheet_name='Supplementary Table 1',
         skipfooter=1, engine='xlrd')
     
+    study = ['10.1038/nature10989']
     persons = set()
     for i, row in data.iterrows():
         status = ['HP:0000717']
@@ -26,7 +27,7 @@ def open_oroak_cohort():
         if row['non-verbal_IQ'] < 70:
             status.append('HP:0001249')
         
-        person = Person(row.child + '|asd_cohorts', row.sex, status)
+        person = Person(row.child + '|asd_cohorts', row.sex, status, study)
         persons.add(person)
     
     return persons

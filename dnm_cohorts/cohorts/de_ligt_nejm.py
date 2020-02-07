@@ -53,9 +53,10 @@ def open_de_ligt_cohort():
     data['person_id'] += '|de_ligt'
     
     status = ['HP:0001249']
+    study = ['10.1056/NEJMoa1206524']
     persons = set()
     for i, row in data.iterrows():
-        person = Person(row.person_id, row.sex, status)
+        person = Person(row.person_id, row.sex, status, study)
         persons.add(person)
     
     return persons

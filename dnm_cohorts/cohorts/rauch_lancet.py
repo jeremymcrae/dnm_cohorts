@@ -14,14 +14,15 @@ def extract_table(handle):
     records = []
     header = None
     for page in extract_pages(handle, start=12, end=16):
-        data = convert_page(page)
+        data = convert_page(page, delta=2.7)
         
         data = sorted(data, reverse=True, key=lambda x: x.y0)
         data = data[1:]
         header, data = data[0], data[1:]
         for line in data:
             text = [ x.get_text() for x in sorted(line, key=lambda x: x.x0) ]
-            records.append(text)
+            if len(text) > 10:
+                records.append(text)
     
     header = [ x.get_text() for x in sorted(header, key=lambda x: x.x0) ]
     
@@ -48,10 +49,11 @@ def open_rauch_cohort():
     data['person_id'] += '|rauch'
     
     status = ['HP:0001249']
+    study = ['10.1016/S0140-6736(12)61480-9']
     persons = set()
     for i, row in data.iterrows():
         
-        person = Person(row.person_id, row.sex, status)
+        person = Person(row.person_id, row.sex, status, study)
         persons.add(person)
     
     return persons

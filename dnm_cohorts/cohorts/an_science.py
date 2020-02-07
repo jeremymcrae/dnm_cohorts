@@ -19,6 +19,7 @@ def open_an_science_cohort():
         data = pandas.read_excel(url, sheet_name='Table S1 Sample information',
             skiprows=1, engine='openpyxl')
     data = data[['SampleID', 'FamilyID', 'Sex', 'Pheno', 'NVIQ']]
+    study = ['10.1126/science.aat6576']
     
     persons = set()
     for i, row in data.iterrows():
@@ -30,6 +31,6 @@ def open_an_science_cohort():
         if isinstance(row.NVIQ, int) and row.NVIQ < 70:
             status.append('HP:0001249')
         
-        person = Person(row.SampleID + '|asd_cohorts', row.Sex, status)
+        person = Person(row.SampleID + '|asd_cohorts', row.Sex, status, study)
         persons.add(person)
     return persons
