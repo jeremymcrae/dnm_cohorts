@@ -28,46 +28,32 @@ from dnm_cohorts.de_novo import DeNovo
 from dnm_cohorts.rate_limiter import RateLimiter
 
 def get_options():
-    parser = argparse.ArgumentParser()
-    parent = argparse.ArgumentParser(add_help=False)
+    parser = argparse.ArgumentParser(add_help=False)
     
-    parent.add_argument('--output', default=sys.stdout, help='where to save output')
-    parent.add_argument('--log', default=sys.stderr, help='where to write log output')
+    parser.add_argument('--output', type=argparse.FileType('wt'),
+        default=sys.stdout, help='where to save output')
+    parser.add_argument('--log', type=argparse.FileType('wt'),
+        default=sys.stderr, help='where to write log output')
     
     subparsers = parser.add_subparsers()
-    de_novos = subparsers.add_parser('de-novos', parents=[parent],
+    de_novos = subparsers.add_parser('de-novos', parents=[parser],
         description='Gets de novo mutations from publically available datasets.')
-    de_novos.add_argument('--de-novos', default=True)
-    de_novos.add_argument('--cohorts', default=False)
-    cohort = subparsers.add_parser('cohort', parents=[parent],
+    de_novos.set_defaults(func=get_de_novos)
+    
+    cohort = subparsers.add_parser('cohort', parents=[parser],
         description='Gets cohort info for de novo datasets')
-    cohort.add_argument('--cohorts', default=True)
-    cohort.add_argument('--de-novos', default=False)
-    lifter = subparsers.add_parser('lift', parents=[parent],
+    cohort.set_defaults(func=get_cohorts)
+    
+    lifter = subparsers.add_parser('lift', parents=[parser],
         description='Converts de novo mutations to a different genome build')
-    lifter.add_argument('--input', required=True, help='path to input de novos')
+    lifter.add_argument('--input', type=argparse.FileType('rt'),
+        required=True, help='path to input de novos')
     lifter.add_argument('--to', required=True,
         help='genome build to lift variant on to. Variants start with a build' \
              'associated with them, so no need to supply a from-build')
-    lifter.add_argument('--cohorts', default=False)
-    lifter.add_argument('--de-novos', default=False)
+    lifter.set_defaults(func=change_build)
     
-    args = parser.parse_args()
-    
-    try:
-        args.output = open(args.output, 'w')
-    except TypeError:
-        pass
-    
-    try:
-        args.log = open(args.log, 'w')
-    except TypeError:
-        pass
-    
-    if hasattr(args, 'input'):
-        args.input = open(args.input, 'r')
-    
-    return args
+    return parser.parse_args()
 
 def merge_duplicate_persons(person_lists):
     ''' merge duplicate persons
@@ -88,9 +74,11 @@ def merge_duplicate_persons(person_lists):
     
     return person_lists
 
-def get_cohorts(output, header):
+async def get_cohorts(args):
     ''' get list of all individuals in all cohorts
     '''
+    header = ['person_id', 'sex', 'phenotype', 'studies']
+    yield '\t'.join(header) + '\n'
     # open ASD cohort info, then drop duplicate samples from the ASD cohorts
     asd = [open_sanders_neuron_cohort(), open_de_rubeis_cohort(),
         open_iossifov_nature_cohort(), open_iossifov_neuron_cohort(),
@@ -104,10 +92,8 @@ def get_cohorts(output, header):
         open_jin_nature_genetics_cohort(), kaplanis_biorxiv_cohort()]
     
     samples = merge_duplicate_persons(samples)
-    
-    _ = output.write('\t'.join(header) + '\n')
     for x in flatten(samples):
-        _ = output.write(str(x) + '\n')
+        yield str(x) + '\n'
 
 def remove_duplicate_dnms(cohorts):
     """ only include unique variants
@@ -127,9 +113,12 @@ def remove_duplicate_dnms(cohorts):
     
     return unique
 
-async def get_de_novos(output, header):
+async def get_de_novos(args):
     """ get list of all de novos in all cohorts
     """
+    header = ['person_id', 'chrom', 'pos', 'ref', 'alt', 'study',
+        'confidence', 'build', 'symbol', 'consequence']
+    yield '\t'.join(header) + '\n'
     async with RateLimiter(14) as limiter:
         # open ASD cohort info, then drop duplicate samples from the ASD cohorts
         asd = []
@@ -160,39 +149,30 @@ async def get_de_novos(output, header):
         cohorts = list(asd) + flatten(non_asd)
         cohorts = await get_consequences(limiter, cohorts)
         
-        _ = output.write('\t'.join(header) + '\n')
         for x in drop_inperson_duplicates(cohorts):
-            _ = output.write(str(x) + '\n')
+            yield str(x) + '\n'
 
-def change_build(input, output, build, header):
+async def change_build(args):
     ''' shift variants onto a new genome build
     '''
-    _ = input.readline()
-    _ = output.write('\t'.join(header) + '\n')
+    header = ['person_id', 'chrom', 'pos', 'ref', 'alt', 'study',
+        'confidence', 'build', 'symbol', 'consequence']
+    yield '\t'.join(header) + '\n'
+    _ = args.input.readline()
+    _ = args.output.write('\t'.join(header) + '\n')
     for line in input:
         var = DeNovo(*line.strip('\n').split('\t'))
         if not var:
             continue
-        remapped = var.to_build(build)
-        if remapped:
-            _ = output.write(str(remapped) + '\n')
+        yield str(var.to_build(args.to)) + '\n'
 
 async def _main():
     args = get_options()
     FORMAT = '%(asctime)-15s %(message)s'
     logging.basicConfig(stream=args.log, format=FORMAT, level=logging.INFO)
     
-    if args.cohorts:
-        header = ['person_id', 'sex', 'phenotype', 'studies']
-        get_cohorts(args.output, header)
-    elif args.de_novos:
-        header = ['person_id', 'chrom', 'pos', 'ref', 'alt', 'study',
-            'confidence', 'build', 'symbol', 'consequence']
-        await get_de_novos(args.output, header)
-    else:
-        header = ['person_id', 'chrom', 'pos', 'ref', 'alt', 'study',
-            'confidence', 'build', 'symbol', 'consequence']
-        change_build(args.input, args.output, args.to, header)
+    async for x in args.func(args):
+        _ = args.output.write(x)
 
 def main():
     trio.run(_main)
