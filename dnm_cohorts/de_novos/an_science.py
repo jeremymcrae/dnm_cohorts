@@ -1,5 +1,6 @@
 
 import logging
+import warnings
 
 import pandas
 
@@ -14,8 +15,11 @@ async def an_science_de_novos(result):
     An et al. Science 362: eaat6576, doi: 10.1126/science.aat6576
     """
     logging.info('getting An et al Science 2018 de novos')
-    data = pandas.read_excel(url, sheet_name='Table S2 de novo mutations',
-        skiprows=1, usecols=list(range(8)), engine='openpyxl')
+    with warnings.catch_warnings():
+        # suppress warning about unknown extension that doesn't affect loading data
+        warnings.simplefilter('ignore')
+        data = pandas.read_excel(url, sheet_name='Table S2 de novo mutations',
+            skiprows=1, usecols=list(range(8)), engine='openpyxl')
     
     data['chrom'] = data['Chr'].astype(str)
     
