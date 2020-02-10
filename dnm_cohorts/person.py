@@ -1,7 +1,7 @@
 
 class Person(dict):
     
-    def __init__(self, person_id, sex, phenotype, studies=None):
+    def __init__(self, person_id, sex, phenotype, studies):
         self.person_id = str(person_id)
         self.sex = sex
         self.phenotype = phenotype
