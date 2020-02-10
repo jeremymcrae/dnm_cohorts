@@ -32,7 +32,13 @@ def open_cohort(path=None):
         path = COHORT_PATH
     with gzip.open(path, 'rt') as handle:
         header = handle.readline()
-        return [ Person(*x.strip('\n').split('\t')) for x in handle ]
+        cohort = []
+        for line in handle:
+            person_id, sex, phenotypes, studies = line.strip('\n').split('\t')
+            phenotypes = phenotypes.split(',')
+            studies = studies.split(',')
+            cohort.append(Person(person_id, sex, phenotypes, studies))
+        return cohort
 
 de_novos = open_de_novos()
 cohort = open_cohort()
