@@ -8,7 +8,7 @@ class Person(dict):
         self.studies = studies
     
     def __repr__(self):
-        return f'Person("{self.person_id}", "{self.sex}", "{self.phenotype}", {self.studies})'
+        return f'Person("{self.person_id}", "{self.sex}", {self.phenotype}, {self.studies})'
     
     def __str__(self):
         return f'{self.person_id}\t{self.sex}\t{",".join(self.phenotype)}\t{",".join(self.studies)}'
