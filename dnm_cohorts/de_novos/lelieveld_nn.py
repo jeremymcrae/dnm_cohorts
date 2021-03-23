@@ -7,7 +7,7 @@ import pandas
 from dnm_cohorts.ensembl import parallel_sequence
 from dnm_cohorts.de_novo import DeNovo
 
-url = "http://www.nature.com/neuro/journal/v19/n9/extref/nn.4352-S3.xlsx"
+url = "https://static-content.springer.com/esm/art%3A10.1038%2Fnn.4352/MediaObjects/41593_2016_BFnn4352_MOESM21_ESM.xlsx"
 
 async def fix_alleles(limiter, data):
     """ clean up ref and alt alleles in a dataset
@@ -49,7 +49,7 @@ async def fix_alleles(limiter, data):
 async def lelieveld_nn_de_novos(result, limiter):
     """ get de novo data for Lelieveld et al. intellectual disability exome study
     
-    De novo mutation data sourced from supplementary table 1 from:
+    De novo mutation data sourced from supplementary table 2 from:
     Lelieveld et al. (2016) Nature Neuroscience 19:1194-1196
     doi: 10.1038/nn.4352
     

@@ -5,7 +5,7 @@ import pandas
 
 from dnm_cohorts.person import Person
 
-url = 'https://www.nature.com/neuro/journal/v19/n9/extref/nn.4352-S3.xlsx'
+url = 'https://static-content.springer.com/esm/art%3A10.1038%2Fnn.4352/MediaObjects/41593_2016_BFnn4352_MOESM21_ESM.xlsx'
 
 def open_lelieveld_cohort():
     """ get proband details for Lelieveld et al., 2016
