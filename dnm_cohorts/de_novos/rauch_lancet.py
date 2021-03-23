@@ -32,8 +32,7 @@ def extract_table_s2(handle):
         
         records += lines
     
-    records.pop(0)
-    records.pop(-1)
+    records = records[3:-6]
     
     # fix the last line
     records[-1] = [ x.split('\xa0')[0] for x in records[-1] ]
@@ -67,7 +66,7 @@ def extract_table_s3(handle):
         records += lines
     
     # drop the last few rows
-    records = records[:-4]
+    records = records[1:-4]
     
     # fix a scrambled pair of lines
     mixed = records.pop(6)
