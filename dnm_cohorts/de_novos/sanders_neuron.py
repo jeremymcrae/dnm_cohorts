@@ -5,7 +5,7 @@ import pandas
 
 from dnm_cohorts.de_novo import DeNovo
 
-url = 'https://www.cell.com/cms/attachment/2118908541/2086568191'
+url = 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4624267/bin/NIHMS723829-supplement-8.xlsx'
 
 async def sanders_neuron_de_novos(result):
     """ get de novo data from the Sanders et al Neuron autism exome study

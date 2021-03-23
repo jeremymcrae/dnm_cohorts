@@ -7,8 +7,8 @@ from dnm_cohorts.fix_hgvs import fix_coordinates_with_allele
 from dnm_cohorts.de_novos.iossifov_nature import tidy_families
 from dnm_cohorts.de_novo import DeNovo
 
-snv_url = 'http://www.cell.com/cms/attachment/2024816859/2044465439/mmc2.xlsx'
-indel_url = 'http://www.cell.com/cms/attachment/2024816859/2044465437/mmc4.xlsx'
+snv_url = 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3619976/bin/NIHMS374246-supplement-02.xlsx'
+indel_url = 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3619976/bin/NIHMS374246-supplement-04.xlsx'
 
 def get_person_ids(data):
     
