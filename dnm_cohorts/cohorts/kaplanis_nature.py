@@ -6,7 +6,7 @@ import pandas
 from dnm_cohorts.person import Person
 from dnm_cohorts.mock_probands import add_mock_probands
 
-url = 'https://www.biorxiv.org/content/biorxiv/early/2019/10/16/797787/DC2/embed/media-2.txt'
+url = 'https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-020-2832-5/MediaObjects/41586_2020_2832_MOESM3_ESM.txt'
 
 def subcohort(rows, counts, prefix, suffix, study):
     '''
@@ -24,12 +24,11 @@ def subcohort(rows, counts, prefix, suffix, study):
     # account for individuals without exomic de novo mutations
     return add_mock_probands(persons, total, prefix, suffix, phenotype, study)
 
-def kaplanis_biorxiv_cohort():
+def kaplanis_nature_cohort():
     """ get proband details for Kaplanis et al BioRxiv 2019
     
-    Kaplanis et al BioRxiv 2019
-    doi: 10.1101/797787
-    Supplementary Table S1.
+    Kaplanis et al Nature 2020
+    doi: 10.1038/s41586-020-2832-5
     """
     random.seed(1)
     data = pandas.read_table(url)
@@ -45,7 +44,7 @@ def kaplanis_biorxiv_cohort():
     
     data['person_id'] = data['id'] + '|' + data['study']
     phenotype = ['HP:0001249']
-    doi = ['10.1101/797787']
+    doi = ['10.1038/s41586-020-2832-5']
     
     persons = set()
     for study in counts:

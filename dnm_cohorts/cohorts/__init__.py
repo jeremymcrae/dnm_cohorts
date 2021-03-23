@@ -14,4 +14,4 @@ from dnm_cohorts.cohorts.homsy_science import open_homsy_science_cohort
 from dnm_cohorts.cohorts.jonsson_nature import open_jonsson_nature_cohort
 from dnm_cohorts.cohorts.jin_nature_genetics import open_jin_nature_genetics_cohort
 from dnm_cohorts.cohorts.an_science import open_an_science_cohort
-from dnm_cohorts.cohorts.kaplanis_biorxiv import kaplanis_biorxiv_cohort
+from dnm_cohorts.cohorts.kaplanis_nature import kaplanis_nature_cohort

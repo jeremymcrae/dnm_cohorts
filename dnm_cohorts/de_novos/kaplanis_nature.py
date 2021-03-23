@@ -6,14 +6,14 @@ import pandas
 from dnm_cohorts.de_novo import DeNovo
 from dnm_cohorts.de_novos.lelieveld_nn import fix_alleles
 
-url = 'https://www.biorxiv.org/content/biorxiv/early/2019/10/16/797787/DC2/embed/media-2.txt'
+url = 'https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-020-2832-5/MediaObjects/41586_2020_2832_MOESM3_ESM.txt'
 
-async def kaplanis_biorxiv_de_novos(result, limiter):
-    """ load de novo mutations from Kaplanis et al BioRxiv 2019
+async def kaplanis_nature_de_novos(result, limiter):
+    """ load de novo mutations from Kaplanis et al Nature 2020
     
     These de novos are loaded from Supplementary Table 1 from
-    Kaplanis et al BioRxiv 2019
-    doi: 10.1101/797787
+    Kaplanis et al Nature 2020
+    doi: 10.1038/s41586-020-2832-5
     
     Returns:
         dataframe of de novo mutations
@@ -23,7 +23,7 @@ async def kaplanis_biorxiv_de_novos(result, limiter):
     
     data['person_id'] = data['id'] + '|' + data['study']
     data['chrom'] = data['chrom'].astype(str)
-    data['study'] = '10.1101/797787'
+    data['study'] = '10.1038/s41586-020-2832-5'
     data['confidence'] = 'high'
     data['build'] = 'grch37'
     
