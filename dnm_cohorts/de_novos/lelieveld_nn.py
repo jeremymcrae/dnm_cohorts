@@ -33,7 +33,16 @@ async def fix_alleles(limiter, data):
     alt[idx] = ref[idx] + alt[idx]
     
     # make deletion alts VEP-compatible
-    alt[alt.isnull()] = '-'
+    idx = alt.isnull()
+
+    seqs = {}
+    coords = [(x.chrom, x.pos - 1, x.pos - 1, x.build) for i, x in data[idx].iterrows()]
+    async with trio.open_nursery() as nursery:
+        for x in coords:
+            nursery.start_soon(parallel_sequence, limiter, *x[:3], seqs, x[3])
+    
+    alt[idx] = [seqs[x] for x in coords]
+    ref[idx] =  alt[idx] + ref[idx]
     
     return ref, alt
 
