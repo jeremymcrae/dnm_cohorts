@@ -89,7 +89,7 @@ async def get_cohorts(args):
     # TODO: I've kept them for now, since they are negligle and conservative.
     samples = asd + [open_de_ligt_cohort(), open_rauch_cohort(),
         open_epi4k_ajhg_cohort(), open_jonsson_nature_cohort(),
-        open_jin_nature_genetics_cohort(), kaplanis_biorxiv_cohort()]
+        open_jin_nature_genetics_cohort(), kaplanis_nature_cohort()]
     
     samples = merge_duplicate_persons(samples)
     for x in flatten(samples):
@@ -144,7 +144,7 @@ async def get_de_novos(args):
             nursery.start_soon(jin_nature_genetics_de_novos, non_asd)
             nursery.start_soon(rauch_lancet_de_novos, non_asd, limiter)
             nursery.start_soon(jonsson_nature_de_novos, non_asd)
-            nursery.start_soon(kaplanis_biorxiv_de_novos, non_asd, limiter)
+            nursery.start_soon(kaplanis_nature_de_novos, non_asd, limiter)
         
         cohorts = list(asd) + flatten(non_asd)
         cohorts = await get_consequences(limiter, cohorts)
