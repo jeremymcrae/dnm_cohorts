@@ -5,7 +5,7 @@ import pandas
 
 from dnm_cohorts.person import Person
 
-url = 'https://media.nature.com/original/nature-assets/ng/journal/v49/n11/extref/ng.3970-S3.xlsx'
+url = 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5675000/bin/NIHMS906719-supplement-supp_datasets.xlsx'
 
 def open_jin_nature_genetics_cohort():
     """ gets individual level data for Jin et al congenital heart disease
