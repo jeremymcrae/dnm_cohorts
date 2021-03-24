@@ -5,7 +5,7 @@ import pandas
 
 from dnm_cohorts.person import Person
 
-url = 'http://www.cell.com/cms/attachment/2118908541/2086568189/mmc2.xlsx'
+url = 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4624267/bin/NIHMS723829-supplement-3.xlsx'
 
 def open_sanders_neuron_cohort():
     """

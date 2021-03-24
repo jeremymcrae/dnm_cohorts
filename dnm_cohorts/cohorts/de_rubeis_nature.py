@@ -7,7 +7,7 @@ from dnm_cohorts.person import Person
 from dnm_cohorts.mock_probands import add_mock_probands
 
 url = 'https://static-content.springer.com/esm/art%3A10.1038%2Fnature13772/MediaObjects/41586_2014_BFnature13772_MOESM41_ESM.xlsx'
-alternate = 'http://www.cell.com/cms/attachment/2118908541/2086568191/mmc6.xlsx'
+alternate = 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4624267/bin/NIHMS723829-supplement-7.xlsx'
 
 def open_additional():
     data = pandas.read_excel(alternate, sheet_name='Exome')
@@ -24,7 +24,7 @@ def open_de_rubeis_cohort():
     De Rubeis et al. (2013) Nature 515:209-215
     doi: 10.1038/nature13772
     Supplementary Table 3, with some additional proband details sourced from
-    Supplementary table S4 from Sanders et al. (2015) Neuron 87:1215-1233.
+    Supplementary table S5 from Sanders et al. (2015) Neuron 87:1215-1233.
     """
     data = pandas.read_excel(url, sheet_name='De Novo', skipfooter=1)
     

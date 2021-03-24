@@ -4,9 +4,9 @@ import itertools
 
 from dnm_cohorts.person import Person
 
-supp_s1_url = 'http://www.cell.com/cms/attachment/2024816859/2044465439/mmc2.xlsx'
-supp_s2_url = 'http://www.cell.com/cms/attachment/2024816859/2044465438/mmc3.xlsx'
-supp_s3_url = 'http://www.cell.com/cms/attachment/2024816859/2044465437/mmc4.xlsx'
+supp_s1_url = 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3619976/bin/NIHMS374246-supplement-02.xlsx'
+supp_s2_url = 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3619976/bin/NIHMS374246-supplement-03.xlsx'
+supp_s3_url = 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3619976/bin/NIHMS374246-supplement-04.xlsx'
 
 def open_iossifov_neuron_cohort():
     """ get probands sequenced in Iossifov et al., Neuron 2012

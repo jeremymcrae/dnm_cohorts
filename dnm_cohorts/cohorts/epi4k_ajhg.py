@@ -9,6 +9,32 @@ from dnm_cohorts.convert_pdf_table import extract_pages, convert_page
 
 url = 'https://ars.els-cdn.com/content/image/1-s2.0-S0002929714003838-mmc1.pdf'
 
+
+def transpose(records):
+    ''' tranpose data from interpreted table columns
+    
+    Args:
+        records: list of data per page, where each item comtains sublists of 
+        data for various columns. e.g. 
+            [
+                ['aa ab ac', 
+                 'IS IS IS', 
+                 'ND1 ND2 ND3', 
+                 'ND1 ND2 ND3', 
+                 'ND1 ND2 ND3', 
+                 'F F M', 
+                 '1 1 1'
+                 ], 
+                 [...]
+            ]
+    
+    Yields:
+        data per row
+    '''
+    for page in records:
+        for row in zip(*(column.split() for column in page)):
+            yield row
+
 def extract_table(handle):
     
     records = []
@@ -38,6 +64,7 @@ def extract_table(handle):
         header, lines = lines[0], lines[1:]
         records += lines
     
+    records = list(transpose(records))
     data = pandas.DataFrame.from_records(records, columns=header)
     data['person_id'] = data['Proband ID'].str.upper()
     data['sex'] = data['Proband gender'].map({'F': 'female', 'M': 'male'})
