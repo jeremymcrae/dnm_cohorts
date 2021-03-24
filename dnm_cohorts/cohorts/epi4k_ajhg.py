@@ -59,7 +59,7 @@ def extract_table(handle):
         lines = lines[:-1]
         
         # drop blank lines
-        lines = [ x for x in lines if x != [''] ]
+        lines = [[y for y in x if y != ''] for x in lines]
         
         header, lines = lines[0], lines[1:]
         records += lines
