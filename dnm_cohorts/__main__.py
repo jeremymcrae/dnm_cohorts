@@ -160,7 +160,7 @@ async def change_build(args):
     yield '\t'.join(header) + '\n'
     _ = args.input.readline()
     _ = args.output.write('\t'.join(header) + '\n')
-    for line in input:
+    for line in args.input:
         var = DeNovo(*line.strip('\n').split('\t'))
         if not var:
             continue
