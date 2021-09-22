@@ -97,7 +97,7 @@ class DeNovo:
             self.lifters[key] = get_lifter(from_build, to_build)
         
         try:
-            coords = self.lifters[key][self.chrom][self.pos]
+            coords = self.lifters[key][self.chrom][self.pos - 1]
         except KeyError:
             logging.warning(f'cannot liftover: {self.chrom}:{self.pos}' \
                             f'{self.ref}->{self.alt}')
@@ -112,6 +112,7 @@ class DeNovo:
         # NOTE: consequence annotations.
         assert len(coords) == 1
         chrom, pos, strand = coords[0]
+        pos += 1
         ref, alt = self.ref, self.alt
         if strand == '-':
             ref = revcomp(self.ref)
