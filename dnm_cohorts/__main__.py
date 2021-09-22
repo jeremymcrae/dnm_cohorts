@@ -155,16 +155,15 @@ async def get_de_novos(args):
 async def change_build(args):
     ''' shift variants onto a new genome build
     '''
-    header = ['person_id', 'chrom', 'pos', 'ref', 'alt', 'study',
-        'confidence', 'build', 'symbol', 'consequence']
-    yield '\t'.join(header) + '\n'
-    _ = args.input.readline()
-    _ = args.output.write('\t'.join(header) + '\n')
+    yield args.input.readline()
+    
     for line in args.input:
         var = DeNovo(*line.strip('\n').split('\t'))
         if not var:
             continue
-        yield str(var.to_build(args.to)) + '\n'
+        remapped = var.to_build(args.to)
+        if remapped:
+            yield str(remapped) + '\n'
 
 async def _main():
     args = get_options()
