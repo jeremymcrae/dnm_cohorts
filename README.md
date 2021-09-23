@@ -59,5 +59,6 @@ reference   |   year   |  unique individuals  |   phenotype   |   assay   | depr
 
 #### Excluded cohorts
 We exclude some published cohorts with de novo mutations, for the reasons below:
- - Helbig _et al_ in _Nature Neuroscience_ 18:898-905. This study only reported the likely pathogenic de novo mutations.
- - Goldman _et al._ in _Nature Genetics_ 48:935-939. This study includes monozygotic twins, so some de novo mutations are not independent, but does not include sample or family IDs that would permit exclusion of the monozygotic twins.
+ - Helbig _et al_ in [_Genetics in Medicine_ 18:898-905](https://doi.org/10.1038/gim.2015.186). This study only reported the likely pathogenic de novo mutations.
+ - Goldman _et al._ in [_Nature Genetics_ 48:935-939](https://doi.org/10.1038/ng.3597). This study includes monozygotic twins, so some de novo mutations are not independent, but does not include sample or family IDs that would permit exclusion of the monozygotic twins.
+ - Goldmann _et al._ in [_Nature Genetics_ 50:487-492](https://doi.org/10.1038/s41588-018-0071-6). This study only reported clustered DNMs, so not representative of all coding DNMs.
