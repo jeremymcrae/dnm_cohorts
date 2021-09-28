@@ -54,7 +54,7 @@ def open_jonsson_nature_cohort():
     study = ['10.1038/nature24018']
     
     persons = set()
-    for i, row in data.iterrows():
+    for row in data.itertuples():
         # individuals have two chances to be female, 1) if their sample if is in
         # the female group, or 2) 3.4% of the remainder are female.
         sex = 'female' if row.person_id in females or random.random() < female_remainder else 'male'

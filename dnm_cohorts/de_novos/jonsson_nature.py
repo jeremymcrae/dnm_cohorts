@@ -45,7 +45,7 @@ async def jonsson_nature_de_novos(result):
     data = data[~data.person_id.isin(child_ids)]
     
     vars = set()
-    for i, row in data.iterrows():
+    for row in data.itertuples():
         var = DeNovo(row.person_id, row.chrom, row.pos, row.ref, row.alt,
             row.study, row.confidence, row.build)
         vars.add(var)
