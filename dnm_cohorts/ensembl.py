@@ -1,5 +1,6 @@
 # functions to extract data from the ensembl REST API
 
+import logging
 import json
 import trio
 
@@ -88,8 +89,15 @@ def most_severe(data, exclude_bad=True):
     for tx in transcripts:
         # get consequence for current transcript
         tx['cq'] = min(tx['consequence_terms'], key=lambda x: severity[x])
-        tx['not_hgnc'] = tx['gene_symbol_source'] != "HGNC" # sort HGNC first
-    
+        if 'gene_symbol_source' in tx:
+            tx['not_hgnc'] = tx['gene_symbol_source'] != "HGNC" # sort HGNC first
+        else:
+            logging.error(f'no "gene_symbol_source" found in {data}')
+            tx['not_hgnc'] = False
+        
+        if 'gene_symbol' not in tx:
+            tx['gene_symbol'] = ''
+        
     # return the most severe consequence, prefer transcripts with HGNC symbols
     tx = min(transcripts, key=lambda x: (severity[x['cq']], x['not_hgnc']))
     return tx['cq'], tx['gene_symbol']
