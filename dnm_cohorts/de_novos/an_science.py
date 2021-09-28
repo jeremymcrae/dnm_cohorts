@@ -6,7 +6,7 @@ import pandas
 
 from dnm_cohorts.de_novo import DeNovo
 
-url = 'https://science.sciencemag.org/content/sci/suppl/2018/12/12/362.6420.eaat6576.DC1/aat6576_Table-S2.xlsx'
+url = 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6432922/bin/NIHMS1015808-supplement-Table2.xlsx'
 
 async def an_science_de_novos(result):
     """ get de novo mutations from An et al, Autism dataset
@@ -28,7 +28,7 @@ async def an_science_de_novos(result):
     data['confidence'] = 'high'
     
     vars = set()
-    for i, row in data.iterrows():
+    for row in data.itertuples():
         var = DeNovo(row.SampleID, row.chrom, row.Pos, row.Ref, row.Alt,
             row.study, row.confidence, 'grch38')
         vars.add(var)

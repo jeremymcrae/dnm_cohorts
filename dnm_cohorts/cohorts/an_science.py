@@ -5,7 +5,7 @@ import pandas
 
 from dnm_cohorts.person import Person
 
-url = 'https://science.sciencemag.org/highwire/filestream/720071/field_highwire_adjunct_files/1/aat6576_Table-S1.xlsx'
+url = 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6432922/bin/NIHMS1015808-supplement-Table1.xlsx'
 
 def open_an_science_cohort():
     """ gets individual level data for An et al Autism dataset
