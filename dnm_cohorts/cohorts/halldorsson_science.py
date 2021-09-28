@@ -27,7 +27,7 @@ def open_halldorsson_science_cohort():
     df['person_id'] += '|halldorsson'
     
     phenotype = ['unaffected']
-    study = ['10.1038/nature24018']
+    study = ['110.1126/science.aau1043']
     female_fraction = 0.5  # assumption from the fraction from their earlier Jonsson et al publication
     
     persons = set()
