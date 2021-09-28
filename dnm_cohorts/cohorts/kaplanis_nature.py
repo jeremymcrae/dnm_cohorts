@@ -25,7 +25,7 @@ def subcohort(rows, counts, prefix, suffix, study):
     return add_mock_probands(persons, total, prefix, suffix, phenotype, study)
 
 def kaplanis_nature_cohort():
-    """ get proband details for Kaplanis et al BioRxiv 2019
+    """ get proband details for Kaplanis et al Nature 2019
     
     Kaplanis et al Nature 2020
     doi: 10.1038/s41586-020-2832-5

@@ -18,7 +18,7 @@ async def kaplanis_nature_de_novos(result, limiter):
     Returns:
         dataframe of de novo mutations
     """
-    logging.info('getting Kaplanis et al BioRxis 2019 de novos')
+    logging.info('getting Kaplanis et al Nature 2019 de novos')
     data = pandas.read_table(url)
     
     data['person_id'] = data['id'] + '|' + data['study']
