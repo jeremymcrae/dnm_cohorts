@@ -16,6 +16,9 @@ url = "https://static-content.springer.com/esm/art%3A10.1038%2Fnature24018/Media
 async def jonsson_nature_de_novos(result):
     """ get de novo variants for Jonsson et al Nature 2017
     
+    This has been superceded by Haldorsson et al, since 99.2% of teh samples
+    from Jonsson et al exist in Haldorsson et al.
+    
     Supplementary Table 4 from:
     Jonsson et al. Nature 549: 519-522, doi: 10.1038/nature24018
     """

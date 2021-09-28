@@ -14,14 +14,14 @@ from dnm_cohorts.cohorts import (open_de_ligt_cohort, open_rauch_cohort,
     open_sanders_neuron_cohort, open_lelieveld_cohort, open_mcrae_nature_cohort,
     open_homsy_science_cohort, open_jonsson_nature_cohort,
     open_jin_nature_genetics_cohort, open_an_science_cohort,
-    kaplanis_nature_cohort)
+    kaplanis_nature_cohort, open_halldorsson_science_cohort)
 from dnm_cohorts.de_novos import (de_ligt_nejm_de_novos,
     de_rubeis_nature_de_novos, epi4k_ajhg_de_novos, gilissen_nature_de_novos,
     iossifov_neuron_de_novos, iossifov_nature_de_novos, lelieveld_nn_de_novos,
     mcrae_nature_de_novos, oroak_nature_de_novos, rauch_lancet_de_novos,
     sanders_nature_de_novos, sanders_neuron_de_novos, homsy_science_de_novos,
     jonsson_nature_de_novos, jin_nature_genetics_de_novos, an_science_de_novos,
-    kaplanis_nature_de_novos)
+    kaplanis_nature_de_novos, halldorsson_science_de_novos)
 from dnm_cohorts.convert_pdf_table import flatten
 from dnm_cohorts.exclude_duplicates import drop_inperson_duplicates
 from dnm_cohorts.de_novo import DeNovo
@@ -87,9 +87,13 @@ async def get_cohorts(args):
     
     # TODO: what about the 1 in 1000 people with differing sex between studies?
     # TODO: I've kept them for now, since they are negligle and conservative.
-    samples = asd + [open_de_ligt_cohort(), open_rauch_cohort(),
-        open_epi4k_ajhg_cohort(), open_jonsson_nature_cohort(),
-        open_jin_nature_genetics_cohort(), kaplanis_nature_cohort()]
+    samples = asd + [open_de_ligt_cohort(), 
+        open_rauch_cohort(),
+        open_epi4k_ajhg_cohort(),
+        open_jin_nature_genetics_cohort(), 
+        kaplanis_nature_cohort(),
+        open_halldorsson_science_cohort(),
+        ]
     
     samples = merge_duplicate_persons(samples)
     for x in flatten(samples):
@@ -143,8 +147,8 @@ async def get_de_novos(args):
             nursery.start_soon(epi4k_ajhg_de_novos, non_asd, limiter)
             nursery.start_soon(jin_nature_genetics_de_novos, non_asd)
             nursery.start_soon(rauch_lancet_de_novos, non_asd, limiter)
-            nursery.start_soon(jonsson_nature_de_novos, non_asd)
             nursery.start_soon(kaplanis_nature_de_novos, non_asd, limiter)
+            nursery.start_soon(halldorsson_science_de_novos, non_asd)
         
         cohorts = list(asd) + flatten(non_asd)
         cohorts = await get_consequences(limiter, cohorts)
