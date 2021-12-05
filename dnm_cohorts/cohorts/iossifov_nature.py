@@ -38,7 +38,7 @@ def open_iossifov_nature_cohort():
     
     path = os.path.join(tempdir.name, 'nature13908-s2', 'Supplementary Table 1.xlsx')
     data = pandas.read_excel(path, 'Supplement-T1-familiesTable')
-    study = ['doi:10.1038/nature13908']
+    study = ['10.1038/nature13908']
     
     persons = set()
     for i, row in data.iterrows():
