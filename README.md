@@ -55,7 +55,7 @@ reference   |   year   |  unique individuals  |   phenotype   |   assay   | depr
 [Jónsson _et al_. _Nature_ 549:519-522](https://doi.org/10.1038/nature24018)                  | 2017 | 1458 | unaffected   |    genome (no chrX in males)    |    yes
 [Jin _et al_. _Nature Genetics_ 49:1593-1601](https://doi.org/10.1038/ng.3970)                | 2017 | 2465 | congenital heart disease   |    exome    |    no
 [An _et al_. _Science_ 362:eaat6576](https://doi.org/10.1126/science.aat6576)                 | 2018 | 1902 affected, 1902 unaffected | autism spectrum disorder, unaffected siblings   |    genome    |    no
-[Halldorsson _et al_. _Science_](10.1126/science.aau1043)                                    | 2019 | 2976 | unaffected, supersedes Jónsson et al   |    genome    |    no
+[Halldorsson _et al_. _Science_](https://doi.org/10.1126/science.aau1043)                                    | 2019 | 2976 | unaffected, supersedes Jónsson et al   |    genome    |    no
 [Kaplanis _et al_. _Nature_](https://doi.org/10.1038/s41586-020-2832-5)                      | 2019 | 31058 | intellectual disability, supersedes Lelieveld et al and McRae et al cohorts   |    exome    |    no
 
 #### Excluded cohorts
