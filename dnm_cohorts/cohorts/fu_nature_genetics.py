@@ -17,7 +17,7 @@ def clean_ssc_ids(df):
     '''
     in_ssc = df['Cohort'] == 'SSC'
     control = df['Affected_Status'] == 1
-    sample_id = df['person_id']
+    sample_id = df['person_id'].copy()
     sample_id.loc[in_ssc] = df['Family'][in_ssc].astype('str')
     sample_id.loc[in_ssc & control] = sample_id.loc[in_ssc & control] + '.s1'
     sample_id.loc[in_ssc & ~control] = sample_id.loc[in_ssc & ~control] + '.p1'
