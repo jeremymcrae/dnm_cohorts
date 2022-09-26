@@ -18,6 +18,8 @@ def download_file(url, path, session=None):
         with open(path, 'wb') as f:
             for chunk in r.iter_content(1600):
                 f.write(chunk)
+    else:
+        raise ValueError(f'{r.status_code} error downloading {url}, headers={r.headers}')
 
 def download_with_cookies(url, path):
     ''' download a file, but set cookies beforehand
