@@ -22,7 +22,7 @@ def open_halldorsson_science_cohort():
     with tempfile.NamedTemporaryFile() as temp:
         # the url redirects, so use the requests package to open the URL
         download_file(url, temp.name)
-        df = pandas.read_table(temp.name, comment='#')
+        df = pandas.read_table(temp.name, comment='#', usecols=['Proband_id'])
     
     df['person_id'] = df['Proband_id'].astype(str)
     df['person_id'] += '|halldorsson'
