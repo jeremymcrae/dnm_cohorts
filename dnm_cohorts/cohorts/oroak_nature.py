@@ -1,4 +1,6 @@
 
+import logging
+
 import pandas
 
 from dnm_cohorts.person import Person
@@ -12,6 +14,7 @@ def open_oroak_cohort():
     doi: 10.1038/nature10989
     Supplementary table 1
     """
+    logging.info('getting O\'Roak et al Nature 2012 cohort')
     data = pandas.read_excel(url, sheet_name='Supplementary Table 1',
         skipfooter=1, engine='xlrd')
     

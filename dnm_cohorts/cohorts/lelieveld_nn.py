@@ -1,4 +1,5 @@
 
+import logging
 import random
 
 import pandas
@@ -14,6 +15,7 @@ def open_lelieveld_cohort():
     doi: 10.1038/nn.4352
     Supplementary table S2.
     """
+    logging.info('getting Lelieveld et al Nature Neuroscience 2016 cohort')
     random.seed(1)
     data = pandas.read_excel(url, sheet_name='Supplementary Table 2')
     

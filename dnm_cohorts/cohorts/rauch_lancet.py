@@ -1,4 +1,5 @@
 
+import logging
 import tempfile
 
 import pandas
@@ -42,6 +43,7 @@ def open_rauch_cohort():
      doi: 10.1016/S0140-6736(12)61480-9
      Supplementary table 1
     """
+    logging.info('getting Rauch et al Lancet 2012 cohort')
     temp = tempfile.NamedTemporaryFile()
     download_file(url, temp.name)
     

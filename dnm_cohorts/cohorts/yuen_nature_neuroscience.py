@@ -15,6 +15,7 @@ def open_yuen_nature_genetics_cohort():
     Yuen et al. (2017) Nature Neuroscience 20:602-611, 
     doi: 10.1038/nn.4524
     """
+    logging.info(f'getting Yuen et al Nature Neuroscience 2017 cohort')
     random.seed(1)
     data = pandas.read_excel(url, 'Table S7', skiprows=1)
     data['person_id'] = data['SUBMITTED_ID'].astype(str) + '|asd_cohorts'

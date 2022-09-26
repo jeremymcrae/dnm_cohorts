@@ -1,4 +1,5 @@
 
+import logging
 import os
 import tempfile
 import math
@@ -28,7 +29,7 @@ def open_iossifov_nature_cohort():
     Nature (2014) 515: 216-221, doi:10.1038/nature13908
     Supplementary table S1.
     """
-    
+    logging.info('getting Iossifov et al Nature 2014 cohort')
     tempdir = tempfile.TemporaryDirectory()
     zipf = os.path.join(tempdir.name, 'temp.zip')
     download_file(url, zipf)

@@ -61,6 +61,7 @@ def open_fu_nature_genetics_cohort():
     
     These numbers can be verified with: dnm_cohorts.de_novos.fu_nature_genetics.check_fu_vs_zhou()
     """
+    logging.info('getting Fu et al Nature Genetics 2022 cohort')
     data = pandas.read_excel(url, 'Supplementary Table 4', skipfooter=14)
     data['person_id'] = data['Sample'].astype(str) + '|asd_cohorts'
     data['sex'] = data['Sex'].str.lower()

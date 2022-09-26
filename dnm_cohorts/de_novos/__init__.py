@@ -17,3 +17,5 @@ from dnm_cohorts.de_novos.jin_nature_genetics import jin_nature_genetics_de_novo
 from dnm_cohorts.de_novos.an_science import an_science_de_novos
 from dnm_cohorts.de_novos.kaplanis_nature import kaplanis_nature_de_novos
 from dnm_cohorts.de_novos.halldorsson_science import halldorsson_science_de_novos
+from dnm_cohorts.de_novos.yuen_nature_neuroscience import yuen_nature_neuroscience_de_novos
+from dnm_cohorts.de_novos.fu_nature_genetics import fu_nature_genetics_de_novos

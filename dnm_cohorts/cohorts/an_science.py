@@ -1,4 +1,5 @@
 
+import logging
 import warnings
 
 import pandas
@@ -13,6 +14,7 @@ def open_an_science_cohort():
     Table S1 from:
     An et al. Science 362: eaat6576, doi: 10.1126/science.aat6576
     """
+    logging.info('getting An et al Science 2018 cohort')
     with warnings.catch_warnings():
         # suppress warning about unknown extension that doesn't affect loading data
         warnings.simplefilter("ignore")

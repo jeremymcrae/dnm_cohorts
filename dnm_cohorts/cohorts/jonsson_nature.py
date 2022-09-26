@@ -1,4 +1,5 @@
 
+import logging
 import os
 import random
 import tempfile
@@ -18,6 +19,7 @@ def open_jonsson_nature_cohort():
     Supplementary Table 4 from:
     Jonsson et al. Nature 549: 519-522, doi: 10.1038/nature24018
     """
+    logging.info('getting Jonsson et al Nature 2017 cohort')
     random.seed(1)
     zipf = tempfile.NamedTemporaryFile()
     download_file(url, zipf.name)

@@ -1,4 +1,5 @@
 
+import logging
 import os
 
 import pandas
@@ -26,6 +27,7 @@ def open_de_rubeis_cohort():
     Supplementary Table 3, with some additional proband details sourced from
     Supplementary table S5 from Sanders et al. (2015) Neuron 87:1215-1233.
     """
+    logging.info('getting De Rubeis et al Nature 2013 cohort')
     data = pandas.read_excel(url, sheet_name='De Novo', skipfooter=1)
     
     # clean up a couple of columns

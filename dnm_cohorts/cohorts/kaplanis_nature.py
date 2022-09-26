@@ -1,4 +1,5 @@
 
+import logging
 import random
 
 import pandas
@@ -30,6 +31,7 @@ def kaplanis_nature_cohort():
     Kaplanis et al Nature 2020
     doi: 10.1038/s41586-020-2832-5
     """
+    logging.info('getting Kaplanis et al Nature 2019 cohort')
     random.seed(1)
     data = pandas.read_table(url)
     

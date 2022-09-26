@@ -16,6 +16,7 @@ def open_halldorsson_science_cohort():
     Supplementary Data 5 (revised) from:
     Halldorsson et al. Science 343: eaau1043, doi: 10.1126/science.aau1043
     """
+    logging.info('getting Halldorsson et al Science 2019 cohort')
     random.seed(1)
     
     with tempfile.NamedTemporaryFile() as temp:

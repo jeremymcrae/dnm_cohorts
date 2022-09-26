@@ -1,4 +1,6 @@
 
+import logging
+
 import pandas
 
 from dnm_cohorts.person import Person
@@ -12,6 +14,7 @@ def open_sanders_nature_cohort():
     doi: 10.1038/nature10945
     Supplementary table S1
     """
+    logging.info('getting Sanders et al Nature 2012 cohort')
     data = pandas.read_excel(url, sheet_name='Sheet1', engine='xlrd')
     
     study = ['10.1038/nature10945']

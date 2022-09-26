@@ -1,4 +1,5 @@
 
+import logging
 import tempfile
 
 import pandas
@@ -77,7 +78,7 @@ def open_epi4k_ajhg_cohort():
     Supplementary Table 6 from:
     Epi4K AJHG 95: 360-370, doi: 10.1016/j.ajhg.2014.08.013
     """
-    
+    logging.info('getting EPI4K et al AJHG 2014 cohort')
     temp = tempfile.NamedTemporaryFile()
     download_file(url, temp.name)
     

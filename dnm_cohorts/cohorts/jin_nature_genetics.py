@@ -1,4 +1,5 @@
 
+import logging
 import random
 
 import pandas
@@ -13,6 +14,7 @@ def open_jin_nature_genetics_cohort():
     Supplementary Table 1 from:
     Jin et al. Nature Genetics 49: 1593-1601, doi: 10.1038/ng.3970
     """
+    logging.info('getting Jin et al Nature Genetics 2017 cohort')
     random.seed(1)
     data = pandas.read_excel(url, 'S1', skiprows=1)
     data['person_id'] = data['Blinded ID'].astype(str) + '|jin'

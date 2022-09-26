@@ -1,4 +1,5 @@
 
+import logging
 import re
 import tempfile
 
@@ -46,6 +47,7 @@ def open_de_ligt_cohort():
     Proband details sourced from 'Clinical description of patients' section in
     supplementary material.
     """
+    logging.info('getting De Ligt et al NEJM 2012 cohort')
     temp = tempfile.NamedTemporaryFile()
     download_with_cookies(url, temp.name)
     

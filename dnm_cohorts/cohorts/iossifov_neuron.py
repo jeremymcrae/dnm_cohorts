@@ -1,6 +1,8 @@
 
-import pandas
 import itertools
+import logging
+
+import pandas
 
 from dnm_cohorts.person import Person
 
@@ -15,6 +17,7 @@ def open_iossifov_neuron_cohort():
     doi: 10.1016/j.neuron.2012.04.009
     Data from supplementary tables S1, S2 and S3.
     """
+    logging.info('getting Iossifov et al Neuron 2012 cohort')
     s1 = pandas.read_excel(supp_s1_url, sheet_name='SNV.v4.1-normlized')
     s2 = pandas.read_excel(supp_s2_url, sheet_name='suppLGKTable')
     s3 = pandas.read_excel(supp_s3_url, sheet_name='ID.v4.1-normlized')

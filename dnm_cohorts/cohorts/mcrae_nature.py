@@ -1,4 +1,5 @@
 
+import logging
 import pandas
 
 from dnm_cohorts.person import Person
@@ -13,6 +14,7 @@ def open_mcrae_nature_cohort():
     doi: 10.1038/nature21062
     Supplementary table S1.
     """
+    logging.info('getting McRae et al Nature 2017 cohort')
     data = pandas.read_excel(url, sheet_name='Supplementary Table 1')
     data['Individual ID'] += '|DDD'
     
