@@ -62,7 +62,12 @@ class DeNovo:
     def __eq__(self, other):
         """ check if two variants are the same (permit fuzzy distance matches)
         """
-        if not self.person_id == other.person_id and self.chrom == other.chrom:
+        # account for variants on different genome builds
+        if self.person_id != other.person_id:
+            return False
+        if self.build != other.build:
+            other = other.to_build(self.build)
+        if self.chrom == other.chrom:
             return False
         
         x1, x2 = self.range
