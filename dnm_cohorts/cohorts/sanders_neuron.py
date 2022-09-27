@@ -1,6 +1,7 @@
 
 import logging
 import os
+import warnings
 
 import pandas
 
@@ -16,7 +17,9 @@ def open_sanders_neuron_cohort():
     doi: 10.1016/j.neuron.2015.09.016
     """
     logging.info('getting Sanders et al Neuron 2015 cohort')
-    data = pandas.read_excel(url, sheet_name='Sheet1')
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore')
+        data = pandas.read_excel(url, sheet_name='Sheet1')
     
     sexes = {'F': 'female', 'female': 'female', 'M': 'male', 'male': 'male',
         'U': 'unknown'}

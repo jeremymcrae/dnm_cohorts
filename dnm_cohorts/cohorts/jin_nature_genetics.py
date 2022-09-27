@@ -1,6 +1,7 @@
 
 import logging
 import random
+import warnings
 
 import pandas
 
@@ -16,7 +17,9 @@ def open_jin_nature_genetics_cohort():
     """
     logging.info('getting Jin et al Nature Genetics 2017 cohort')
     random.seed(1)
-    data = pandas.read_excel(url, 'S1', skiprows=1)
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore')
+        data = pandas.read_excel(url, 'S1', skiprows=1)
     data['person_id'] = data['Blinded ID'].astype(str) + '|jin'
     
     # get male fraction in trios from cohort sex counts in supplemental table 2
