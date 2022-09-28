@@ -57,7 +57,13 @@ class DeNovo:
             yield x
     
     def __hash__(self):
-        return hash(f'{self.person_id}-{self.chrom}-{self.pos}')
+        ''' get unique hash for variant, but standardized to grch38 genome build
+        '''
+        chrom, pos = self.chrom, self.pos
+        if self.build != 'grch38':
+            tmp = self.to_build('grch38')
+            chrom, pos = tmp.chrom, tmp.pos
+        return hash(f'{self.person_id}-{chrom}-{pos}')
     
     def __eq__(self, other):
         """ check if two variants are the same (permit fuzzy distance matches)
@@ -67,7 +73,7 @@ class DeNovo:
             return False
         if self.build != other.build:
             other = other.to_build(self.build)
-        if self.chrom == other.chrom:
+        if self.chrom != other.chrom:
             return False
         
         x1, x2 = self.range
