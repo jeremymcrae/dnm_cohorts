@@ -47,8 +47,8 @@ class RateLimiter:
         await self.wait_for_token()
         try:
             resp = await self.client.get(url, *args, **kwargs)
-        except:
-            logging.error(f'problem accessing {url}')
+        except Exception as err:
+            logging.error(f'problem accessing {url}: {err}')
             raise
         logging.info(f'{url}\t{resp.status_code}')
         resp.raise_for_status()
