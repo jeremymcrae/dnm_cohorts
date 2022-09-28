@@ -4,8 +4,6 @@ import logging
 import json
 import trio
 
-REQS_PER_SECOND = 15
-
 # consequence list, as sorted at
 # https://www.ensembl.org/info/genome/variation/prediction/predicted_data.html
 consequences = [
