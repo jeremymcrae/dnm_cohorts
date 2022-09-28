@@ -52,7 +52,7 @@ severity = dict(zip(consequences, range(len(consequences))))
 def get_base_url(build):
     assert build in ["grch37", "grch38"], f'unknown build: {build}'
     ver = build + '.' if build == "grch37" else ''
-    return f'http://{ver}rest.ensembl.org'
+    return f'https://{ver}rest.ensembl.org'
 
 async def cq_and_symbol(limiter, var, sem):
     """find the VEP consequence for a variant
