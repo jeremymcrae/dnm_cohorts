@@ -61,8 +61,11 @@ class DeNovo:
         '''
         chrom, pos = self.chrom, self.pos
         if self.build != 'grch38':
-            tmp = self.to_build('grch38')
-            chrom, pos = tmp.chrom, tmp.pos
+            try:
+                tmp = self.to_build('grch38')
+                chrom, pos = tmp.chrom, tmp.pos
+            except:
+                pass
         return hash(f'{self.person_id}-{chrom}-{pos}')
     
     def __eq__(self, other):
