@@ -8,20 +8,49 @@ import logging
 from itertools import groupby
 
 from dnm_cohorts.ensembl import get_consequences
-from dnm_cohorts.cohorts import (open_de_ligt_cohort, open_rauch_cohort,
-    open_de_rubeis_cohort, open_epi4k_ajhg_cohort, open_iossifov_nature_cohort,
-    open_iossifov_neuron_cohort, open_oroak_cohort, open_sanders_nature_cohort,
-    open_sanders_neuron_cohort, open_lelieveld_cohort, open_mcrae_nature_cohort,
-    open_homsy_science_cohort, open_jonsson_nature_cohort,
-    open_jin_nature_genetics_cohort, open_an_science_cohort,
-    kaplanis_nature_cohort, open_halldorsson_science_cohort)
-from dnm_cohorts.de_novos import (de_ligt_nejm_de_novos,
-    de_rubeis_nature_de_novos, epi4k_ajhg_de_novos, gilissen_nature_de_novos,
-    iossifov_neuron_de_novos, iossifov_nature_de_novos, lelieveld_nn_de_novos,
-    mcrae_nature_de_novos, oroak_nature_de_novos, rauch_lancet_de_novos,
-    sanders_nature_de_novos, sanders_neuron_de_novos, homsy_science_de_novos,
-    jonsson_nature_de_novos, jin_nature_genetics_de_novos, an_science_de_novos,
-    kaplanis_nature_de_novos, halldorsson_science_de_novos)
+from dnm_cohorts.cohorts import (
+    open_de_ligt_cohort,
+    open_rauch_cohort,
+    open_de_rubeis_cohort,
+    open_epi4k_ajhg_cohort,
+    open_iossifov_nature_cohort,
+    open_iossifov_neuron_cohort,
+    open_oroak_cohort,
+    open_sanders_nature_cohort,
+    open_sanders_neuron_cohort,
+    open_lelieveld_cohort,
+    open_mcrae_nature_cohort,
+    open_homsy_science_cohort,
+    open_jonsson_nature_cohort,
+    open_jin_nature_genetics_cohort,
+    open_an_science_cohort,
+    kaplanis_nature_cohort,
+    open_halldorsson_science_cohort,
+    open_yuen_nature_genetics_cohort,
+    open_fu_nature_genetics_cohort,
+    )
+from dnm_cohorts.de_novos import (
+    de_ligt_nejm_de_novos,
+    de_rubeis_nature_de_novos,
+    epi4k_ajhg_de_novos,
+    gilissen_nature_de_novos,
+    iossifov_neuron_de_novos,
+    iossifov_nature_de_novos,
+    lelieveld_nn_de_novos,
+    mcrae_nature_de_novos,
+    oroak_nature_de_novos,
+    rauch_lancet_de_novos,
+    sanders_nature_de_novos,
+    sanders_neuron_de_novos,
+    homsy_science_de_novos,
+    jonsson_nature_de_novos,
+    jin_nature_genetics_de_novos,
+    an_science_de_novos,
+    kaplanis_nature_de_novos,
+    halldorsson_science_de_novos,
+    yuen_nature_neuroscience_de_novos,
+    fu_nature_genetics_de_novos,
+    )
 from dnm_cohorts.convert_pdf_table import flatten
 from dnm_cohorts.exclude_duplicates import drop_inperson_duplicates
 from dnm_cohorts.de_novo import DeNovo
@@ -83,10 +112,11 @@ async def get_cohorts(args):
     asd = [open_sanders_neuron_cohort(), open_de_rubeis_cohort(),
         open_iossifov_nature_cohort(), open_iossifov_neuron_cohort(),
         open_oroak_cohort(), open_sanders_nature_cohort(),
-        open_an_science_cohort()]
+        open_an_science_cohort(), open_yuen_nature_genetics_cohort(),
+        open_fu_nature_genetics_cohort()]
     
     # TODO: what about the 1 in 1000 people with differing sex between studies?
-    # TODO: I've kept them for now, since they are negligle and conservative.
+    # TODO: I've kept them for now, since they are negligible and conservative.
     samples = asd + [open_de_ligt_cohort(), 
         open_rauch_cohort(),
         open_epi4k_ajhg_cohort(),
@@ -134,6 +164,8 @@ async def get_de_novos(args):
             nursery.start_soon(oroak_nature_de_novos, asd, limiter)
             nursery.start_soon(sanders_nature_de_novos, asd, limiter)
             nursery.start_soon(an_science_de_novos, asd)
+            nursery.start_soon(yuen_nature_neuroscience_de_novos, asd)
+            nursery.start_soon(fu_nature_genetics_de_novos, asd)
         
         for a, b in itertools.combinations(asd, 2):
             # remove the easy matches
