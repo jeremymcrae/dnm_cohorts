@@ -45,7 +45,11 @@ class RateLimiter:
         if 'params' not in kwargs:
             kwargs['params'] = {}
         await self.wait_for_token()
-        resp = await self.client.get(url, *args, **kwargs)
+        try:
+            resp = await self.client.get(url, *args, **kwargs)
+        except:
+            logging.error(f'problem accessing {url}')
+            raise
         logging.info(f'{url}\t{resp.status_code}')
         resp.raise_for_status()
         return resp.text
