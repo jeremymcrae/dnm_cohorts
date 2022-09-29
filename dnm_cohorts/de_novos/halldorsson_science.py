@@ -7,7 +7,7 @@ import pandas
 from dnm_cohorts.de_novo import DeNovo
 from dnm_cohorts.download_file import download_file
 
-url = 'https://www.science.org/doi/suppl/10.1126/science.aau1043/suppl_file/aau1043_datas5_revision1.tsv'
+url = 'https://www.science.org/action/downloadSupplement?doi=10.1126%2Fscience.aau1043&file=aau1043_datas5_revision1.tsv'
 
 async def halldorsson_science_de_novos(result):
     """ get de novo variants for Halldorsson et al Science 2019
