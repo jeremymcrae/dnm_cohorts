@@ -27,7 +27,7 @@ async def yuen_nature_neuroscience_de_novos(result):
     variants = set()
     for row in data.itertuples():
         var = DeNovo(row.person_id, row.chrom, row.pos, row.ref, row.alt,
-            row.study, row.confidence, 'grch38')
+            row.study, row.confidence, 'grch37')
         variants.add(var)
     
     result.append(variants)
