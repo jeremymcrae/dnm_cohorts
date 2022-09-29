@@ -39,7 +39,7 @@ def ensembl_retry(retries=5):
                         delay = float(dict(err.response.headers)['retry-after'])
                 await trio.sleep(delay)
             if last_exception is not None:
-                raise type(last_exception) from last_exception
+                raise last_exception
             return result
         return wrapper
     return decorator
