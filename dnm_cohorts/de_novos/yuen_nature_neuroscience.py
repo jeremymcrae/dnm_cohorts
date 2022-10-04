@@ -18,7 +18,7 @@ async def yuen_nature_neuroscience_de_novos(result):
     
     data['person_id'] = data['SAMPLE']
     data['chrom'] = data['CHROM']
-    data['pos'] = data['START']
+    data['pos'] = data['START'] + 1  # this dataset used zero-based coords
     data['ref'] = data['REF']
     data['alt'] = data['ALT']
     data['study'] = '10.1038/nn.4524'
