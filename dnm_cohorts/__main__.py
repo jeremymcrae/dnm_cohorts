@@ -109,15 +109,22 @@ async def get_cohorts(args):
     header = ['person_id', 'sex', 'phenotype', 'studies']
     yield '\t'.join(header) + '\n'
     # open ASD cohort info, then drop duplicate samples from the ASD cohorts
-    asd = [open_sanders_neuron_cohort(), open_de_rubeis_cohort(),
-        open_iossifov_nature_cohort(), open_iossifov_neuron_cohort(),
-        open_oroak_cohort(), open_sanders_nature_cohort(),
-        open_an_science_cohort(), open_yuen_nature_genetics_cohort(),
-        open_fu_nature_genetics_cohort()]
+    asd = [
+        open_sanders_neuron_cohort(),
+        open_de_rubeis_cohort(),
+        open_iossifov_nature_cohort(),
+        open_iossifov_neuron_cohort(),
+        open_oroak_cohort(),
+        open_sanders_nature_cohort(),
+        open_an_science_cohort(),
+        open_yuen_nature_genetics_cohort(),
+        open_fu_nature_genetics_cohort(),
+        ]
     
     # TODO: what about the 1 in 1000 people with differing sex between studies?
     # TODO: I've kept them for now, since they are negligible and conservative.
-    samples = asd + [open_de_ligt_cohort(), 
+    samples = asd + [
+        open_de_ligt_cohort(), 
         open_rauch_cohort(),
         open_epi4k_ajhg_cohort(),
         open_jin_nature_genetics_cohort(), 
