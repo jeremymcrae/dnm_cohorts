@@ -9,7 +9,7 @@ from dnm_cohorts.person import Person
 url = 'https://static-content.springer.com/esm/art%3A10.1038%2Fs41588-022-01104-0/MediaObjects/41588_2022_1104_MOESM3_ESM.xlsx'
 
 def clean_ssc_ids(df):
-    ''' lean sample IDs from the SSC subset, for consistency with previous IDs.
+    ''' clean sample IDs from the SSC subset, for consistency with previous IDs.
     
     I spot checked one sample via the family ID and confirmed the de novos in
     this dataframe were present (along with others from WGS calling, which is
