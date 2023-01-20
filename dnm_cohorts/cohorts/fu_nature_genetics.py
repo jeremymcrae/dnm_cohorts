@@ -79,13 +79,6 @@ def open_fu_nature_genetics_cohort():
         
         persons.add(person)
         
-        # FIXME I found a duplicate de novo call in the table for 12603.p1|asd_cohorts
-        # FIXME at 12:31667984 G->A. there are two rows for this variant, each 
-        # FIXME for a different gene symbol (METTL20 and ETFBKMT), which come
-        # FIXME from two different studies - 10.1126/science.aat6576 and 
-        # FIXME 10.1038/nature10989. Figure out why this occurs, and prevent it 
-        # FIXME and others.
-        
         # FIXME There are some large families of sequenced sibs in this cohort,
         # FIXME e.g family ID SF0094948. We should drop to a single affected 
         # FIXME proband to avoid potential confounders from recurrent mutations 
