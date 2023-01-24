@@ -15,7 +15,7 @@ def clean_ssc_ids(df):
     this dataframe were present (along with others from WGS calling, which is
     why I'm not simply setting this study as the source of truth).
     '''
-    in_ssc = df['Cohort'] == 'SSC'
+    in_ssc = df['cohort'] == 'SSC'
     control = df['Affected_Status'] == 1
     sample_id = df['person_id'].copy()
     sample_id.loc[in_ssc] = df['Family'][in_ssc].astype('str')
@@ -63,6 +63,7 @@ def open_fu_nature_genetics_cohort():
     """
     logging.info('getting Fu et al Nature Genetics 2022 cohort')
     df = pandas.read_excel(url, 'Supplementary Table 4', skipfooter=14)
+    df = df.rename(columns={'Cohort': 'cohort', 'VCF_batch': 'vcf_batch'})
     df['person_id'] = df['Sample'].astype(str) + '|asd_cohorts'
     df['sex'] = df['Sex'].str.lower()
     control = df['Affected_Status'] == 1
