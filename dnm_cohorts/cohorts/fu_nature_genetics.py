@@ -62,18 +62,18 @@ def open_fu_nature_genetics_cohort():
     These numbers can be verified with: dnm_cohorts.de_novos.fu_nature_genetics.check_fu_vs_zhou()
     """
     logging.info('getting Fu et al Nature Genetics 2022 cohort')
-    data = pandas.read_excel(url, 'Supplementary Table 4', skipfooter=14)
-    data['person_id'] = data['Sample'].astype(str) + '|asd_cohorts'
-    data['sex'] = data['Sex'].str.lower()
-    control = data['Affected_Status'] == 1
-    data['status'] = 'HP:0000717'
-    data.loc[control, 'status'] = 'unaffected'
-    data['person_id'] = clean_ssc_ids(data)
+    df = pandas.read_excel(url, 'Supplementary Table 4', skipfooter=14)
+    df['person_id'] = df['Sample'].astype(str) + '|asd_cohorts'
+    df['sex'] = df['Sex'].str.lower()
+    control = df['Affected_Status'] == 1
+    df['status'] = 'HP:0000717'
+    df.loc[control, 'status'] = 'unaffected'
+    df['person_id'] = clean_ssc_ids(df)
     
     study = ['10.1038/s41588-022-01104-0']
     
     persons = set()
-    for row in data.itertuples():
+    for row in df.itertuples():
         person = Person(row.person_id, row.sex, [row.status], study)
         person.family = row.Family
         
@@ -122,9 +122,14 @@ def to_build(lifter, row):
 def open_fu_dnms():
     ''' open Fu et al variants
     '''
-    df = pandas.read_excel('https://static-content.springer.com/esm/' \
-        'art%3A10.1038%2Fs41588-022-01104-0/MediaObjects/'\
-        '41588_2022_1104_MOESM3_ESM.xlsx', 'Supplementary Table 20', skipfooter=18)
+    df = pandas.read_excel(url, 'Supplementary Table 20', skipfooter=18)
+    
+    sample_df = pandas.read_excel(url, 'Supplementary Table 4', skipfooter=14)
+    sample_df['person_id'] = sample_df['Sample'].astype(str) + '|asd_cohorts'
+    sample_df['person_id'] = clean_ssc_ids(sample_df)
+    
+    df['person_id'] = df['Sample'].map(dict(zip(sample_df.Sample, sample_df.person_id)))
+    
     # make coord column names consistent
     df[['chrom', 'pos', 'ref', 'alt']] = df['Variant'].str.split(':', expand=True)
     df['pos'] = df['pos'].astype(int)
@@ -137,14 +142,24 @@ def open_fu_dnms():
 def open_zhou_dnms():
     ''' open Zhou et al variants
     '''
-    df = pandas.read_excel('https://static-content.springer.com/esm/' \
-        'art%3A10.1038%2Fs41588-022-01148-2/MediaObjects/' \
-        '41588_2022_1148_MOESM5_ESM.xlsx', 'SupplementaryData1_ASD_Discov_D', skipfooter=18)
+    url = 'https://static-content.springer.com/esm/' \
+        'art%3A10.1038%2Fs41588-022-01148-2/MediaObjects/41588_2022_1148_MOESM5_ESM.xlsx'
     
-    df = df.rename(columns={'Chrom': 'chrom', 'Position': 'pos', 'Ref': 'ref', 'Alt': 'alt'})
+    df = pandas.read_excel(url, 'SupplementaryData1_ASD_Discov_D', skipfooter=18)
+    df = df.rename(columns={'Chrom': 'chrom', 'Position': 'pos', 'Ref': 'ref', 
+                            'Alt': 'alt', 'IID': 'person_id', 'Cohort': 'cohort'})
+    df['person_id'] = df['person_id'].astype('str')
     df['chrom'] = df['chrom'].astype('str')
     df['symbol'] = df['HGNC']
     df['consequence'] = df['GeneEff']
+    
+    # fix some sample IDs with discrepant IDs
+    idx = df['person_id'].str.startswith('CC')
+    df.loc[idx, 'person_id'] = df.loc[idx, 'person_id'].str.replace('.', '_')
+    
+    # fix other sample IDs with discrepant IDs
+    idx = df['person_id'].str.contains('@')
+    df.loc[idx, 'person_id'] = df.loc[idx, 'person_id'].str.replace('@', '_')
     
     # lift Zhou variants to hg38
     lifter = get_lifter('hg19', 'hg38')
