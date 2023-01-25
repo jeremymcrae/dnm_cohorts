@@ -19,6 +19,7 @@ async def fu_nature_genetics_de_novos(result):
     data = pandas.read_excel(fu_url, 'Supplementary Table 20', skipfooter=18)
     
     sample_df = pandas.read_excel(fu_url, 'Supplementary Table 4', skipfooter=14)
+    sample_df = sample_df.rename(columns={'Cohort': 'cohort'})
     sample_df['person_id'] = sample_df['Sample'].astype(str) + '|asd_cohorts'
     sample_df['person_id'] = clean_ssc_ids(sample_df)
     
