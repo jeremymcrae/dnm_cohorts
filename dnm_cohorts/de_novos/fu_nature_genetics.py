@@ -34,14 +34,14 @@ async def fu_nature_genetics_de_novos(result):
     variants = set()
     for row in data.itertuples():
         var = DeNovo(row.person_id, row.chrom, row.pos, row.ref, row.alt,
-            row.study, row.confidence, data.build)
+            row.study, row.confidence, row.build)
         variants.add(var)
     
     # fill in the missing chrX de novos from Zhou et al dataset
     zhou = await import_zhou_chrX_calls(sample_df)
     for row in zhou.itertuples():
         var = DeNovo(row.person_id, row.chrom, row.pos, row.ref, row.alt,
-            row.study, row.confidence, data.build)
+            row.study, row.confidence, row.build)
         variants.add(var)
     
     result.append(variants)
