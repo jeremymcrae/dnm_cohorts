@@ -118,7 +118,7 @@ def find_missing_zhou_samples(zhou, fu_sample_df):
             (fu_sample_df.person_id.str.len() == 9)].VCF_batch.value_counts()
 
     # I'll have to exclude importing from the 17 missing SPARK samples
-    spark_missing = zhou['person_id'][(zhou['cohort'] == 'SPARK') & ~zhou['matched']]
+    spark_missing = set(zhou['person_id'][(zhou['cohort'] == 'SPARK') & ~zhou['matched']])
 
     # of the missing 42 ASC samples (vs 3074 found), most sample IDs are found in
     # other, earlier studies, so I can exclude those.
