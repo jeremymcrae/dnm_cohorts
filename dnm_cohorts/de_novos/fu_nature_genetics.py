@@ -74,6 +74,7 @@ async def open_zhou_de_novos(url):
     df['symbol'] = df['HGNC']
     df['consequence'] = df['GeneEff']
     df['study'] = '10.1038/s41588-022-01148-2'
+    df['confidence'] = 'high'
     df['build'] = 'grch37'
     
     # fix some sample IDs with discrepant IDs
@@ -111,24 +112,28 @@ def find_missing_zhou_samples(zhou, fu_sample_df):
     # >>> cohort  person_id
     # >>>  MSSNG  AU3692301
     # >>>  MSSNG  AU1635302
-
+    
     # The AUXXXXXXX samples in Fu et al are all from one substudy: ASC_B14. I think
     # I'm ok ignoring that small overlap.
     fu_sample_df[fu_sample_df.person_id.str.startswith('AU') & 
             (fu_sample_df.person_id.str.len() == 9)].VCF_batch.value_counts()
     
     mssng_missing = set(zhou['person_id'][(zhou['cohort'] == 'MSSNG') & ~zhou['matched']])
+    logging.info(f'found {len(mssng_missing)} missing from MSSNG')
     
     # I'll have to exclude importing from the 17 missing SPARK samples
     spark_missing = set(zhou['person_id'][(zhou['cohort'] == 'SPARK') & ~zhou['matched']])
+    logging.info(f'found {len(spark_missing)} missing from SPARK')
 
     # of the missing 42 ASC samples (vs 3074 found), most sample IDs are found in
     # other, earlier studies, so I can exclude those.
     asc_missing = set(zhou['person_id'][(zhou['cohort'] == 'ASC') & ~zhou['matched']])
+    logging.info(f'found {len(asc_missing)} missing from ASC')
 
     # the missing 420 SSC samples are from Sanders et al Neuron 2015 87:1215-1233.
     # At least, the ones I spot checked were, so these are included already.
     ssc_missing = set(zhou['person_id'][(zhou['cohort'] == 'SSC') & ~zhou['matched']])
+    logging.info(f'found {len(ssc_missing)} missing from SSC')
     
     return mssng_missing | spark_missing | asc_missing | ssc_missing
 
