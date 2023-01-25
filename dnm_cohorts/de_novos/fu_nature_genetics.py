@@ -69,7 +69,7 @@ async def open_zhou_de_novos(url):
     df = pandas.read_excel(url, 'SupplementaryData1_ASD_Discov_D', skipfooter=18)
     df = df.rename(columns={'Chrom': 'chrom', 'Position': 'pos', 'Ref': 'ref', 
                             'Alt': 'alt', 'IID': 'person_id', 'Cohort': 'cohort'})
-    df['person_id'] = df['person_id'].astype('str')
+    df['person_id'] = df['person_id'].astype('str') + '|asd_cohorts'
     df['chrom'] = df['chrom'].astype('str')
     df['symbol'] = df['HGNC']
     df['consequence'] = df['GeneEff']
@@ -130,38 +130,33 @@ def find_missing_zhou_samples(zhou, fu_sample_df):
     
     return spark_missing | asc_missing | ssc_missing
 
-def all_cohort_matches(df: pandas.DataFrame, sample_id: str, cohort: str='asd_cohorts'):
+def all_cohort_matches(df: pandas.DataFrame, sample_id: str):
     ''' find all rows in the combined cohort for a given sample ID
     
     Args:
         df: pandas Dataframe with person_id column
         sample_id: sample_id of sample to check
-        cohort: name of subcohort to restrict to (suffix of person_ids in cohort 
-                dataframe)
     
     Returns:
         rows matching the sample ID
     '''
-    asd = df.person_id.str.contains(cohort, regex=False)
-    return df[asd & df.person_id.str.startswith(sample_id + '|')]
+    return df[df.person_id.str == sample_id ]
 
-def in_multiple_studies(df: pandas.DataFrame, sample_id: str, cohort: str='asd_cohorts'):
+def in_multiple_studies(df: pandas.DataFrame, sample_id: str):
     ''' check if a sample was reported in multiple studies
     
     Args:
         df: pandas Dataframe with person_id column
         sample_id: sample_id of sample to check
-        cohort: name of subcohort to restrict to (suffix of person_ids in cohort 
-                dataframe)
     
     Returns:
         true/false for whether the sample is in multjple studies
     '''
-    rows = all_cohort_matches(df, sample_id, cohort)
+    rows = all_cohort_matches(df, sample_id)
     if len(rows) > 1:
         raise ValueError(f'too many sample matches for {sample_id}: {sorted(set(rows.person_id))}')
     elif len(rows) == 0:
-        raise ValueError(f'no rows fpound for {sample_id}')
+        raise ValueError(f'no rows found for {sample_id}')
     return len(rows.squeeze().studies.split(',')) > 1
 
 def categorize_missing_fu_samples(fu_cohort, fu, zhou):
