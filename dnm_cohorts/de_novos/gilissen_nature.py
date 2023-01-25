@@ -35,7 +35,7 @@ def extract_table(handle):
         records += lines
     
     # remove the final few footer lines
-    records = records[:-7]
+    records = records[2:-7]
     
     # standardise the columns
     records = [ x[:5] for x in records ]
