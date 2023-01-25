@@ -5,11 +5,15 @@ import tempfile
 
 import pandas
 
-from dnm_cohorts.download_file import download_with_cookies
+from dnm_cohorts.download_file import download_file
 from dnm_cohorts.person import Person
 from dnm_cohorts.convert_pdf_table import extract_pages, convert_page
 
-url = 'https://www.nejm.org/doi/suppl/10.1056/NEJMoa1206524/suppl_file/nejmoa1206524_appendix.pdf'
+# I would prefer to use a NEJM URL, but the NEJM website requires accessing via 
+# a javascript enabled browser to authenticate the request. I stashed the same 
+# file in a google bucket instead.
+# url = 'https://www.nejm.org/doi/suppl/10.1056/NEJMoa1206524/suppl_file/nejmoa1206524_appendix.pdf'
+url = 'https://storage.googleapis.com/6cf434c4c71ee9c3cf1b2d8cfc0e9cd32e8d1e64/nejmoa1206524_appendix.pdf'
 
 def extract_table(handle):
     
@@ -49,7 +53,7 @@ def open_de_ligt_cohort():
     """
     logging.info('getting De Ligt et al NEJM 2012 cohort')
     temp = tempfile.NamedTemporaryFile()
-    download_with_cookies(url, temp.name)
+    download_file(url, temp.name)
     
     data = extract_table(temp)
     data['person_id'] += '|de_ligt'
