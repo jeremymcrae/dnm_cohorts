@@ -28,7 +28,7 @@ async def de_rubeis_nature_de_novos(result):
     
     # strip whitespace and ensure columns are string
     for col in ['person_id', 'chrom', 'ref', 'alt']:
-        data[col] = data[col].astype(str).str.replace(' |\t', '')
+        data[col] = data[col].astype(str).str.replace(' |\t', '', regex=False)
     
     data['person_id'] += '|asd_cohorts'
     data['study'] = "10.1038/nature13772"
