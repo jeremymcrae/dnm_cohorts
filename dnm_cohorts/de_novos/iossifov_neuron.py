@@ -49,7 +49,7 @@ async def iossifov_neuron_de_novos(result, limiter):
     # merge the SNV and indel de novo calls
     snvs = snvs[['quadId', 'location', 'variant', 'effectGenes', 'effectType', 'inChild']]
     indels = indels[['quadId', 'location', 'variant', 'effectGenes', 'effectType', 'inChild']]
-    data = snvs.append(indels, ignore_index=True)
+    data = pandas.concat([snvs, indels], ignore_index=True)
     
     # get the coordinates
     coords = await fix_coordinates_with_allele(limiter, data['location'], data['variant'])
