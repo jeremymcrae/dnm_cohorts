@@ -113,11 +113,11 @@ class DeNovo:
         try:
             coords = self.lifters[key][self.chrom][self.pos - 1]
         except KeyError:
-            logging.warning(f'cannot liftover: {self.chrom}:{self.pos}' \
+            logging.warning(f'cannot liftover: {self.chrom}:{self.pos} ' \
                             f'{self.ref}->{self.alt}')
             return None
         if not coords:
-            logging.warning(f'cannot liftover: {self.chrom}:{self.pos}' \
+            logging.warning(f'cannot liftover: {self.chrom}:{self.pos} ' \
                             f'{self.ref}->{self.alt}')
             return None
         
