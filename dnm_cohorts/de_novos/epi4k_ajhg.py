@@ -13,8 +13,8 @@ def get_person_ids(data):
     """ lean up the person IDs
     """
     
-    trios = data['TRIO ID'].str.replace('*', '').str.upper()
-    person_ids = data['Child ID'].str.replace('*', '').str.upper()
+    trios = data['TRIO ID'].str.replace('*', '', regex=False).str.upper()
+    person_ids = data['Child ID'].str.replace('*', '', regex=False).str.upper()
     phenos = data['PHENO']
     
     # get a set of IDs that match the Coriell IDs

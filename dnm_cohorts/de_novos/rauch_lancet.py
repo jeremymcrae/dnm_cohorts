@@ -94,7 +94,7 @@ async def rauch_lancet_de_novos(result, limiter):
     s2 = extract_table_s2(temp)
     del s2['cq']
     s3 = extract_table_s3(temp)
-    data = s2.append(s3, ignore_index=True)
+    data = pandas.concat([s2, s3], ignore_index=True)
     
     coords = await fix_hgvs_coordinates(limiter, data['hgvs_genomic'])
     data['chrom'], data['pos'], data['ref'], data['alt'] = coords

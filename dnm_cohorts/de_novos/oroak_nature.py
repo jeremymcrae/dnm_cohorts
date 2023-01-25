@@ -42,13 +42,13 @@ async def fix_alleles(limiter, data):
     
     # tidy up the deletion alleles
     dels_alt = [seqs[x] for x in dels_coords]
-    ref[dels] = dels_alt + alt[dels].str.replace('\dD, *-', '')
+    ref[dels] = dels_alt + alt[dels].str.replace('\dD, *-', '', regex=False)
     alt[dels] = dels_alt
     
     # tidy up the insertion alleles
     ins_ref = [seqs[x] for x in ins_coords]
     ref[ins] = ins_ref
-    alt[ins] = ins_ref + alt[ins].str.replace('\dI, *\+', '')
+    alt[ins] = ins_ref + alt[ins].str.replace('\dI, *\+', '', regex=False)
     
     return ref, alt
 

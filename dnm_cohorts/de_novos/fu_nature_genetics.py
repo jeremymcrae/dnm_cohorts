@@ -78,11 +78,11 @@ async def open_zhou_de_novos(url):
     
     # fix some sample IDs with discrepant IDs
     idx = df['person_id'].str.startswith('CC')
-    df.loc[idx, 'person_id'] = df.loc[idx, 'person_id'].str.replace('.', '_')
+    df.loc[idx, 'person_id'] = df.loc[idx, 'person_id'].str.replace('.', '_', regex=False)
     
     # fix other sample IDs with discrepant IDs
     idx = df['person_id'].str.contains('@', regex=False)
-    df.loc[idx, 'person_id'] = df.loc[idx, 'person_id'].str.replace('@', '_')
+    df.loc[idx, 'person_id'] = df.loc[idx, 'person_id'].str.replace('@', '_', regex=False)
     
     return df
 
