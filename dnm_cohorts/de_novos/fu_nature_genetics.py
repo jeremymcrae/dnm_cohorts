@@ -130,7 +130,7 @@ def find_missing_zhou_samples(zhou, fu_sample_df):
     # At least, the ones I spot checked were, so these are included already.
     ssc_missing = set(zhou['person_id'][(zhou['cohort'] == 'SSC') & ~zhou['matched']])
     
-    return spark_missing | asc_missing | ssc_missing
+    return mssng_missing | spark_missing | asc_missing | ssc_missing
 
 def all_cohort_matches(df: pandas.DataFrame, sample_id: str):
     ''' find all rows in the combined cohort for a given sample ID
