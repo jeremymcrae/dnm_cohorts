@@ -117,6 +117,8 @@ def find_missing_zhou_samples(zhou, fu_sample_df):
     fu_sample_df[fu_sample_df.person_id.str.startswith('AU') & 
             (fu_sample_df.person_id.str.len() == 9)].VCF_batch.value_counts()
     
+    mssng_missing = set(zhou['person_id'][(zhou['cohort'] == 'MSSNG') & ~zhou['matched']])
+    
     # I'll have to exclude importing from the 17 missing SPARK samples
     spark_missing = set(zhou['person_id'][(zhou['cohort'] == 'SPARK') & ~zhou['matched']])
 
