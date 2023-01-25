@@ -49,7 +49,7 @@ async def fu_nature_genetics_de_novos(result):
 async def import_zhou_chrX_calls(fu_sample_df):
     ''' import chrX de novo calls from Zhou et al to fill in the Fu et al dataset
     '''
-    zhou = await open_zhou_de_novos()
+    zhou = await open_zhou_de_novos(zhou_url)
     zhou_missing = find_missing_zhou_samples(zhou, fu_sample_df)
     zhou = zhou[~zhou['person_id'].isin(zhou_missing)]
     return zhou[zhou['chrom'] == 'X']
