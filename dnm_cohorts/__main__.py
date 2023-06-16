@@ -136,20 +136,30 @@ async def get_cohorts(args):
     for x in flatten(samples):
         yield str(x) + '\n'
 
-def remove_duplicate_dnms(cohorts):
+def merge_duplicate_dnms(cohorts):
     """ only include unique variants
     """
     
     unique = set()
-    for id, group in groupby(flatten(cohorts), key=lambda x: x.person_id):
+    for _id, group in groupby(sorted(flatten(cohorts), key=lambda x: x.person_id), key=lambda x: x.person_id):
         # within variants for an individual, check to see if any are the same
         # variant by seeing if any already included overlap the same range.
         # We can't just check for inclusion inside the set, as that would use
         # the position, not the range.
         shrunken = set()
         for var in group:
-            if not any( var == x for x in shrunken ):
-                shrunken.add(var)
+            # can't use "var in shrunken", since that only checks exact pos
+            if any(var == x for x in shrunken):
+                studies = [var.study]
+                for x in shrunken:
+                    if var == x:
+                        studies += x.study.split(',')
+                        studies = ','.join(sorted(set(studies)))
+                        var.study = studies
+                        break
+                shrunken = set(x for x in shrunken if x != var)
+            shrunken.add(var)
+        
         unique |= shrunken
     
     return unique
@@ -157,7 +167,7 @@ def remove_duplicate_dnms(cohorts):
 async def get_de_novos(args):
     """ get list of all de novos in all cohorts
     """
-    header = ['person_id', 'chrom', 'pos', 'ref', 'alt', 'study',
+    header = ['person_id', 'chrom', 'pos', 'ref', 'alt', 'studies',
         'confidence', 'build', 'symbol', 'consequence']
     yield '\t'.join(header) + '\n'
     async with RateLimiter(14) as limiter:
@@ -174,11 +184,7 @@ async def get_de_novos(args):
             nursery.start_soon(yuen_nature_neuroscience_de_novos, asd)
             nursery.start_soon(fu_nature_genetics_de_novos, asd)
         
-        for a, b in itertools.combinations(asd, 2):
-            # remove the easy matches
-            a -= b
-        
-        asd = remove_duplicate_dnms(reversed(asd))
+        asd = merge_duplicate_dnms(reversed(asd))
         non_asd = []
         async with trio.open_nursery() as nursery:
             nursery.start_soon(de_ligt_nejm_de_novos, non_asd, limiter)
