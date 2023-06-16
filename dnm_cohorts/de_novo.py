@@ -76,6 +76,8 @@ class DeNovo:
             return False
         if self.build != other.build:
             other = other.to_build(self.build)
+        if other is None:
+            return False
         if self.chrom != other.chrom:
             return False
         
