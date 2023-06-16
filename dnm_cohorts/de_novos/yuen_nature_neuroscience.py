@@ -17,7 +17,7 @@ async def yuen_nature_neuroscience_de_novos(result):
     logging.info('getting Yuen et al Nature Neuroscience 2017 de novos')
     data = pandas.read_excel(url, 'Table S3', skiprows=1)
     
-    data['person_id'] = data['SAMPLE']
+    data['person_id'] = data['SAMPLE'] + '|asd_cohorts'
     data['chrom'] = data['CHROM']
     data['pos'] = data['START'] + 1  # this dataset used zero-based coords
     data['ref'] = data['REF']
