@@ -19,7 +19,7 @@ dependencies = [
 [project.optional-dependencies]
 build = [
   "asks",
-  "hgvs <= 1.5.1",
+  "hgvs <= 1.5.1", # newer versions install psycopg2 from source, which can have issues
   "intervaltree",
   "pandas",
   "pdfminer.six",
