@@ -1,0 +1,35 @@
+[project]
+name = "dnm_cohorts"
+description = 'Package for obtaining cohorts used for de novo mutation analysis'
+version = "1.7.0"
+readme = {file = "README.md", content-type = "text/markdown"}
+license = {text = 'MIT'}
+authors = [
+    {name = "Jeremy McRae", email = "jmcrae@illumina.com"},
+]
+classifiers=[
+    "Development Status :: 3 - Alpha",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+
+dependencies = [
+  "liftover",
+]
+
+[project.optional-dependencies]
+build = [
+  "asks",
+  "hgvs <= 1.5.1",
+  "intervaltree",
+  "pandas",
+  "pdfminer.six",
+  "openpyxl",
+  "trio",
+  "xlrd",
+]
+
+[project.urls]
+Homepage = 'https://github.com/jeremymcrae/dnm_cohorts'
+
+[project.scripts]
+dnm_cohorts = "dnm_cohorts.__main__:main"
